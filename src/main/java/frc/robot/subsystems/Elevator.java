@@ -18,7 +18,7 @@ private final TrapezoidProfile.Constraints m_Constraints =
  new TrapezoidProfile.Constraints(1.75, 0.75);
  private final ProfiledPIDController m_Controller = 
  new ProfiledPIDController(1.3, 0.0, 0.7, m_Constraints, kDt);
-
+ 
  public Elevator() {
     m_encoder.setDistancePerPulse(1.0 / 360.0 * 2.0 * Math.PI * 1.5);
  }
