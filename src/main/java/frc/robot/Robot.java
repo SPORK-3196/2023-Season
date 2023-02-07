@@ -4,7 +4,9 @@
 
 package frc.robot;
 
+import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 
 /**
@@ -16,6 +18,14 @@ import edu.wpi.first.wpilibj2.command.Command;
 public class Robot extends TimedRobot {
   private Command autoCommmand;
   private RobotContainer m_robotContainer;
+
+  public static XboxController primaryController = new XboxController(0);
+  public static XboxController armController = new XboxController(1);
+
+  public static double LJSX_Primary = primaryController.getLeftX();
+  public static double LJSY_Primary = primaryController.getLeftY();
+  public static SlewRateLimiter filter = new SlewRateLimiter(.5);
+  
   /**
    * This function is run when the robot is first started up and should be used for any
    * initialization code.
