@@ -3,8 +3,9 @@ package frc.robot.commands;
 import java.util.Set;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.Subsystem;
-import frc.robot.Robot;
 import frc.robot.subsystems.Lift;
+import frc.robot.Robot;
+import frc.robot.subsystems.Arm;
 
 public class LiftWithJoystick extends CommandBase {
   public LiftWithJoystick() {
@@ -33,16 +34,16 @@ public class LiftWithJoystick extends CommandBase {
     double liftInput = - Robot.primaryController.getRawAxis(1);
     double liftSpeedCoef = -1.0;
 
-    //System.out.println(Robot.lift.getEncoder());
+    /*//System.out.println(Robot.lift.getEncoder());
     if(Robot.primaryController.getXButtonPressed()) {
-      Robot.arm.armOut = false; // Cargo dropoff
+      Robot.arm.shoulder = false; // Cargo dropoff
       Robot.lift.setSetpoint(6000);
       Robot.lift.enable();
     } else if(Robot.primaryController.getBButtonPressed()) {
-      Robot.arm.armOut = true; // Hatch pickup
+      Robot.arm.elbow = true; // Hatch pickup
       Robot.lift.setSetpoint(3000);
       Robot.lift.enable();
-    }
+    }*/
 
     if(Math.abs(liftInput) > 0.08) {
       Robot.lift.disable();
