@@ -4,8 +4,11 @@
 
 package frc.robot;
 
+import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.subsystems.Lift;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -16,12 +19,23 @@ import edu.wpi.first.wpilibj2.command.Command;
 public class Robot extends TimedRobot {
   private Command autoCommmand;
   private RobotContainer m_robotContainer;
+
+  public static XboxController primaryController = new XboxController(0);
+  public static XboxController armController = new XboxController(1);
+
+  public static double LJSX_Primary = primaryController.getLeftX();
+  public static double LJSY_Primary = primaryController.getLeftY();
+  public static SlewRateLimiter filter = new SlewRateLimiter(.5);
+  public static Lift lift;
+public static Object controller1;
+public static Object arm;
   /**
    * This function is run when the robot is first started up and should be used for any
    * initialization code.
    */
   @Override
   public void robotInit() {
+    lift = new Lift();
       m_robotContainer = new RobotContainer();
   }
 
@@ -62,6 +76,7 @@ public class Robot extends TimedRobot {
   /** This function is called once when teleop is enabled. */
   @Override
   public void teleopInit() {
+
     // if(autoCommmand != null){
     //   autoCommand.cancel();
     // }
