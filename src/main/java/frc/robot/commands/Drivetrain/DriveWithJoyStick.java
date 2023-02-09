@@ -1,4 +1,4 @@
-package frc.robot.commands;
+package frc.robot.commands.Drivetrain;
 
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 
