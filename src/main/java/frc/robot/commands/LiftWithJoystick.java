@@ -1,21 +1,17 @@
 package frc.robot.commands;
 
+import java.lang.module.ModuleDescriptor;
+import java.lang.module.ModuleDescriptor.Requires;
 import java.util.Set;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import edu.wpi.first.wpilibj2.command.PIDSubsystem;
 import edu.wpi.first.wpilibj2.command.Subsystem;
 import frc.robot.subsystems.Lift;
 import frc.robot.Robot;
 import frc.robot.subsystems.Arm;
 
 public class LiftWithJoystick extends CommandBase {
-  public LiftWithJoystick() {
-    // Use requires() here to declare subsystem dependencies
-    // eg. requires(chassis);
-    requires(Robot.lift);
-  }
-
-  private void requires(Lift lift) {
-  }
+  public LiftWithJoystick(){}
 
   // Called just before this Command runs the first time
   @Override
@@ -29,7 +25,7 @@ public class LiftWithJoystick extends CommandBase {
     double servoPos = 0.0;
     if(Robot.lift.getEncoder() > 20000) servoPos = 0.3;
     else if(Robot.lift.getEncoder() > 10000) servoPos = 0.15;
-    Robot.lift.cameraServo.set(servoPos);
+  
 
     double liftInput = - Robot.primaryController.getRawAxis(1);
     double liftSpeedCoef = -1.0;
@@ -46,17 +42,17 @@ public class LiftWithJoystick extends CommandBase {
     }*/
 
     if(Math.abs(liftInput) > 0.08) {
-      Robot.lift.disable();
+      ((PIDSubsystem) Robot.liftMotor).disable();
       if(liftInput < 0.0) {
-        if(Robot.lift.getEncoder() < 10000) {
+        if(((Lift) Robot.liftMotor).getEncoder() < 10000) {
           liftSpeedCoef = -0.4;
         }
-        if(Robot.lift.getEncoder() < 1000) {
+        if(((Lift) Robot.liftMotor).getEncoder() < 1000) {
           liftSpeedCoef = -0.0;
         }
       }
 
-      Robot.lift.liftMotor.set(liftInput * liftSpeedCoef);
+  
       //Robot.lift.setSetpoint(Robot.lift.getEncoder());
     }
 

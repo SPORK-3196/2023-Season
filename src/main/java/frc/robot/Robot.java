@@ -26,16 +26,16 @@ public class Robot extends TimedRobot {
   public static double LJSX_Primary = primaryController.getLeftX();
   public static double LJSY_Primary = primaryController.getLeftY();
   public static SlewRateLimiter filter = new SlewRateLimiter(.5);
+  public static Object liftMotor;
   public static Lift lift;
-public static Object controller1;
-public static Object arm;
+  
   /**
    * This function is run when the robot is first started up and should be used for any
    * initialization code.
    */
   @Override
   public void robotInit() {
-    lift = new Lift();
+    Lift lift;
       m_robotContainer = new RobotContainer();
   }
 

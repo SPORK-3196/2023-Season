@@ -1,5 +1,13 @@
 package frc.robot.subsystems;
 
+import com.ctre.phoenix.CANifier.PWMChannel;
+import com.revrobotics.CANSparkMax;
+import com.revrobotics.RelativeEncoder;
+import com.revrobotics.SparkMaxAbsoluteEncoder;
+import com.revrobotics.SparkMaxRelativeEncoder;
+import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+import com.revrobotics.SparkMaxAbsoluteEncoder.Type;
+
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.Servo;
 import edu.wpi.first.wpilibj.motorcontrol.PWMSparkMax;
@@ -16,20 +24,27 @@ public class Lift extends PIDSubsystem {
 
   public double offset = 0;
 
-  public PWMSparkMax liftMotor = new PWMSparkMax(10);
+  //public PWMSparkMax liftMotor = new PWMSparkMax(10);
+  public CANSparkMax liftMotor = new CANSparkMax(10, MotorType.kBrushless);
 
-  public Servo cameraServo = new Servo(0);
+  //public Servo cameraServo = new Servo(0);
 
   public double getEncoder() {
-    return liftMotor.getExpiration() - offset;
+    RelativeEncoder liftEncoder = liftMotor.getEncoder();
+    return offset;
   }
 
   public void resetEncoder() {
-    offset = liftMotor.getExpiration();
+    RelativeEncoder liftEncoder = liftMotor.getEncoder();
   }
 
   public void resetEncoderTo(int val) {
-    offset = liftMotor.getExpiration() - val;
+    //SparkMaxAbsoluteEncoder current = liftMotor.getAbsoluteEncoder(Type.kDutyCycle);
+    //current.getPosition();
+    RelativeEncoder liftEncoder = liftMotor.getEncoder();
+   // offset = liftMotor.getEncoder();
+     ;
+    //offset = liftMotor.getSelectedSensorValue() - val;
   }
   
   public Lift() {
