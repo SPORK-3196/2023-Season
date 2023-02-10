@@ -11,7 +11,12 @@ import frc.robot.Robot;
 import frc.robot.subsystems.Arm;
 
 public class LiftWithJoystick extends CommandBase {
-  public LiftWithJoystick(){}
+  public LiftWithJoystick(){
+    Requires(Robot.lift);
+  }
+
+  private void Requires(Lift lift) {
+  }
 
   // Called just before this Command runs the first time
   @Override
@@ -22,15 +27,15 @@ public class LiftWithJoystick extends CommandBase {
   // Called repeatedly when this Command is scheduled to run
   
   public void execute() {
-    double servoPos = 0.0;
-    if(Robot.lift.getEncoder() > 20000) servoPos = 0.3;
-    else if(Robot.lift.getEncoder() > 10000) servoPos = 0.15;
+    if(Robot.lift.getEncoder() > 20000) {
+    } else if(Robot.lift.getEncoder() > 10000) {
+    }
   
 
     double liftInput = - Robot.primaryController.getRawAxis(1);
     double liftSpeedCoef = -1.0;
 
-    /*//System.out.println(Robot.lift.getEncoder());
+    System.out.println(Robot.lift.getEncoder());
     if(Robot.primaryController.getXButtonPressed()) {
       Robot.arm.shoulder = false; // Cargo dropoff
       Robot.lift.setSetpoint(6000);
@@ -39,7 +44,7 @@ public class LiftWithJoystick extends CommandBase {
       Robot.arm.elbow = true; // Hatch pickup
       Robot.lift.setSetpoint(3000);
       Robot.lift.enable();
-    }*/
+    }
 
     if(Math.abs(liftInput) > 0.08) {
       ((PIDSubsystem) Robot.liftMotor).disable();
