@@ -1,16 +1,9 @@
 package frc.robot.subsystems;
 
-import com.ctre.phoenix.CANifier.PWMChannel;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
-import com.revrobotics.SparkMaxAbsoluteEncoder;
-import com.revrobotics.SparkMaxRelativeEncoder;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
-import com.revrobotics.SparkMaxAbsoluteEncoder.Type;
-
 import edu.wpi.first.math.controller.PIDController;
-import edu.wpi.first.wpilibj.Servo;
-import edu.wpi.first.wpilibj.motorcontrol.PWMSparkMax;
 import edu.wpi.first.wpilibj2.command.PIDSubsystem;
 import frc.robot.commands.LiftWithJoystick;
 
@@ -42,8 +35,8 @@ public class Lift extends PIDSubsystem {
     //SparkMaxAbsoluteEncoder current = liftMotor.getAbsoluteEncoder(Type.kDutyCycle);
     //current.getPosition();
     RelativeEncoder liftEncoder = liftMotor.getEncoder();
-   // offset = liftMotor.getEncoder();
-     ;
+    return;
+    // offset = liftMotor.getEncoder();
     //offset = liftMotor.getSelectedSensorValue() - val;
   }
   
@@ -69,6 +62,7 @@ public class Lift extends PIDSubsystem {
   public double returnPIDInput() {
     return getEncoder();
   }
+
 
   public void usePIDOutput(double val) {
     liftMotor.set(-val);

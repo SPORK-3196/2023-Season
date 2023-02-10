@@ -35,7 +35,7 @@ public class LiftWithJoystick extends CommandBase {
     double liftInput = - Robot.primaryController.getRawAxis(1);
     double liftSpeedCoef = -1.0;
 
-    System.out.println(Robot.lift.getEncoder());
+   /*  System.out.println(Robot.lift.getEncoder());
     if(Robot.primaryController.getXButtonPressed()) {
       Robot.arm.shoulder = false; // Cargo dropoff
       Robot.lift.setSetpoint(6000);
@@ -44,7 +44,7 @@ public class LiftWithJoystick extends CommandBase {
       Robot.arm.elbow = true; // Hatch pickup
       Robot.lift.setSetpoint(3000);
       Robot.lift.enable();
-    }
+    }*/
 
     if(Math.abs(liftInput) > 0.08) {
       ((PIDSubsystem) Robot.liftMotor).disable();
