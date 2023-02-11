@@ -27,7 +27,7 @@ public class Drivetrain extends SubsystemBase {
     private MotorControllerGroup rightGroup = new MotorControllerGroup(rearRight, frontRight);
 
     public DifferentialDrive differentialDrive = new DifferentialDrive(leftGroup, rightGroup);
-
+    
     public DifferentialDriveOdometry m_odometry;
     
     public Drivetrain() {
@@ -46,6 +46,16 @@ public class Drivetrain extends SubsystemBase {
 
         m_odometry = new DifferentialDriveOdometry(gyroscope.getRotation2d(), sensorToMeters(rearLeft.getSelectedSensorPosition()), -1 * sensorToMeters(rearRight.getSelectedSensorPosition()));
     }
+    public void curvatureDriveIK(double speed, double rotation) {
+        DifferentialDrive.WheelSpeeds wheelSpeeds = DifferentialDrive.curvatureDriveIK(speed, rotation, true);
+        leftGroup.set(wheelSpeeds.left);
+        rightGroup.set(wheelSpeeds.right);
+      }
+      public void arcadeDriveIK(double speed, double rotation) {
+        DifferentialDrive.WheelSpeeds wheelSpeeds = DifferentialDrive.arcadeDriveIK(speed, rotation, true);
+        leftGroup.set(wheelSpeeds.left);
+        rightGroup.set(wheelSpeeds.right);
+      }
     
     public void resetEncoders() {
         frontLeft.setSelectedSensorPosition(0);

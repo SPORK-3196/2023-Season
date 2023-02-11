@@ -1,4 +1,4 @@
-package frc.robot.commands;
+package frc.robot.commands.Lift;
 
 import java.lang.module.ModuleDescriptor;
 import java.lang.module.ModuleDescriptor.Requires;
@@ -11,6 +11,10 @@ import frc.robot.Robot;
 import frc.robot.subsystems.Arm;
 
 public class LiftWithJoystick extends CommandBase {
+
+  public LiftWithJoystick(){
+    addRequirements(Robot.lift);
+  }
 
   // Called just before this Command runs the first time
   @Override

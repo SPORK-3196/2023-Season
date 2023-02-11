@@ -5,7 +5,7 @@ import com.revrobotics.RelativeEncoder;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj2.command.PIDSubsystem;
-import frc.robot.commands.LiftWithJoystick;
+import frc.robot.commands.Lift.LiftWithJoystick;
 
 /**
  * Add your docs here.

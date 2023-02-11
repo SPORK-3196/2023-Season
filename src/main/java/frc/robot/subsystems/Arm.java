@@ -6,7 +6,7 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.ArmConstants;
-import frc.robot.commands.RunArm;
+import frc.robot.commands.Arm.RunArm;
 
 public class Arm extends SubsystemBase {
 
@@ -31,7 +31,7 @@ public class Arm extends SubsystemBase {
 
     
     public void DefaltCommand(){
-    //TODO run arm commands 
+    // run arm commands 
     setDefaultCommand(new RunArm());
     }
 }

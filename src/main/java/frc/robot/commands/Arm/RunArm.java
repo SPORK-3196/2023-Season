@@ -1,5 +1,5 @@
 
-package frc.robot.commands;
+package frc.robot.commands.Arm;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.revrobotics.CANSparkMax;
@@ -9,6 +9,12 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Robot;
 
 public class RunArm extends CommandBase {
+
+  public RunArm() {
+    // Use requires() here to declare subsystem dependencies
+    // eg. requires(chassis);
+    addRequirements(Robot.arm);
+  }
     public void initialize() {
         Robot.arm.ShoulderMotor.set(0);
         Robot.arm.ShoulderPID.setP(0.05);
