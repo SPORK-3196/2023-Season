@@ -4,12 +4,23 @@
 
 package frc.robot;
 
+import com.ctre.phoenix.motorcontrol.InvertType;
+import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
+import com.ctre.phoenix.sensors.Pigeon2;
+import com.ctre.phoenix.sensors.WPI_PigeonIMU;
+
 import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.drive.DifferentialDrive;
+import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.Constants.DrivetrainConstants;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Lift;
+import pabeles.concurrency.ConcurrencyOps.Reset;
+import frc.robot.subsystems.Drivetrain;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -30,6 +41,15 @@ public class Robot extends TimedRobot {
   public static Object liftMotor;
   public static Lift lift;
   public static Arm arm;
+  private final Timer m_Timer = new Timer();
+  public WPI_TalonFX rearLeft = new WPI_TalonFX(DrivetrainConstants.rearLeftPort);
+  public WPI_TalonFX frontLeft = new WPI_TalonFX(DrivetrainConstants.frontLeftPort);
+  public WPI_TalonFX rearRight = new WPI_TalonFX(DrivetrainConstants.rearRightPort);
+  public WPI_TalonFX frontRight = new WPI_TalonFX(DrivetrainConstants.frontRightPort);
+  private MotorControllerGroup leftGroup = new MotorControllerGroup(rearLeft, frontLeft);
+  private MotorControllerGroup rightGroup = new MotorControllerGroup(rearRight, frontRight);
+  public DifferentialDrive differentialDrive = new DifferentialDrive(leftGroup, rightGroup);
+
   
   /**
    * This function is run when the robot is first started up and should be used for any
@@ -68,11 +88,19 @@ public class Robot extends TimedRobot {
      {
         autoCommand.schedule();
      }
+     m_Timer.restart();
   }
 
   /** This function is called periodically during autonomous. */
   @Override
   public void autonomousPeriodic() {
+   /*  rightGroup.setInverted(true);
+    if(m_Timer.get()< 1.5){
+    differentialDrive.arcadeDrive(0.01,0,false);
+    
+    } else {
+      differentialDrive.stopMotor();
+    }*/
   }
 
   /** This function is called once when teleop is enabled. */
@@ -94,7 +122,6 @@ public class Robot extends TimedRobot {
   /** This function is called periodically when disabled. */
   @Override
   public void disabledPeriodic() {}
-
   /** This function is called once when test mode is enabled. */
   @Override
   public void testInit() {}

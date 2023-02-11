@@ -12,13 +12,14 @@ import edu.wpi.first.wpilibj2.command.RamseteCommand;
 import frc.robot.Constants;
 import frc.robot.subsystems.Drivetrain;
 
-public class StraightTrajectory extends CommandBase {
+public class StraightTrajectory extends CommandBase{
     public Drivetrain drivetrain;
     
     public StraightTrajectory(Drivetrain drivetrain){
         this.drivetrain = drivetrain;
         addRequirements(drivetrain);
     }
+    
     public Command trajectoryCommand() {
 
         PathPlannerTrajectory trajectory = 
@@ -26,11 +27,9 @@ public class StraightTrajectory extends CommandBase {
              4, 3);
 
         RamseteCommand ramseteCommand = 
-            new RamseteCommand(trajectory, 
-            drivetrain::getPose, 
-            new RamseteController(2, .7), 
-            new SimpleMotorFeedforward(Constants.DrivetrainConstants.m_2022ksVolts,
-                Constants.DrivetrainConstants.m_2022kvVoltSecondsPerMeter,
+            new RamseteCommand(trajectory, drivetrain::getPose, new RamseteController(2, .7),
+            new SimpleMotorFeedforward(Constants.DrivetrainConstants.m_2022ksVolts, 
+            Constants.DrivetrainConstants.m_2022kvVoltSecondsPerMeter,
                 Constants.DrivetrainConstants.m_2022kaVoltSecondsSquaredPerMeter),
             Constants.DrivetrainConstants.m_2022DifferentialDriveKinematics,
             drivetrain::motorWheelSpeeds,
