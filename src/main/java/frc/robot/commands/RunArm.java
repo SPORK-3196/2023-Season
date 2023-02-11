@@ -55,7 +55,7 @@ public class RunArm extends CommandBase {
 
       if(Robot.armController.getAButton()) {
           Robot.arm.ShoulderPID.setReference((((Robot.lift.getEncoder() / 30000.0) - 1.0) * 16.9), CANSparkMax.kPosition);
-          Robot.arm.ElbowPID.setReference((((Robot.arm.armEncoder + 16.9) * (7.6/16.9)) - 7.6), CANSparkMax.kPosition);
+          Robot.arm.ElbowPID.setReference((((Robot.arm.ShoulderEncoder + 16.9) * (7.6/16.9)) - 7.6), CANSparkMax.kPosition);
       } else if(Robot.armController.getBumper(Hand.kLeft)) {
         Robot.arm.ShoulderPID.setReference((((Robot.lift.getEncoder() / 30000.0) - 1.0) * 16.9) + ShoulderOffset, CANSparkMax.kPosition);
         Robot.arm.ElbowPID.setReference((((Robot.arm.ShoulderEncoder + 16.9) * (10.6/16.9)) - 10.6) + ElbowOffset, CANSparkMax.kPosition);

@@ -8,6 +8,7 @@ import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Lift;
 
 /**
@@ -28,6 +29,7 @@ public class Robot extends TimedRobot {
   public static SlewRateLimiter filter = new SlewRateLimiter(.5);
   public static Object liftMotor;
   public static Lift lift;
+  public static Arm arm;
   
   /**
    * This function is run when the robot is first started up and should be used for any

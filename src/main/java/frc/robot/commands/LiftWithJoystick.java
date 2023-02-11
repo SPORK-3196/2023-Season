@@ -11,12 +11,6 @@ import frc.robot.Robot;
 import frc.robot.subsystems.Arm;
 
 public class LiftWithJoystick extends CommandBase {
-  public LiftWithJoystick(){
-    Requires(Robot.lift);
-  }
-
-  private void Requires(Lift lift) {
-  }
 
   // Called just before this Command runs the first time
   @Override
