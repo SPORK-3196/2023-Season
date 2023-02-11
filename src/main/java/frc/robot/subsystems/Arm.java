@@ -1,12 +1,12 @@
 package frc.robot.subsystems;
 
-import com.revrobotics.CANPIDController;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.SparkMaxPIDController;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.ArmConstants;
+import frc.robot.commands.RunArm;
 
 public class Arm extends SubsystemBase {
 
@@ -32,6 +32,6 @@ public class Arm extends SubsystemBase {
     
     public void DefaltCommand(){
     //TODO run arm commands 
-       // setDefaultCommand(new RunArm());
+    setDefaultCommand(new RunArm());
     }
 }

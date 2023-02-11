@@ -27,13 +27,9 @@ public class Robot extends TimedRobot {
   public static double LJSX_Primary = primaryController.getLeftX();
   public static double LJSY_Primary = primaryController.getLeftY();
   public static SlewRateLimiter filter = new SlewRateLimiter(.5);
-<<<<<<< HEAD
   public static Object liftMotor;
   public static Lift lift;
   public static Arm arm;
-=======
-
->>>>>>> e5f761210425634205e59133d263ef8bbeacb60d
   
   /**
    * This function is run when the robot is first started up and should be used for any
@@ -82,16 +78,9 @@ public class Robot extends TimedRobot {
   /** This function is called once when teleop is enabled. */
   @Override
   public void teleopInit() {
-<<<<<<< HEAD
-
-    // if(autoCommmand != null){
-    //   autoCommand.cancel();
-    // }
-=======
      if(autoCommand != null){
        autoCommand.cancel();
     }
->>>>>>> e5f761210425634205e59133d263ef8bbeacb60d
   }
 
   /** This function is called periodically during operator control. */
