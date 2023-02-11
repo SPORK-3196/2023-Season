@@ -7,11 +7,11 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.ClawConstants;;
 
 public class Claw extends SubsystemBase{
-    private final Solenoid piston1 
+    public final Solenoid piston1 
         = new Solenoid(PneumaticsModuleType.REVPH, 
         ClawConstants.piston1Port);
 
-    private final Solenoid piston2 
+    public final Solenoid piston2 
         = new Solenoid(PneumaticsModuleType.REVPH, 
         ClawConstants.piston2Port);
     public Claw(){
@@ -30,13 +30,10 @@ public class Claw extends SubsystemBase{
         : this.runOnce(() -> piston2.set(ClawConstants.kSolenoidReverse)));
     }
 
-    public void TogglePiston2(){
-        piston2.toggle();
+    public CommandBase TogglePiston2(){
+        return this.runOnce(() -> piston2.toggle());
     }
-    public void extendPiston2(){
-        piston2.set(true);
-    }
-    public void retractPiston2(){
-        piston2.set(false);
+    public CommandBase TogglePiston1(){
+        return this.runOnce(() -> piston1.toggle());
     }
 }

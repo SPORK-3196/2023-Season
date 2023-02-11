@@ -1,5 +1,6 @@
 package frc.robot;
 
+import edu.wpi.first.math.kinematics.DifferentialDriveKinematics;
 import edu.wpi.first.math.util.Units;
 
 public final class Constants {
@@ -41,7 +42,21 @@ public final class Constants {
 
         public static final int gyroPort = 5;
 
-        public static final int wheelRadiusIn = 3;
-        public static final double wheelRadiusMeter = Units.inchesToMeters(wheelRadiusIn);
+        public static final double wheelRadiusMeter = Units.inchesToMeters(3);
+        public static final double m_2023gearRatio = 11.7;
+        public static final double m_2022gearRatio = 8.68;
+        public static final double countsPerRevolution = 2048;
+
+        public static double m_2022ksVolts = 0.67962;
+        public static double m_2022kvVoltSecondsPerMeter = 1.8334;
+        public static double m_2022kaVoltSecondsSquaredPerMeter = 0.45089;
+        public static double m_2022kP = 2.7381;
+        
+        public static double m_2022DrivetrainTrackWidthMeters = Units.inchesToMeters(28);
+        public static DifferentialDriveKinematics m_2022DifferentialDriveKinematics = new DifferentialDriveKinematics(m_2022DrivetrainTrackWidthMeters);
+
+        public static double maxSpeed = 3;
+        public static double kMaxAccelerationMetersPerSecSquared = 1;
+
     }
 }
