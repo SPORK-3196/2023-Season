@@ -38,7 +38,7 @@ public class StraightTrajectory extends CommandBase {
             new PIDController(Constants.DrivetrainConstants.m_2022kP, 0, 0),
             drivetrain::tankDriveVolts,
             drivetrain);
-            
+
         drivetrain.resetOdometry();
         
         return ramseteCommand.andThen(() -> drivetrain.tankDriveVolts(0, 0));
@@ -47,5 +47,19 @@ public class StraightTrajectory extends CommandBase {
     @Override
     public void initialize(){
         trajectoryCommand();
+    }
+    
+    @Override
+    public void execute() {
+
+    }
+
+    @Override
+    public void end(boolean interrupted){
+
+    }
+    @Override
+    public boolean isFinished(){
+        return false;
     }
 }
