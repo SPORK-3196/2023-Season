@@ -47,6 +47,7 @@ public class StraightTrajectory extends CommandBase {
     @Override
     public void initialize(){
         trajectoryCommand();
+
     }
     
     @Override

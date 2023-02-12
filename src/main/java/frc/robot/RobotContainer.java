@@ -1,7 +1,5 @@
 package frc.robot;
 
-import java.util.List;
-
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 // import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 // import edu.wpi.first.math.geometry.Pose2d;
@@ -27,6 +25,7 @@ public class RobotContainer {
     private Arm arm = new Arm(); 
     private Elevator elevator = new Elevator();
     private Turret turret = new Turret();
+
     private static SendableChooser<Command> autoChooser = new SendableChooser<Command>();
 
     private DriveWithJoyStick joystickDrive = new DriveWithJoyStick(drivetrain);
@@ -36,29 +35,8 @@ public class RobotContainer {
         claw.setDefaultCommand(new OpenClaw(claw));
         autoChooser.setDefaultOption("Straight Traj 6.49m", new StraightTrajectory(drivetrain));
     }
-    // public void trajectoryCommand(){
-    //     var autoVoltageConstraint = 
-    //             new DifferentialDriveVoltageConstraint(
-    //                 new SimpleMotorFeedforward(Constants.DrivetrainConstants.m_2022ksVolts, 
-    //                     Constants.DrivetrainConstants.m_2022kvVoltSecondsPerMeter, 
-    //                     Constants.DrivetrainConstants.m_2022kaVoltSecondsSquaredPerMeter), 
-    //                     Constants.DrivetrainConstants.m_2022DifferentialDriveKinematics, 10);
-        
-    //         TrajectoryConfig config = 
-    //             new TrajectoryConfig(Constants.DrivetrainConstants.maxSpeed, 
-    //             Constants.DrivetrainConstants.kMaxAccelerationMetersPerSecSquared)
-    //             .setKinematics(Constants.DrivetrainConstants.m_2022DifferentialDriveKinematics)
-    //             .addConstraint(autoVoltageConstraint);
-    // Trajectory trajectory =
-    //             TrajectoryGenerator.generateTrajectory(
-    //                 new Pose2d(0, 0, new Rotation2d(0)),
-    //                 List.of(new Translation2d(1, 1), new Translation2d(2, -1)),
-    //                 new Pose2d(3, 0, new Rotation2d(0)),
-    //                 config);
-    // }
 
     public void configureButtonBindings() {
-
     }
     public Command getSelected(){
         return autoChooser.getSelected();

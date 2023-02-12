@@ -2,14 +2,17 @@ package frc.robot.commands.Drivetrain;
 
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 
+import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.Robot;
 
 public class DriveWithJoyStick extends CommandBase {
-    private Drivetrain drivetrain;
+    private final Drivetrain drivetrain;
     double speedFiltered;
     double rotationFiltered;
+
+    DifferentialDrive.WheelSpeeds wheelSpeeds;
 
     public DriveWithJoyStick(Drivetrain drivetrain) {
         this.drivetrain = drivetrain;
@@ -27,10 +30,10 @@ public class DriveWithJoyStick extends CommandBase {
     
     @Override
     public void execute() {
-        speedFiltered = Robot.filter.calculate(Robot.LJSY_Primary);
-        rotationFiltered = Robot.filter.calculate(Robot.LJSX_Primary);
+        speedFiltered = Robot.LJSY_Primary * 2/3;
+        rotationFiltered = Robot.LJSX_Primary * 2/3;
 
-        drivetrain.arcadeDrive(speedFiltered, rotationFiltered);
+        drivetrain.arcadeDrive(-speedFiltered, rotationFiltered);
     }
 
     @Override
