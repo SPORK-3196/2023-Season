@@ -26,6 +26,8 @@ public class DriveWithJoyStick extends CommandBase {
         drivetrain.rearLeft.setNeutralMode(NeutralMode.Coast);
         drivetrain.frontRight.setNeutralMode(NeutralMode.Coast);
         drivetrain.rearRight.setNeutralMode(NeutralMode.Coast);
+
+        drivetrain.differentialDrive.setDeadband(.08);
     }
     
     @Override
