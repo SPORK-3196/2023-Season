@@ -27,8 +27,8 @@ public class Drivetrain extends SubsystemBase {
 
     private WPI_PigeonIMU gyroscope = new WPI_PigeonIMU(DrivetrainConstants.gyroPort);
 
-    private MotorControllerGroup leftGroup = new MotorControllerGroup(rearLeft, frontLeft);
-    private MotorControllerGroup rightGroup = new MotorControllerGroup(rearRight, frontRight);
+    public MotorControllerGroup leftGroup = new MotorControllerGroup(rearLeft, frontLeft);
+    public MotorControllerGroup rightGroup = new MotorControllerGroup(rearRight, frontRight);
 
     public DifferentialDrive differentialDrive = new DifferentialDrive(leftGroup, rightGroup);
     
@@ -97,8 +97,5 @@ public class Drivetrain extends SubsystemBase {
     @Override
     public void periodic(){
         m_odometry.update(gyroscope.getRotation2d(), sensorToMeters(rearLeft.getSelectedSensorPosition()), -1 * sensorToMeters(rearRight.getSelectedSensorPosition()));
-    }
-    public void setDefaultCommand(){
-        setDefaultCommand(new StraightTrajectory(null));
     }
 }

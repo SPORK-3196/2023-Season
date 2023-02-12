@@ -32,7 +32,7 @@ public class RunArm extends CommandBase {
 
 
   // Called repeatedly when this Command is scheduled to run
-
+ //TODO old code
   public void execute() {
     //double armSpeed = -0.4*Robot.controller1.getRawAxis(1);
     //double wristSpeed = 0.4*Robot.controller1.getRawAxis(5);

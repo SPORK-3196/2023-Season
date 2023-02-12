@@ -1,7 +1,5 @@
 package frc.robot.commands.Lift;
 
-import java.lang.module.ModuleDescriptor;
-import java.lang.module.ModuleDescriptor.Requires;
 import java.util.Set;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.PIDSubsystem;
