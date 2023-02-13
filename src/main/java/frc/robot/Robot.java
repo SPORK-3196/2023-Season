@@ -8,8 +8,13 @@ import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
+
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Lift;
+
+import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import edu.wpi.first.wpilibj2.command.Commands;
+
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -30,7 +35,6 @@ public class Robot extends TimedRobot {
   public static Object liftMotor;
   public static Lift lift;
   public static Arm arm;
- 
 
   
   /**
@@ -51,7 +55,11 @@ public class Robot extends TimedRobot {
    * SmartDashboard integrated updating.
    */
   @Override
-  public void robotPeriodic() {}
+  public void robotPeriodic() {
+      LJSX_Primary = primaryController.getLeftX();
+      LJSY_Primary = primaryController.getLeftY();
+      CommandScheduler.getInstance().run();
+  }
 
   /**
    * This autonomous (along with the chooser code above) shows how to select between different

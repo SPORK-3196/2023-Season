@@ -1,5 +1,7 @@
 package frc.robot.commands.Drivetrain;
 
-public class DistanceDrive {
+import edu.wpi.first.wpilibj2.command.CommandBase;
+
+public class DistanceDrive extends CommandBase{
     
 }

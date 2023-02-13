@@ -35,12 +35,12 @@ public final class Constants {
     }
     
     public static final class DrivetrainConstants {
-        public static final int rearLeftPort = 1;
-        public static final int frontLeftPort = 3; 
-        public static final int rearRightPort = 2;
-        public static final int frontRightPort = 4;
+        public static final int rearLeftPort = 3;
+        public static final int frontLeftPort = 1; 
+        public static final int rearRightPort = 4;
+        public static final int frontRightPort = 2;
 
-        public static final int gyroPort = 5;
+        public static final int gyroPort = 12;
 
         public static final double wheelRadiusMeter = Units.inchesToMeters(3);
         public static final double m_2023gearRatio = 11.7;
@@ -55,8 +55,8 @@ public final class Constants {
         public static double m_2022DrivetrainTrackWidthMeters = Units.inchesToMeters(28);
         public static DifferentialDriveKinematics m_2022DifferentialDriveKinematics = new DifferentialDriveKinematics(m_2022DrivetrainTrackWidthMeters);
 
-        public static double maxSpeed = 3;
-        public static double kMaxAccelerationMetersPerSecSquared = 1;
+        public static double maxSpeed = 4;
+        public static double kMaxAccelerationMetersPerSecSquared = 3;
 
     }
 }
