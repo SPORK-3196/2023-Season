@@ -45,6 +45,7 @@ public class Robot extends TimedRobot {
   public void robotInit() {
     Lift lift;
       m_robotContainer = new RobotContainer();
+      CommandScheduler.getInstance().run();
   }
 
   /**
@@ -74,6 +75,9 @@ public class Robot extends TimedRobot {
   @Override
   public void autonomousInit() {
      autoCommand = m_robotContainer.getSelected();
+     System.out.println("Got here-autonomous init");
+     System.out.println("Got here: " + autoCommand);
+
      if(autoCommand != null)
      {
         autoCommand.schedule();

@@ -55,8 +55,8 @@ public final class Constants {
         public static double m_2022DrivetrainTrackWidthMeters = Units.inchesToMeters(28);
         public static DifferentialDriveKinematics m_2022DifferentialDriveKinematics = new DifferentialDriveKinematics(m_2022DrivetrainTrackWidthMeters);
 
-        public static double maxSpeed = 4;
-        public static double kMaxAccelerationMetersPerSecSquared = 3;
+        public static double maxSpeed = 3;
+        public static double kMaxAccelerationMetersPerSecSquared = 1;
 
     }
 }

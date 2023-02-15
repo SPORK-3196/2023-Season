@@ -35,7 +35,7 @@ public class DriveWithJoyStick extends CommandBase {
         speedFiltered = Robot.LJSY_Primary * 2/3;
         rotationFiltered = Robot.LJSX_Primary * 2/3;
 
-        drivetrain.arcadeDrive(-speedFiltered, rotationFiltered);
+        drivetrain.arcadeDrive(speedFiltered, -rotationFiltered);
     }
 
     @Override
