@@ -4,7 +4,6 @@
 
 package frc.robot;
 
-import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -35,6 +34,7 @@ public class Robot extends TimedRobot {
   @Override
   public void robotInit() {
       m_robotContainer = new RobotContainer();
+      CommandScheduler.getInstance().run();
   }
 
   /**
@@ -64,6 +64,9 @@ public class Robot extends TimedRobot {
   @Override
   public void autonomousInit() {
      autoCommand = m_robotContainer.getSelected();
+     System.out.println("Got here-autonomous init");
+     System.out.println("Got here: " + autoCommand);
+
      if(autoCommand != null)
      {
         autoCommand.schedule();
