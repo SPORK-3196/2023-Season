@@ -4,7 +4,10 @@
 
 package frc.robot;
 
+<<<<<<< HEAD
 import edu.wpi.first.math.filter.SlewRateLimiter;
+=======
+>>>>>>> 95f7bed121063f9b3a4af131fe5aa0ee1feb6a38
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.XboxController;
@@ -64,8 +67,12 @@ import static frc.robot.Variables.XboxController.X2_YButtonEntry;
 
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+<<<<<<< HEAD
 
 
+=======
+import frc.robot.OI;
+>>>>>>> 95f7bed121063f9b3a4af131fe5aa0ee1feb6a38
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
  * each mode, as described in the TimedRobot documentation. If you change the name of this class or
@@ -73,6 +80,7 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
  * project.
  */
 public class Robot extends TimedRobot {
+<<<<<<< HEAD
 
   private Command autoCommand;
   private RobotContainer m_robotContainer;
@@ -104,6 +112,22 @@ public class Robot extends TimedRobot {
   public static Arm arm;
   
 
+=======
+   private Command autoCommand;
+   private RobotContainer m_robotContainer;
+
+   public static XboxController primaryController = new XboxController(0);
+   public static XboxController armController = new XboxController(1);
+
+   public static double LJSX_Primary = primaryController.getLeftX();
+   public static double LJSY_Primary = primaryController.getLeftY();
+   
+   public static double dPad = armController.getPOV();
+   public static JoystickButton B_Arm = new JoystickButton(armController, XboxController.Button.kB.value);
+   public static JoystickButton A_Arm = new JoystickButton(armController, XboxController.Button.kA.value);
+   public static JoystickButton X_Arm = new JoystickButton(armController, XboxController.Button.kX.value);
+   public static JoystickButton Y_Arm = new JoystickButton(armController, XboxController.Button.kY.value);
+>>>>>>> 95f7bed121063f9b3a4af131fe5aa0ee1feb6a38
 
   
   /**
@@ -112,9 +136,7 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotInit() {
-    Lift lift;
       m_robotContainer = new RobotContainer();
-      CommandScheduler.getInstance().run();
   }
 
   /**
@@ -126,6 +148,7 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotPeriodic() {
+<<<<<<< HEAD
       if(primaryController.isConnected())
       {
         X1_RTValue = primaryController.getRightTriggerAxis();
@@ -202,6 +225,35 @@ public class Robot extends TimedRobot {
     }
     CommandScheduler.getInstance().run();
 
+=======
+      LJSX_Primary = primaryController.getLeftX();
+      LJSY_Primary = primaryController.getLeftY();
+      if(primaryController.isConnected()) {
+         OI.XboxController.X1_AButton = primaryController.getAButton();
+         OI.XboxController.X1_BButton = primaryController.getBButton();
+         OI.XboxController.X1_XButton = primaryController.getXButton();
+         OI.XboxController.X1_YButton = primaryController.getYButton();
+
+         OI.XboxController.X1_LJX = primaryController.getLeftX();
+         OI.XboxController.X1_LJY = primaryController.getLeftY();
+      }
+      if(armController.isConnected()){
+         OI.XboxController.X2_DPad = armController.getPOV();
+      }
+
+      if(!DriverStation.isFMSAttached()){
+         OI.XboxController.X1_AButtonEntry.setBoolean(OI.XboxController.X1_AButton);
+         OI.XboxController.X1_BButtonEntry.setBoolean(OI.XboxController.X1_BButton);
+         OI.XboxController.X1_XButtonEntry.setBoolean(OI.XboxController.X1_XButton);
+         OI.XboxController.X1_YButtonEntry.setBoolean(OI.XboxController.X1_YButton);
+         
+         OI.XboxController.X1_LJX_Entry.setDouble(OI.XboxController.X1_LJX);
+         OI.XboxController.X1_LJY_Entry.setDouble(OI.XboxController.X1_LJY);
+
+         OI.XboxController.X2_DPadEntry.setDouble(OI.XboxController.X2_DPad);
+      }
+      CommandScheduler.getInstance().run();   
+>>>>>>> 95f7bed121063f9b3a4af131fe5aa0ee1feb6a38
   }
 
   /**

@@ -13,7 +13,10 @@ import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.Constants.DrivetrainConstants;
+<<<<<<< HEAD
 
+=======
+>>>>>>> 95f7bed121063f9b3a4af131fe5aa0ee1feb6a38
 
 public class Drivetrain extends SubsystemBase {
 

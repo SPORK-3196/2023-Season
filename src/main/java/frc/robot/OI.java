@@ -1,20 +1,14 @@
-// Copyright (c) FIRST and other WPILib contributors.
-// Open Source Software; you can modify and/or share it under the terms of
-// the WPILib BSD license file in the root directory of this project.
-
 package frc.robot;
 
 import edu.wpi.first.networktables.GenericEntry;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 
-public final class Variables {
-    
-    public static ShuffleboardTab X1_TAB =  Shuffleboard.getTab("Xbox conPrime");
-    public static ShuffleboardTab X2_TAB =  Shuffleboard.getTab("Xbox ConSec");
-
-
+public class OI {
     public static final class XboxController {
+        public static ShuffleboardTab X1_TAB =  Shuffleboard.getTab("Xbox Controller #1");
+        public static ShuffleboardTab X2_TAB =  Shuffleboard.getTab("Xbox Controller #2");
+        
         public static double X1_RTValue = 0;
         public static double X1_LTValue = 0;
 
@@ -33,6 +27,8 @@ public final class Variables {
 
         public static double X2_RTValue = 0;
         public static double X2_LTValue = 0;
+
+        public static double X2_DPad = -1;
 
         public static boolean X2_RB = false;
         public static boolean X2_LB = false;
@@ -81,5 +77,11 @@ public final class Variables {
         public static GenericEntry X2_YButtonEntry = X2_TAB.add("Y Button", false).getEntry();
         public static GenericEntry X2_AButtonEntry = X2_TAB.add("A Button", false).getEntry();
         public static GenericEntry X2_BButtonEntry = X2_TAB.add("B Button", false).getEntry();
+<<<<<<< HEAD:src/main/java/frc/robot/Variables.java
         }
+=======
+
+        public static GenericEntry X2_DPadEntry = X2_TAB.add("DPad", 0).getEntry();
+    }
+>>>>>>> 95f7bed121063f9b3a4af131fe5aa0ee1feb6a38:src/main/java/frc/robot/OI.java
 }

@@ -9,22 +9,23 @@ import frc.robot.Robot;
 import frc.robot.subsystems.Arm;
 
 public class LiftWithJoystick extends CommandBase {
-
-  public LiftWithJoystick(){
-    addRequirements(Robot.lift);
+  Lift lift;
+  public LiftWithJoystick(Lift lift){
+    this.lift = lift;
+    addRequirements(lift);
   }
 
   // Called just before this Command runs the first time
   @Override
   public void initialize() {
-    Robot.lift.liftMotor.set(0);
+    lift.liftMotor.set(0);
   }
 
   // Called repeatedly when this Command is scheduled to run
   
   public void execute() {
-    if(Robot.lift.getEncoder() > 20000) {
-    } else if(Robot.lift.getEncoder() > 10000) {
+    if(lift.getEncoder() > 20000) {
+    } else if(lift.getEncoder() > 10000) {
     }
   
 
@@ -42,20 +43,20 @@ public class LiftWithJoystick extends CommandBase {
       Robot.lift.enable();
     }*/
 
-    if(Math.abs(liftInput) > 0.08) {
-      ((PIDSubsystem) Robot.liftMotor).disable();
-      if(liftInput < 0.0) {
-        if(((Lift) Robot.liftMotor).getEncoder() < 10000) {
-          liftSpeedCoef = -0.4;
-        }
-        if(((Lift) Robot.liftMotor).getEncoder() < 1000) {
-          liftSpeedCoef = -0.0;
-        }
-      }
+    // if(Math.abs(liftInput) > 0.08) {
+    //   ((PIDSubsystem) lift.liftMotor).disable();
+    //   if(liftInput < 0.0) {
+    //     if(((Lift) Robot.liftMotor).getEncoder() < 10000) {
+    //       liftSpeedCoef = -0.4;
+    //     }
+    //     if(((Lift) Robot.liftMotor).getEncoder() < 1000) {
+    //       liftSpeedCoef = -0.0;
+    //     }
+    //   }
 
   
       //Robot.lift.setSetpoint(Robot.lift.getEncoder());
-    }
+    // }
 
     
     //System.out.println(Robot.lift.getPIDController().getError());

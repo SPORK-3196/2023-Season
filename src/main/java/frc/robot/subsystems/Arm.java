@@ -26,12 +26,14 @@ public class Arm extends SubsystemBase {
     public CANSparkMax ElbowMotor = new CANSparkMax(9, MotorType.kBrushless);
     public SparkMaxPIDController ElbowPID = ElbowMotor.getPIDController();
     public Object shoulderOut;
+    public Arm(){
 
+    }
 
 
     
     public void DefaltCommand(){
     // run arm commands 
-    setDefaultCommand(new RunArm());
+    // setDefaultCommand(new RunArm());
     }
 }
