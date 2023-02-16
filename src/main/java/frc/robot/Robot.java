@@ -4,12 +4,13 @@
 
 package frc.robot;
 
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
-import edu.wpi.first.wpilibj2.command.Commands;
-
+import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import frc.robot.OI;
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
  * each mode, as described in the TimedRobot documentation. If you change the name of this class or
@@ -17,14 +18,20 @@ import edu.wpi.first.wpilibj2.command.Commands;
  * project.
  */
 public class Robot extends TimedRobot {
-  private Command autoCommand;
-  private RobotContainer m_robotContainer;
+   private Command autoCommand;
+   private RobotContainer m_robotContainer;
 
-  public static XboxController primaryController = new XboxController(0);
-  public static XboxController armController = new XboxController(1);
+   public static XboxController primaryController = new XboxController(0);
+   public static XboxController armController = new XboxController(1);
 
-  public static double LJSX_Primary = primaryController.getLeftX();
-  public static double LJSY_Primary = primaryController.getLeftY();
+   public static double LJSX_Primary = primaryController.getLeftX();
+   public static double LJSY_Primary = primaryController.getLeftY();
+   
+   public static double dPad = armController.getPOV();
+   public static JoystickButton B_Arm = new JoystickButton(armController, XboxController.Button.kB.value);
+   public static JoystickButton A_Arm = new JoystickButton(armController, XboxController.Button.kA.value);
+   public static JoystickButton X_Arm = new JoystickButton(armController, XboxController.Button.kX.value);
+   public static JoystickButton Y_Arm = new JoystickButton(armController, XboxController.Button.kY.value);
 
   
   /**
@@ -48,7 +55,31 @@ public class Robot extends TimedRobot {
   public void robotPeriodic() {
       LJSX_Primary = primaryController.getLeftX();
       LJSY_Primary = primaryController.getLeftY();
-      CommandScheduler.getInstance().run();
+      if(primaryController.isConnected()) {
+         OI.XboxController.X1_AButton = primaryController.getAButton();
+         OI.XboxController.X1_BButton = primaryController.getBButton();
+         OI.XboxController.X1_XButton = primaryController.getXButton();
+         OI.XboxController.X1_YButton = primaryController.getYButton();
+
+         OI.XboxController.X1_LJX = primaryController.getLeftX();
+         OI.XboxController.X1_LJY = primaryController.getLeftY();
+      }
+      if(armController.isConnected()){
+         OI.XboxController.X2_DPad = armController.getPOV();
+      }
+
+      if(!DriverStation.isFMSAttached()){
+         OI.XboxController.X1_AButtonEntry.setBoolean(OI.XboxController.X1_AButton);
+         OI.XboxController.X1_BButtonEntry.setBoolean(OI.XboxController.X1_BButton);
+         OI.XboxController.X1_XButtonEntry.setBoolean(OI.XboxController.X1_XButton);
+         OI.XboxController.X1_YButtonEntry.setBoolean(OI.XboxController.X1_YButton);
+         
+         OI.XboxController.X1_LJX_Entry.setDouble(OI.XboxController.X1_LJX);
+         OI.XboxController.X1_LJY_Entry.setDouble(OI.XboxController.X1_LJY);
+
+         OI.XboxController.X2_DPadEntry.setDouble(OI.XboxController.X2_DPad);
+      }
+      CommandScheduler.getInstance().run();   
   }
 
   /**

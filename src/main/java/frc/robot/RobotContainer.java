@@ -1,31 +1,16 @@
 package frc.robot;
 
-import java.util.List;
-
 import com.pathplanner.lib.PathPlanner;
 import com.pathplanner.lib.PathPlannerTrajectory;
 
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.RamseteController;
-import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.geometry.Translation2d;
-import edu.wpi.first.math.trajectory.Trajectory;
-import edu.wpi.first.math.trajectory.TrajectoryConfig;
-import edu.wpi.first.math.trajectory.TrajectoryGenerator;
-import edu.wpi.first.math.trajectory.constraint.DifferentialDriveVoltageConstraint;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
-// import edu.wpi.first.math.controller.SimpleMotorFeedforward;
-// import edu.wpi.first.math.geometry.Pose2d;
-// import edu.wpi.first.math.geometry.Rotation2d;
-// import edu.wpi.first.math.geometry.Translation2d;
-// import edu.wpi.first.math.trajectory.Trajectory;
-// import edu.wpi.first.math.trajectory.TrajectoryConfig;
-// import edu.wpi.first.math.trajectory.TrajectoryGenerator;
-// import edu.wpi.first.math.trajectory.constraint.DifferentialDriveVoltageConstraint;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.RamseteCommand;
+import frc.robot.commands.Autonomous.Cone.PickupConeStation;
+import frc.robot.commands.Autonomous.Cube.PickupCubeStation;
 import frc.robot.commands.Claw.OpenClaw;
 import frc.robot.commands.Drivetrain.DriveWithJoyStick;
 import frc.robot.subsystems.Arm;
@@ -33,6 +18,7 @@ import frc.robot.subsystems.Claw;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Elevator;
 import frc.robot.subsystems.Turret;
+import frc.robot.Robot;
 
 public class RobotContainer {
     private Claw claw = new Claw();
@@ -47,15 +33,16 @@ public class RobotContainer {
     public RobotContainer(){
         configureButtonBindings();
         drivetrain.setDefaultCommand(joystickDrive);
-        //claw.setDefaultCommand(new OpenClaw(claw));
+        claw.setDefaultCommand(new OpenClaw(claw));
         System.out.println("Got here-joystick");
         autoChooser.setDefaultOption("Straight Traj", trajectory());
-
-        //autoChooser.setDefaultOption("Traj",trajectory());
     }
 
     public void configureButtonBindings() {
-    }
+        if(Robot.dPad == 0) Robot.A_Arm.onTrue(new PickupConeStation(arm, elevator, claw));
+        if(Robot.dPad == 0) Robot.X_Arm.onTrue(new PickupCubeStation(arm, elevator, claw));
+
+    }   
      
     public static Command trajectory(){
 
