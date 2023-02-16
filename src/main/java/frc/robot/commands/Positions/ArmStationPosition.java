@@ -1,4 +1,4 @@
-package frc.robot.commands.Autonomous;
+package frc.robot.commands.Positions;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Arm;
