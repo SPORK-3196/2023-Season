@@ -77,6 +77,5 @@ public final class Variables {
         public static GenericEntry X2_YButtonEntry = X2_TAB.add("Y Button", false).getEntry();
         public static GenericEntry X2_AButtonEntry = X2_TAB.add("A Button", false).getEntry();
         public static GenericEntry X2_BButtonEntry = X2_TAB.add("B Button", false).getEntry();
-
-    }
+        }
 }

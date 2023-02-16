@@ -5,6 +5,7 @@
 package frc.robot;
 
 import edu.wpi.first.math.filter.SlewRateLimiter;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -12,8 +13,57 @@ import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Lift;
 
+import static frc.robot.Variables.XboxController.X1_AButton;
+import static frc.robot.Variables.XboxController.X1_AButtonEntry;
+import static frc.robot.Variables.XboxController.X1_BButton;
+import static frc.robot.Variables.XboxController.X1_BButtonEntry;
+import static frc.robot.Variables.XboxController.X1_LB;
+import static frc.robot.Variables.XboxController.X1_LB_Entry;
+import static frc.robot.Variables.XboxController.X1_LJX;
+import static frc.robot.Variables.XboxController.X1_LJX_Entry;
+import static frc.robot.Variables.XboxController.X1_LJY;
+import static frc.robot.Variables.XboxController.X1_LJY_Entry;
+import static frc.robot.Variables.XboxController.X1_LTValue;
+import static frc.robot.Variables.XboxController.X1_LT_Entry;
+import static frc.robot.Variables.XboxController.X1_RB;
+import static frc.robot.Variables.XboxController.X1_RB_Entry;
+import static frc.robot.Variables.XboxController.X1_RJX;
+import static frc.robot.Variables.XboxController.X1_RJX_Entry;
+import static frc.robot.Variables.XboxController.X1_RJY;
+import static frc.robot.Variables.XboxController.X1_RJY_Entry;
+import static frc.robot.Variables.XboxController.X1_RTValue;
+import static frc.robot.Variables.XboxController.X1_RT_Entry;
+import static frc.robot.Variables.XboxController.X1_XButton;
+import static frc.robot.Variables.XboxController.X1_XButtonEntry;
+import static frc.robot.Variables.XboxController.X1_YButton;
+import static frc.robot.Variables.XboxController.X1_YButtonEntry;
+import static frc.robot.Variables.XboxController.X2_AButton;
+import static frc.robot.Variables.XboxController.X2_AButtonEntry;
+import static frc.robot.Variables.XboxController.X2_BButton;
+import static frc.robot.Variables.XboxController.X2_BButtonEntry;
+import static frc.robot.Variables.XboxController.X2_LB;
+import static frc.robot.Variables.XboxController.X2_LB_Entry;
+import static frc.robot.Variables.XboxController.X2_LJX;
+import static frc.robot.Variables.XboxController.X2_LJX_Entry;
+import static frc.robot.Variables.XboxController.X2_LJY;
+import static frc.robot.Variables.XboxController.X2_LJY_Entry;
+import static frc.robot.Variables.XboxController.X2_LTValue;
+import static frc.robot.Variables.XboxController.X2_LT_Entry;
+import static frc.robot.Variables.XboxController.X2_RB;
+import static frc.robot.Variables.XboxController.X2_RB_Entry;
+import static frc.robot.Variables.XboxController.X2_RJX;
+import static frc.robot.Variables.XboxController.X2_RJX_Entry;
+import static frc.robot.Variables.XboxController.X2_RJY;
+import static frc.robot.Variables.XboxController.X2_RJY_Entry;
+import static frc.robot.Variables.XboxController.X2_RTValue;
+import static frc.robot.Variables.XboxController.X2_RT_Entry;
+import static frc.robot.Variables.XboxController.X2_XButton;
+import static frc.robot.Variables.XboxController.X2_XButtonEntry;
+import static frc.robot.Variables.XboxController.X2_YButton;
+import static frc.robot.Variables.XboxController.X2_YButtonEntry;
+
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
-import edu.wpi.first.wpilibj2.command.Commands;
+import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
 
 /**
@@ -23,18 +73,37 @@ import edu.wpi.first.wpilibj2.command.Commands;
  * project.
  */
 public class Robot extends TimedRobot {
+
   private Command autoCommand;
   private RobotContainer m_robotContainer;
 
   public static XboxController primaryController = new XboxController(0);
   public static XboxController armController = new XboxController(1);
+  
+  public static JoystickButton X1J_A =  new JoystickButton(primaryController, XboxController.Button.kA.value);
+  public static JoystickButton X1J_B =  new JoystickButton(primaryController, XboxController.Button.kB.value);
+  public static JoystickButton X1J_X =  new JoystickButton(primaryController, XboxController.Button.kX.value);
+  public static JoystickButton X1J_Y =  new JoystickButton(primaryController, XboxController.Button.kY.value);
+  public static JoystickButton X1J_LB = new JoystickButton(primaryController, XboxController.Button.kLeftBumper.value);
+  public static JoystickButton X1J_RB = new JoystickButton(primaryController, XboxController.Button.kRightBumper.value);
+  public static JoystickButton X1J_LS = new JoystickButton(primaryController, XboxController.Button.kLeftStick.value);
+  public static JoystickButton X1J_RS = new JoystickButton(primaryController, XboxController.Button.kRightStick.value);
+  
+  public static JoystickButton X2J_A =  new JoystickButton(armController, XboxController.Button.kA.value);
+  public static JoystickButton X2J_B =  new JoystickButton(armController, XboxController.Button.kB.value);
+  public static JoystickButton X2J_X =  new JoystickButton(armController, XboxController.Button.kX.value);
+  public static JoystickButton X2J_Y =  new JoystickButton(armController, XboxController.Button.kY.value);
+  public static JoystickButton X2J_LB = new JoystickButton(armController, XboxController.Button.kLeftBumper.value);
+  public static JoystickButton X2J_RB = new JoystickButton(armController, XboxController.Button.kRightBumper.value);
+  public static JoystickButton X2J_LS = new JoystickButton(armController, XboxController.Button.kLeftStick.value);
+  public static JoystickButton X2J_RS = new JoystickButton(armController, XboxController.Button.kRightStick.value);
 
-  public static double LJSX_Primary = primaryController.getLeftX();
-  public static double LJSY_Primary = primaryController.getLeftY();
   public static SlewRateLimiter filter = new SlewRateLimiter(.5);
   public static Object liftMotor;
   public static Lift lift;
   public static Arm arm;
+  
+
 
   
   /**
@@ -57,9 +126,82 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotPeriodic() {
-      LJSX_Primary = primaryController.getLeftX();
-      LJSY_Primary = primaryController.getLeftY();
-      CommandScheduler.getInstance().run();
+
+
+      if(primaryController.isConnected())
+      {
+        X1_RTValue = primaryController.getRightTriggerAxis();
+        X1_LTValue = primaryController.getLeftTriggerAxis();
+        
+        X1_RB = primaryController.getRightBumper();
+        X1_LB = primaryController.getLeftBumper();
+  
+        X1_LJX = primaryController.getLeftX();
+        X1_LJY = primaryController.getLeftY();
+        X1_RJX = primaryController.getRightX();
+        X1_RJY = primaryController.getRightY();      
+        
+        X1_XButton = primaryController.getXButton();
+        X1_YButton = primaryController.getYButton();
+        X1_AButton = primaryController.getAButton();
+        X1_BButton = primaryController.getBButton(); 
+      
+      if(!DriverStation.isFMSAttached());{
+        X1_RT_Entry.setDouble(X1_RTValue);
+        X1_LT_Entry.setDouble(X1_LTValue);
+
+        X1_RB_Entry.setBoolean(X1_RB);
+        X1_LB_Entry.setBoolean(X1_LB);
+
+        X1_LJX_Entry.setDouble(X1_LJX);
+        X1_LJY_Entry.setDouble(X1_LJY);
+        X1_RJX_Entry.setDouble(X1_RJX);
+        X1_RJY_Entry.setDouble(X1_RJY);
+
+        X1_XButtonEntry.setBoolean(X1_XButton);
+        X1_YButtonEntry.setBoolean(X1_YButton);
+        X1_AButtonEntry.setBoolean(X1_AButton);
+        X1_BButtonEntry.setBoolean(X1_BButton);
+        
+      }
+      
+    }
+
+      if(armController.isConnected());
+
+        X2_RTValue = primaryController.getRightTriggerAxis();
+        X2_LTValue = primaryController.getLeftTriggerAxis();
+        
+        X2_RB = primaryController.getRightBumper();
+        X2_LB = primaryController.getLeftBumper();
+  
+        X2_LJX = primaryController.getLeftX();
+        X2_LJY = primaryController.getLeftY();
+        X2_RJX = primaryController.getRightX();
+        X2_RJY = primaryController.getRightY();      
+        
+        X2_XButton = primaryController.getXButton();
+        X2_YButton = primaryController.getYButton();
+        X2_AButton = primaryController.getAButton();
+        X2_BButton = primaryController.getBButton(); 
+
+      if(!DriverStation.isFMSAttached());
+        X2_RT_Entry.setDouble(X1_RTValue);
+        X2_LT_Entry.setDouble(X1_LTValue);
+
+        X2_RB_Entry.setBoolean(X1_RB);
+        X2_LB_Entry.setBoolean(X1_LB);
+
+        X2_LJX_Entry.setDouble(X1_LJX);
+        X2_LJY_Entry.setDouble(X1_LJY);
+        X2_RJX_Entry.setDouble(X1_RJX);
+        X2_RJY_Entry.setDouble(X1_RJY);
+
+        X2_XButtonEntry.setBoolean(X1_XButton);
+        X2_YButtonEntry.setBoolean(X1_YButton);
+        X2_AButtonEntry.setBoolean(X1_AButton);
+        X2_BButtonEntry.setBoolean(X1_BButton);
+
   }
 
   /**
