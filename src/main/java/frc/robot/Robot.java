@@ -8,6 +8,8 @@ import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import edu.wpi.first.wpilibj2.command.button.Trigger;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -24,6 +26,10 @@ public class Robot extends TimedRobot {
 
   public static double LJSX_Primary = primaryController.getLeftX();
   public static double LJSY_Primary = primaryController.getLeftY();
+
+  public static double LJSX_Secondary = armController.getLeftX();
+  public static double LJSY_Secondary = armController.getLeftY();
+
   public static SlewRateLimiter filter = new SlewRateLimiter(.5);
   
   /**

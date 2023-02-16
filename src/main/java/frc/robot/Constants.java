@@ -44,4 +44,14 @@ public final class Constants {
         public static final int wheelRadiusIn = 3;
         public static final double wheelRadiusMeter = Units.inchesToMeters(wheelRadiusIn);
     }
+
+    public static final class TurretConstants {
+        public static final int turretPort = 9;
+
+        public static final int motorVolts = 12;
+        public static final double idealSpeed = 0; //robby help.
+        public static final double motorRotationsPerDegree = 0.1745; //10:1 gear ratio
+        public static final double motorRotationsPerDegree2022 = 0.1515; //8.68:1 gear ratio
+
+    }
 }
