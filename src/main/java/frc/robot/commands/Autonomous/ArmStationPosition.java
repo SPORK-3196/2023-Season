@@ -2,13 +2,13 @@ package frc.robot.commands.Autonomous;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Arm;
-import frc.robot.subsystems.Elevator;
+import frc.robot.subsystems.Lift;
 
 public class ArmStationPosition extends CommandBase{
-     Elevator elevator;
+     Lift lift;
      Arm arm;
-     public ArmStationPosition(Arm arm, Elevator elevator){
+     public ArmStationPosition(Arm arm, Lift lift){
         this.arm = arm;
-        this.elevator = elevator;
+        this.lift = lift;
      }
 }

@@ -8,6 +8,10 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
+
+import frc.robot.subsystems.Arm;
+import frc.robot.subsystems.Lift;
+
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.OI;
@@ -41,7 +45,6 @@ public class Robot extends TimedRobot {
   @Override
   public void robotInit() {
       m_robotContainer = new RobotContainer();
-      CommandScheduler.getInstance().run();
   }
 
   /**
@@ -102,11 +105,20 @@ public class Robot extends TimedRobot {
      {
         autoCommand.schedule();
      }
+
+     //m_Timer.restart();
   }
 
   /** This function is called periodically during autonomous. */
   @Override
   public void autonomousPeriodic() {
+   /*  rightGroup.setInverted(true);
+    if(m_Timer.get()< 1.5){
+    differentialDrive.arcadeDrive(0.1,0,false);
+    
+    } else {
+      differentialDrive.stopMotor();
+    }*/
   }
 
   /** This function is called once when teleop is enabled. */
@@ -128,7 +140,6 @@ public class Robot extends TimedRobot {
   /** This function is called periodically when disabled. */
   @Override
   public void disabledPeriodic() {}
-
   /** This function is called once when test mode is enabled. */
   @Override
   public void testInit() {}

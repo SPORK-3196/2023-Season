@@ -16,15 +16,15 @@ import frc.robot.commands.Drivetrain.DriveWithJoyStick;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Claw;
 import frc.robot.subsystems.Drivetrain;
-import frc.robot.subsystems.Elevator;
+import frc.robot.subsystems.Lift;
 import frc.robot.subsystems.Turret;
 import frc.robot.Robot;
 
 public class RobotContainer {
     private Claw claw = new Claw();
-    private static Drivetrain drivetrain = new Drivetrain();
+    private static Drivetrain drivetrain = new Drivetrain(); 
     private Arm arm = new Arm(); 
-    private Elevator elevator = new Elevator();
+    private Lift lift= new Lift();
     private Turret turret = new Turret();
 
     private static SendableChooser<Command> autoChooser = new SendableChooser<Command>();
@@ -39,8 +39,8 @@ public class RobotContainer {
     }
 
     public void configureButtonBindings() {
-        if(Robot.dPad == 0) Robot.A_Arm.onTrue(new PickupConeStation(arm, elevator, claw));
-        if(Robot.dPad == 0) Robot.X_Arm.onTrue(new PickupCubeStation(arm, elevator, claw));
+        if(Robot.dPad == 0) Robot.A_Arm.onTrue(new PickupConeStation(arm, lift, claw));
+        if(Robot.dPad == 0) Robot.X_Arm.onTrue(new PickupCubeStation(arm, lift, claw));
 
     }   
      
@@ -71,5 +71,6 @@ public class RobotContainer {
     public Command getSelected(){
         System.out.println("Got here-getselected");
         return autoChooser.getSelected();
+
     }  
 }

@@ -5,15 +5,15 @@ import frc.robot.commands.Autonomous.ArmStationPosition;
 import frc.robot.commands.Claw.CloseClawCube;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Claw;
-import frc.robot.subsystems.Elevator;
+import frc.robot.subsystems.Lift;
 
 public class PickupCubeStation extends ParallelCommandGroup{
     Arm arm;
-    Elevator elevator;
+    Lift lift;
     Claw claw;
-    public PickupCubeStation(Arm arm, Elevator elevator, Claw claw){
+    public PickupCubeStation(Arm arm, Lift lift, Claw claw){
         super(
-            new ArmStationPosition(arm, elevator),
+            new ArmStationPosition(arm, lift),
             new CloseClawCube(claw)
         );
     }
