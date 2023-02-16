@@ -6,6 +6,7 @@ import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.Robot;
+import frc.robot.Variables;
 
 public class DriveWithJoyStick extends CommandBase {
     private final Drivetrain drivetrain;
@@ -32,8 +33,8 @@ public class DriveWithJoyStick extends CommandBase {
     
     @Override
     public void execute() {
-        speedFiltered = Robot.LJSY_Primary * 2/3;
-        rotationFiltered = Robot.LJSX_Primary * 2/3;
+        speedFiltered = Variables.XboxController.X1_LJX * 2/3;
+        rotationFiltered = Variables.XboxController.X1_LJY * 2/3;
 
         drivetrain.arcadeDrive(speedFiltered, -rotationFiltered);
     }
