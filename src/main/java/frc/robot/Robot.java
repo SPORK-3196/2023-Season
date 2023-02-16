@@ -126,8 +126,6 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotPeriodic() {
-
-
       if(primaryController.isConnected())
       {
         X1_RTValue = primaryController.getRightTriggerAxis();
@@ -145,7 +143,7 @@ public class Robot extends TimedRobot {
         X1_YButton = primaryController.getYButton();
         X1_AButton = primaryController.getAButton();
         X1_BButton = primaryController.getBButton(); 
-      
+      }
       if(!DriverStation.isFMSAttached());{
         X1_RT_Entry.setDouble(X1_RTValue);
         X1_LT_Entry.setDouble(X1_LTValue);
@@ -164,10 +162,9 @@ public class Robot extends TimedRobot {
         X1_BButtonEntry.setBoolean(X1_BButton);
         
       }
-      
-    }
+    
 
-      if(armController.isConnected());
+      if(armController.isConnected()){
 
         X2_RTValue = primaryController.getRightTriggerAxis();
         X2_LTValue = primaryController.getLeftTriggerAxis();
@@ -185,7 +182,7 @@ public class Robot extends TimedRobot {
         X2_AButton = primaryController.getAButton();
         X2_BButton = primaryController.getBButton(); 
 
-      if(!DriverStation.isFMSAttached());
+      if(!DriverStation.isFMSAttached()){
         X2_RT_Entry.setDouble(X1_RTValue);
         X2_LT_Entry.setDouble(X1_LTValue);
 
@@ -201,6 +198,9 @@ public class Robot extends TimedRobot {
         X2_YButtonEntry.setBoolean(X1_YButton);
         X2_AButtonEntry.setBoolean(X1_AButton);
         X2_BButtonEntry.setBoolean(X1_BButton);
+      }
+    }
+    CommandScheduler.getInstance().run();
 
   }
 
