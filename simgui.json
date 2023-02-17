@@ -1,7 +1,18 @@
 {
+  "HALProvider": {
+    "Other Devices": {
+      "Pigeon IMU[0]": {
+        "header": {
+          "open": true
+        }
+      }
+    }
+  },
   "NTProvider": {
     "types": {
-      "/FMSInfo": "FMSInfo"
+      "/FMSInfo": "FMSInfo",
+      "/Shuffleboard/Example tab/Pigeon IMU [12]": "Gyro",
+      "/Shuffleboard/gyroscope/Pigeon IMU [0]": "Gyro"
     }
   }
 }

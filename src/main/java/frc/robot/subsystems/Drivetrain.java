@@ -13,10 +13,6 @@ import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.Constants.DrivetrainConstants;
-<<<<<<< HEAD
-
-=======
->>>>>>> 95f7bed121063f9b3a4af131fe5aa0ee1feb6a38
 
 public class Drivetrain extends SubsystemBase {
 
@@ -25,7 +21,7 @@ public class Drivetrain extends SubsystemBase {
     public WPI_TalonFX rearRight = new WPI_TalonFX(DrivetrainConstants.rearRightPort);
     public WPI_TalonFX frontRight = new WPI_TalonFX(DrivetrainConstants.frontRightPort);
 
-    private WPI_PigeonIMU gyroscope = new WPI_PigeonIMU(DrivetrainConstants.gyroPort);
+    public static WPI_PigeonIMU gyroscope = new WPI_PigeonIMU(DrivetrainConstants.gyroPort);
 
     public MotorControllerGroup leftGroup = new MotorControllerGroup(frontLeft, rearLeft);
     public MotorControllerGroup rightGroup = new MotorControllerGroup(frontRight, rearRight);
