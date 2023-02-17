@@ -21,7 +21,7 @@ public class Drivetrain extends SubsystemBase {
     public WPI_TalonFX rearRight = new WPI_TalonFX(DrivetrainConstants.rearRightPort);
     public WPI_TalonFX frontRight = new WPI_TalonFX(DrivetrainConstants.frontRightPort);
 
-    private WPI_PigeonIMU gyroscope = new WPI_PigeonIMU(DrivetrainConstants.gyroPort);
+    public static WPI_PigeonIMU gyroscope = new WPI_PigeonIMU(DrivetrainConstants.gyroPort);
 
     public MotorControllerGroup leftGroup = new MotorControllerGroup(frontLeft, rearLeft);
     public MotorControllerGroup rightGroup = new MotorControllerGroup(frontRight, rearRight);
@@ -81,15 +81,24 @@ public class Drivetrain extends SubsystemBase {
     public void resetOdometry(){
         m_odometry.resetPosition(gyroscope.getRotation2d(), 0, 0, getPose());
     }
-
+    public static double getGyroHeading(){
+        return gyroscope.getYaw();
+    }
     public double getGyroHeadingRadians(){
-        return Units.degreesToRadians(gyroscope.getYaw());
+        return Units.degreesToRadians(getGyroHeading());
+    }
+    
+    public static double getGyroRate(){
+        return gyroscope.getRate();
     }
     
     public void zeroGyro(){
         gyroscope.setYaw(0);
     }
 
+    public static void zerogyro(){
+        gyroscope.setYaw(0);
+    }
     @Override
     public void periodic(){
         

@@ -1,7 +1,7 @@
 package frc.robot.commands.Autonomous.Cone;
 
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
-import frc.robot.commands.Autonomous.ArmStationPosition;
+import frc.robot.commands.Autonomous.Positions.ArmStationPosition;
 import frc.robot.commands.Claw.OpenClaw;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Claw;

@@ -4,12 +4,13 @@
 
 package frc.robot;
 
+
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.OI;
-
+import frc.robot.subsystems.Drivetrain;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;/**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -31,9 +32,7 @@ public class Robot extends TimedRobot {
    public static JoystickButton B_Arm = new JoystickButton(armController, XboxController.Button.kB.value);
    public static JoystickButton A_Arm = new JoystickButton(armController, XboxController.Button.kA.value);
    public static JoystickButton X_Arm = new JoystickButton(armController, XboxController.Button.kX.value);
-   public static JoystickButton Y_Arm = new JoystickButton(armController, XboxController.Button.kY.value);
-
-  
+   public static JoystickButton Y_Arm = new JoystickButton(armController, XboxController.Button.kY.value);  
   /**
    * This function is run when the robot is first started up and should be used for any
    * initialization code.
@@ -41,6 +40,7 @@ public class Robot extends TimedRobot {
   @Override
   public void robotInit() {
       m_robotContainer = new RobotContainer();
+      Drivetrain.zerogyro();
   }
 
   /**
@@ -54,6 +54,8 @@ public class Robot extends TimedRobot {
   public void robotPeriodic() {
       LJSX_Primary = primaryController.getLeftX();
       LJSY_Primary = primaryController.getLeftY();
+      OI.Drivetrain.gyroRate = Drivetrain.getGyroRate();
+      OI.Drivetrain.gyroHeading = Drivetrain.getGyroHeading();
       if(primaryController.isConnected()) {
          OI.XboxController.X1_AButton = primaryController.getAButton();
          OI.XboxController.X1_BButton = primaryController.getBButton();
@@ -77,6 +79,9 @@ public class Robot extends TimedRobot {
          OI.XboxController.X1_LJY_Entry.setDouble(OI.XboxController.X1_LJY);
 
          OI.XboxController.X2_DPadEntry.setDouble(OI.XboxController.X2_DPad);
+
+         OI.Drivetrain.GyroRateEntry.setDouble(OI.Drivetrain.gyroRate);
+         OI.Drivetrain.GyroHeadingEntry.setDouble(OI.Drivetrain.gyroHeading);
       }
       CommandScheduler.getInstance().run();   
   }

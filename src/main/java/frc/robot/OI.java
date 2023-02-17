@@ -79,5 +79,15 @@ public class OI {
         public static GenericEntry X2_BButtonEntry = X2_TAB.add("B Button", false).getEntry();
 
         public static GenericEntry X2_DPadEntry = X2_TAB.add("DPad", 0).getEntry();
+
+    }
+    public static final class Drivetrain  {
+        public static ShuffleboardTab Drive_TAB = Shuffleboard.getTab("Drivetrain");
+
+        public static double gyroRate = 0;
+        public static double gyroHeading = 0;
+
+        public static GenericEntry GyroRateEntry = Drive_TAB.add("Gyro rate", 0).getEntry();
+        public static GenericEntry GyroHeadingEntry = Drive_TAB.add("Gyro Heading", 0).getEntry();
     }
 }

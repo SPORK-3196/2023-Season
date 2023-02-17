@@ -13,6 +13,7 @@ import frc.robot.commands.Autonomous.Cone.PickupConeStation;
 import frc.robot.commands.Autonomous.Cube.PickupCubeStation;
 import frc.robot.commands.Claw.OpenClaw;
 import frc.robot.commands.Drivetrain.DriveWithJoyStick;
+import frc.robot.commands.Drivetrain.Turn45Degrees;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Claw;
 import frc.robot.subsystems.Drivetrain;
@@ -35,7 +36,8 @@ public class RobotContainer {
         drivetrain.setDefaultCommand(joystickDrive);
         claw.setDefaultCommand(new OpenClaw(claw));
         System.out.println("Got here-joystick");
-        autoChooser.setDefaultOption("Straight Traj", trajectory());
+        autoChooser.addOption("Straight Traj", trajectory());
+        autoChooser.setDefaultOption("Turn 45 Degrees", new Turn45Degrees(drivetrain));
     }
 
     public void configureButtonBindings() {
