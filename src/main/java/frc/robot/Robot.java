@@ -5,6 +5,7 @@
 package frc.robot;
 
 
+import edu.wpi.first.net.PortForwarder;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.XboxController;
@@ -41,6 +42,9 @@ public class Robot extends TimedRobot {
   public void robotInit() {
       m_robotContainer = new RobotContainer();
       Drivetrain.zerogyro();
+
+      PortForwarder.add(5800, "10.31.96.11", 5800);
+
   }
 
   /**

@@ -37,7 +37,7 @@ public class RobotContainer {
         claw.setDefaultCommand(new OpenClaw(claw));
         System.out.println("Got here-joystick");
         autoChooser.addOption("Straight Traj", trajectory());
-        autoChooser.setDefaultOption("Turn 45 Degrees", new Turn45Degrees(drivetrain));
+        autoChooser.setDefaultOption("Turn 45 Degrees", new Turn45Degrees(drivetrain, 5));
     }
 
     public void configureButtonBindings() {
