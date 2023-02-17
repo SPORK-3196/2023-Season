@@ -12,6 +12,7 @@ import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj2.command.Command;
 
 import frc.robot.subsystems.Arm;
+import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Lift;
 
 import static frc.robot.Variables.XboxController.X1_AButton;
@@ -133,6 +134,8 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotPeriodic() {
+    Variables.Drivetrain.gyroRate = Drivetrain.getGyroRate();
+    Variables.Drivetrain.gyroHeading = Drivetrain.getGyroHeading();
       if(primaryController.isConnected())
       {
         X1_RTValue = primaryController.getRightTriggerAxis();
