@@ -5,15 +5,17 @@ import com.pathplanner.lib.PathPlannerTrajectory;
 
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.RamseteController;
+import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.RamseteCommand;
+import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.commands.Autonomous.Cone.PickupConeStation;
 import frc.robot.commands.Autonomous.Cube.PickupCubeStation;
+import frc.robot.commands.Autonomous.Positions.Square;
 import frc.robot.commands.Claw.OpenClaw;
 import frc.robot.commands.Drivetrain.DriveWithJoyStick;
-import frc.robot.commands.Drivetrain.Turn45Degrees;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Claw;
 import frc.robot.subsystems.Drivetrain;
@@ -31,19 +33,29 @@ public class RobotContainer {
     private static SendableChooser<Command> autoChooser = new SendableChooser<Command>();
     private DriveWithJoyStick joystickDrive = new DriveWithJoyStick(drivetrain);
 
+    public static XboxController primaryController = new XboxController(0);
+    public static XboxController armController = new XboxController(1);
+ 
+    public static double LJSX_Primary = primaryController.getLeftX();
+    public static double LJSY_Primary = primaryController.getLeftY();
+    
+    public static double dPad = armController.getPOV();
+    public static JoystickButton B_Arm = new JoystickButton(armController, XboxController.Button.kB.value);
+    public static JoystickButton A_Arm = new JoystickButton(armController, XboxController.Button.kA.value);
+    public static JoystickButton X_Arm = new JoystickButton(armController, XboxController.Button.kX.value);
+    public static JoystickButton Y_Arm = new JoystickButton(armController, XboxController.Button.kY.value); 
     public RobotContainer(){
         configureButtonBindings();
         drivetrain.setDefaultCommand(joystickDrive);
         claw.setDefaultCommand(new OpenClaw(claw));
         System.out.println("Got here-joystick");
         autoChooser.addOption("Straight Traj", trajectory());
-        autoChooser.setDefaultOption("Turn 45 Degrees", new Turn45Degrees(drivetrain, 5));
+        autoChooser.setDefaultOption("Turn 45 Degrees", new Square(drivetrain));
     }
 
     public void configureButtonBindings() {
-        if(Robot.dPad == 0) Robot.A_Arm.onTrue(new PickupConeStation(arm, lift, claw));
-        if(Robot.dPad == 0) Robot.X_Arm.onTrue(new PickupCubeStation(arm, lift, claw));
-
+        if(dPad == 0) A_Arm.onTrue(new PickupConeStation(arm, lift, claw));
+        if(dPad == 0) X_Arm.onTrue(new PickupCubeStation(arm, lift, claw));
     }   
      
     public static Command trajectory(){

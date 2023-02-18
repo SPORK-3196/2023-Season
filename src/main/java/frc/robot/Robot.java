@@ -8,12 +8,11 @@ package frc.robot;
 import edu.wpi.first.net.PortForwarder;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.TimedRobot;
-import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.OI;
 import frc.robot.subsystems.Drivetrain;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
-import edu.wpi.first.wpilibj2.command.button.JoystickButton;/**
+/**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
  * each mode, as described in the TimedRobot documentation. If you change the name of this class or
  * the package after creating this project, you must also update the build.gradle file in the
@@ -22,18 +21,7 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;/**
 public class Robot extends TimedRobot {
    private Command autoCommand;
    private RobotContainer m_robotContainer;
-
-   public static XboxController primaryController = new XboxController(0);
-   public static XboxController armController = new XboxController(1);
-
-   public static double LJSX_Primary = primaryController.getLeftX();
-   public static double LJSY_Primary = primaryController.getLeftY();
-   
-   public static double dPad = armController.getPOV();
-   public static JoystickButton B_Arm = new JoystickButton(armController, XboxController.Button.kB.value);
-   public static JoystickButton A_Arm = new JoystickButton(armController, XboxController.Button.kA.value);
-   public static JoystickButton X_Arm = new JoystickButton(armController, XboxController.Button.kX.value);
-   public static JoystickButton Y_Arm = new JoystickButton(armController, XboxController.Button.kY.value);  
+ 
   /**
    * This function is run when the robot is first started up and should be used for any
    * initialization code.
@@ -56,21 +44,21 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotPeriodic() {
-      LJSX_Primary = primaryController.getLeftX();
-      LJSY_Primary = primaryController.getLeftY();
+      RobotContainer.LJSX_Primary = RobotContainer.primaryController.getLeftX();
+      RobotContainer.LJSY_Primary = RobotContainer.primaryController.getLeftY();
       OI.Drivetrain.gyroRate = Drivetrain.getGyroRate();
       OI.Drivetrain.gyroHeading = Drivetrain.getGyroHeading();
-      if(primaryController.isConnected()) {
-         OI.XboxController.X1_AButton = primaryController.getAButton();
-         OI.XboxController.X1_BButton = primaryController.getBButton();
-         OI.XboxController.X1_XButton = primaryController.getXButton();
-         OI.XboxController.X1_YButton = primaryController.getYButton();
+      if(RobotContainer.primaryController.isConnected()) {
+         OI.XboxController.X1_AButton = RobotContainer.primaryController.getAButton();
+         OI.XboxController.X1_BButton = RobotContainer.primaryController.getBButton();
+         OI.XboxController.X1_XButton = RobotContainer.primaryController.getXButton();
+         OI.XboxController.X1_YButton = RobotContainer.primaryController.getYButton();
 
-         OI.XboxController.X1_LJX = primaryController.getLeftX();
-         OI.XboxController.X1_LJY = primaryController.getLeftY();
+         OI.XboxController.X1_LJX = RobotContainer.primaryController.getLeftX();
+         OI.XboxController.X1_LJY = RobotContainer.primaryController.getLeftY();
       }
-      if(armController.isConnected()){
-         OI.XboxController.X2_DPad = armController.getPOV();
+      if(RobotContainer.armController.isConnected()){
+         OI.XboxController.X2_DPad = RobotContainer.armController.getPOV();
       }
 
       if(!DriverStation.isFMSAttached()){
