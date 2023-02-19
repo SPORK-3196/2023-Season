@@ -1,0 +1,134 @@
+// Copyright (c) FIRST and other WPILib contributors.
+// Open Source Software; you can modify and/or share it under the terms of
+// the WPILib BSD license file in the root directory of this project.
+
+package frc.robot;
+
+import edu.wpi.first.networktables.GenericEntry;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
+
+public class Variables {
+    public static final class XboxController {
+        public static ShuffleboardTab X1_TAB =  Shuffleboard.getTab("Xbox Controller #1");
+        public static ShuffleboardTab X2_TAB =  Shuffleboard.getTab("Xbox Controller #2");
+        
+        public static double X1_RTValue = 0;
+        public static double X1_LTValue = 0;
+
+        public static boolean X1_RB = false;
+        public static boolean X1_LB = false;
+
+        public static double X1_LJX = 0;
+        public static double X1_LJY = 0;
+        public static double X1_RJX = 0;
+        public static double X1_RJY = 0;
+
+        public static boolean X1_XButton = false;
+        public static boolean X1_YButton = false;
+        public static boolean X1_AButton = false;
+        public static boolean X1_BButton = false;
+
+        public static double X2_RTValue = 0;
+        public static double X2_LTValue = 0;
+
+        public static double X2_DPad = -1;
+
+        public static boolean X2_RB = false;
+        public static boolean X2_LB = false;
+
+        public static double X2_LJX = 0;
+        public static double X2_LJY = 0;
+        public static double X2_RJX = 0;
+        public static double X2_RJY = 0;
+
+        public static boolean X2_LJS = false;
+
+        public static boolean X2_XButton = false;
+        public static boolean X2_YButton = false;
+        public static boolean X2_AButton = false;
+        public static boolean X2_BButton = false;
+
+        public static GenericEntry X1_RT_Entry = X1_TAB.add("Right Trigger", 0.0).getEntry();
+        public static GenericEntry X1_LT_Entry = X1_TAB.add("Left Trigger", 0.0).getEntry();
+
+        public static GenericEntry X1_RB_Entry = X1_TAB.add("Right Bumper", false).getEntry();
+        public static GenericEntry X1_LB_Entry = X1_TAB.add("Left Bumper", false).getEntry();
+
+        public static GenericEntry X1_LJX_Entry = X1_TAB.add("Left Joystick X", 0.0).getEntry();
+        public static GenericEntry X1_LJY_Entry = X1_TAB.add("Left Joystick Y", 0.0).getEntry();
+        public static GenericEntry X1_RJX_Entry = X1_TAB.add("Right Joystick X", 0.0).getEntry();
+        public static GenericEntry X1_RJY_Entry = X1_TAB.add("Right Joystick Y", 0.0).getEntry();
+
+        public static GenericEntry X1_XButtonEntry = X1_TAB.add("X Button", false).getEntry();
+        public static GenericEntry X1_YButtonEntry = X1_TAB.add("Y Button", false).getEntry();
+        public static GenericEntry X1_AButtonEntry = X1_TAB.add("A Button", false).getEntry();
+        public static GenericEntry X1_BButtonEntry = X1_TAB.add("B Button", false).getEntry();
+
+        
+        public static GenericEntry X2_RT_Entry = X2_TAB.add("Right Trigger", 0.0).getEntry();
+        public static GenericEntry X2_LT_Entry = X2_TAB.add("Left Trigger", 0.0).getEntry();
+
+        public static GenericEntry X2_RB_Entry = X2_TAB.add("Right Bumper", false).getEntry();
+        public static GenericEntry X2_LB_Entry = X2_TAB.add("Left Bumper", false).getEntry();
+
+        public static GenericEntry X2_LJX_Entry = X2_TAB.add("Left Joystick X", 0.0).getEntry();
+        public static GenericEntry X2_LJY_Entry = X2_TAB.add("Left Joystick Y", 0.0).getEntry();
+        public static GenericEntry X2_RJX_Entry = X2_TAB.add("Right Joystick X", 0.0).getEntry();
+        public static GenericEntry X2_RJY_Entry = X2_TAB.add("Right Joystick Y", 0.0).getEntry();
+
+        public static GenericEntry X2_XButtonEntry = X2_TAB.add("X Button", false).getEntry();
+        public static GenericEntry X2_YButtonEntry = X2_TAB.add("Y Button", false).getEntry();
+        public static GenericEntry X2_AButtonEntry = X2_TAB.add("A Button", false).getEntry();
+        public static GenericEntry X2_BButtonEntry = X2_TAB.add("B Button", false).getEntry();
+
+        public static GenericEntry X2_DPadEntry = X2_TAB.add("DPad", 0).getEntry();
+    }
+    public static final class Drivetrain  {
+        public static ShuffleboardTab Drive_TAB = Shuffleboard.getTab("Drivetrain");
+
+        public static double gyroRate = 0;
+        public static double gyroHeading = 0;
+
+        public static GenericEntry GyroRateEntry = Drive_TAB.add("Gyro rate", 0).getEntry();
+        public static GenericEntry GyroHeadingEntry = Drive_TAB.add("Gyro Heading", 0).getEntry();
+
+        public static GenericEntry Kp_Entry = Drive_TAB.add("drive kp",1).getEntry();
+        public static GenericEntry Ki_Entry = Drive_TAB.add("drive ki", 0).getEntry();
+        public static GenericEntry Kd_Entry = Drive_TAB.add("drive kd", 0).getEntry();
+    }
+    public static final class ShoulderPID{
+        public static ShuffleboardTab PIDSholder_TAB =  Shuffleboard.getTab("PID Sholder");
+        
+
+        public static GenericEntry Kp_Entry = PIDSholder_TAB.add("sholder kp",1).getEntry();
+        public static GenericEntry Ki_Entry = PIDSholder_TAB.add("sholder ki", 0).getEntry();
+        public static GenericEntry Kd_Entry = PIDSholder_TAB.add("sholder kd", 0).getEntry();
+    }
+    public static final class ElbowPID{
+    public static ShuffleboardTab PIDElbow_TAB =  Shuffleboard.getTab("PID Sholder");
+        
+
+    public static GenericEntry Kp_Entry = PIDElbow_TAB.add("Elbow kp",1).getEntry();
+    public static GenericEntry Ki_Entry = PIDElbow_TAB.add("Elbow ki", 0).getEntry();
+    public static GenericEntry Kd_Entry = PIDElbow_TAB.add("Elbow kd", 0).getEntry();
+}
+    public static final class cam1{
+    public static ShuffleboardTab cam1_TAB = Shuffleboard.getTab("cam1 vars");
+
+    public static GenericEntry cam1Yaw_Entry = cam1_TAB.add("Yaw", 0).getEntry();
+    public static GenericEntry cam1pitch_Entry = cam1_TAB.add("pitch", 0).getEntry();
+    }
+    public static final class cam2{
+        public static ShuffleboardTab cam2_TAB = Shuffleboard.getTab("cam1 vars");
+    
+        public static GenericEntry cam2Yaw_Entry = cam2_TAB.add("Yaw", 0).getEntry();
+        public static GenericEntry cam2pitch_Entry = cam2_TAB.add("pitch", 0).getEntry();
+        }
+    public static final class lime{
+        public static ShuffleboardTab lime_TAB = Shuffleboard.getTab("cam1 vars");
+        
+        public static GenericEntry limeYaw_Entry = lime_TAB.add("Yaw", 0).getEntry();
+        public static GenericEntry limepitch_Entry = lime_TAB.add("pitch", 0).getEntry();
+    }
+}
