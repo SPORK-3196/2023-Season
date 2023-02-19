@@ -2,11 +2,9 @@ package frc.robot.commands.Lift;
 
 import java.util.Set;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import edu.wpi.first.wpilibj2.command.PIDSubsystem;
 import edu.wpi.first.wpilibj2.command.Subsystem;
 import frc.robot.subsystems.Lift;
 import frc.robot.RobotContainer;
-import frc.robot.subsystems.Arm;
 
 public class LiftWithJoystick extends CommandBase {
   Lift lift;

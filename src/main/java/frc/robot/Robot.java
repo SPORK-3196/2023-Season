@@ -5,9 +5,12 @@
 package frc.robot;
 
 
+import org.photonvision.targeting.PhotonTrackedTarget;
+
 import edu.wpi.first.net.PortForwarder;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.OI;
 import frc.robot.subsystems.Drivetrain;
@@ -21,7 +24,7 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
 public class Robot extends TimedRobot {
    private Command autoCommand;
    private RobotContainer m_robotContainer;
- 
+   
   /**
    * This function is run when the robot is first started up and should be used for any
    * initialization code.
@@ -33,6 +36,9 @@ public class Robot extends TimedRobot {
 
       PortForwarder.add(5800, "10.31.96.11", 5800);
 
+      Shuffleboard.getTab("Autonomous Controls")
+      .add(RobotContainer.autoChooser);
+      
   }
 
   /**
@@ -48,7 +54,14 @@ public class Robot extends TimedRobot {
       RobotContainer.LJSY_Primary = RobotContainer.primaryController.getLeftY();
       OI.Drivetrain.gyroRate = Drivetrain.getGyroRate();
       OI.Drivetrain.gyroHeading = Drivetrain.getGyroHeading();
+      
+
+      RobotContainer.result = RobotContainer.aprilTagCam.getLatestResult();
+      if(RobotContainer.bResult != null)
+         System.out.println(RobotContainer.getCamYaw(RobotContainer.bResult));         
+
       if(RobotContainer.primaryController.isConnected()) {
+         
          OI.XboxController.X1_AButton = RobotContainer.primaryController.getAButton();
          OI.XboxController.X1_BButton = RobotContainer.primaryController.getBButton();
          OI.XboxController.X1_XButton = RobotContainer.primaryController.getXButton();
@@ -74,6 +87,8 @@ public class Robot extends TimedRobot {
 
          OI.Drivetrain.GyroRateEntry.setDouble(OI.Drivetrain.gyroRate);
          OI.Drivetrain.GyroHeadingEntry.setDouble(OI.Drivetrain.gyroHeading);
+
+         OI.Vision.MicroYawEntry.setDouble(RobotContainer.getCamYaw(RobotContainer.bResult));
       }
       CommandScheduler.getInstance().run();   
   }

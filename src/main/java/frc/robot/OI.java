@@ -90,4 +90,12 @@ public class OI {
         public static GenericEntry GyroRateEntry = Drive_TAB.add("Gyro rate", 0).getEntry();
         public static GenericEntry GyroHeadingEntry = Drive_TAB.add("Gyro Heading", 0).getEntry();
     }
+    public static final class Vision {
+        public static ShuffleboardTab Vision_TAB = Shuffleboard.getTab("Vision");
+
+        public static double microYaw = 0;
+
+        public static GenericEntry MicroYawEntry = Vision_TAB.add("Microsoft Cam Yaw", 0).getEntry();
+
+    }
 }
