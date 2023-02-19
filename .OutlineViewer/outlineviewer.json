@@ -1,0 +1,14 @@
+{
+  "NetworkTables Settings": {
+    "mode": "Client (NT4)",
+    "serverTeam": "3196"
+  },
+  "transitory": {
+    "photonvision": {
+      "Microsoft_LifeCam_Turret": {
+        "open": true
+      },
+      "open": true
+    }
+  }
+}

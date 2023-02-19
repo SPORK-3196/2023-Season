@@ -36,7 +36,10 @@ public class RobotContainer {
     private Lift lift= new Lift();
     private Turret turret = new Turret();
 
-    public static PhotonCamera aprilTagCam = new PhotonCamera("Microsoft_Lifecam_Elevator");
+    public static PhotonCamera aprilTagCam = new PhotonCamera("Global_Shutter_Elevator");
+    public static PhotonCamera primaryCamera = new PhotonCamera("Primary Camera");
+    public static PhotonCamera backupCamera = new PhotonCamera("Backup Camera");
+    public static double aprilYaw = 0;
 
     public static PhotonPipelineResult result = aprilTagCam.getLatestResult();
     public static PhotonTrackedTarget bResult = result.getBestTarget();
@@ -70,7 +73,7 @@ public class RobotContainer {
         if(OI.XboxController.X2_DPad == 0) A_Arm.onTrue(new PickupConeStation(arm, lift, claw));
         if(OI.XboxController.X2_DPad == 0) X_Arm.onTrue(new PickupCubeStation(arm, lift, claw));
         
-        A_Arm.whileTrue(new TracktoTag(drivetrain));
+        A_Prim.whileTrue(new TracktoTag(drivetrain));
     }   
      
     public static Command trajectory(){
@@ -83,9 +86,7 @@ public class RobotContainer {
             new RamseteCommand(trajectory, 
             drivetrain::getPose, 
             new RamseteController(2, .7), 
-            new SimpleMotorFeedforward(Constants.DrivetrainConstants.m_2022ksVolts,
-                Constants.DrivetrainConstants.m_2022kvVoltSecondsPerMeter,
-                Constants.DrivetrainConstants.m_2022kaVoltSecondsSquaredPerMeter),
+            drivetrain.m_feedforward,
             Constants.DrivetrainConstants.m_2022DifferentialDriveKinematics,
             drivetrain::motorWheelSpeeds,
             new PIDController(Constants.DrivetrainConstants.m_2022kP, 0, 0),
@@ -99,14 +100,11 @@ public class RobotContainer {
     }
     public Command getSelected(){
         return autoChooser.getSelected();
-
     } 
 
-    public static PhotonTrackedTarget camResult(PhotonCamera camera){
-        PhotonPipelineResult result = camera.getLatestResult();
-        return result.hasTargets() ? result.getBestTarget() : null;
+    public static PhotonPipelineResult pipelineResult(PhotonCamera camera){
+        return camera.getLatestResult();
     }
-
     public static boolean hasTargets(PhotonPipelineResult result){
         return result.hasTargets();
     }

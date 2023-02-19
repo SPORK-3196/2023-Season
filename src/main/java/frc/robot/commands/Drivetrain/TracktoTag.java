@@ -25,24 +25,20 @@ public class TracktoTag extends CommandBase {
         drivetrain.frontRight.setNeutralMode(NeutralMode.Coast);
         drivetrain.rearRight.setNeutralMode(NeutralMode.Coast);
         
-        controller = new PIDController(.008, 0, 0);
-
+        controller = new PIDController(.014, .005, .0004);
+        if(RobotContainer.aprilYaw > 1) 
+            rotPower -= .02;
+        
+        else if(RobotContainer.aprilYaw < 1)
+            rotPower += .02;
     }
 
     @Override
     public void execute(){
-        
         if(RobotContainer.hasTargets(RobotContainer.result))
-            yaw = RobotContainer.getCamYaw(RobotContainer.camResult(RobotContainer.aprilTagCam));
-            rotPower = controller.calculate(yaw, -1);
+            rotPower = controller.calculate(RobotContainer.aprilYaw, 0);
 
-        if (yaw > 1.0) {
-            rotPower -= 0.02;
-        }
-        else if (yaw < 1.0) {
-            rotPower += 0.02;
-        }
-        drivetrain.arcadeDrive(0, rotPower);
+        drivetrain.arcadeDriveAI(0, rotPower);
     }
 
     @Override

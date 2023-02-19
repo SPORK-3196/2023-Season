@@ -5,9 +5,12 @@
 package frc.robot;
 
 
+import org.photonvision.PhotonCamera;
 import org.photonvision.targeting.PhotonTrackedTarget;
 
 import edu.wpi.first.net.PortForwarder;
+import edu.wpi.first.networktables.NetworkTable;
+import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
@@ -24,18 +27,26 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
 public class Robot extends TimedRobot {
    private Command autoCommand;
    private RobotContainer m_robotContainer;
-   
   /**
    * This function is run when the robot is first started up and should be used for any
    * initialization code.
    */
   @Override
   public void robotInit() {
+      NetworkTableInstance camInstance = NetworkTableInstance.getDefault();
+      camInstance.startClient4("10.31.96.50");
+      camInstance.startDSClient();
+      
       m_robotContainer = new RobotContainer();
       Drivetrain.zerogyro();
 
       PortForwarder.add(5800, "10.31.96.11", 5800);
+      PortForwarder.add(5800, "10.31.96.50", 5800);
 
+      RobotContainer.aprilTagCam.setDriverMode(false);
+      RobotContainer.aprilTagCam.setPipelineIndex(1);
+      PhotonCamera.setVersionCheckEnabled(false);
+      
       Shuffleboard.getTab("Autonomous Controls")
       .add(RobotContainer.autoChooser);
       
@@ -55,13 +66,14 @@ public class Robot extends TimedRobot {
       OI.Drivetrain.gyroRate = Drivetrain.getGyroRate();
       OI.Drivetrain.gyroHeading = Drivetrain.getGyroHeading();
       
-
+      
       RobotContainer.result = RobotContainer.aprilTagCam.getLatestResult();
-      if(RobotContainer.bResult != null)
-         System.out.println(RobotContainer.getCamYaw(RobotContainer.bResult));         
+      if(RobotContainer.hasTargets(RobotContainer.pipelineResult(RobotContainer.aprilTagCam)))
+         RobotContainer.bResult = RobotContainer.result.getBestTarget();
+         RobotContainer.aprilYaw = RobotContainer.getCamYaw(RobotContainer.bResult);
 
       if(RobotContainer.primaryController.isConnected()) {
-         
+
          OI.XboxController.X1_AButton = RobotContainer.primaryController.getAButton();
          OI.XboxController.X1_BButton = RobotContainer.primaryController.getBButton();
          OI.XboxController.X1_XButton = RobotContainer.primaryController.getXButton();

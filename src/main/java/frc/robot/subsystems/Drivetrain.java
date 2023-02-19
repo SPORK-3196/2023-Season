@@ -32,7 +32,7 @@ public class Drivetrain extends SubsystemBase {
     
     public DifferentialDriveOdometry m_odometry;
     
-    private final SimpleMotorFeedforward m_feedforward =
+    public final SimpleMotorFeedforward m_feedforward =
       new SimpleMotorFeedforward(
           Constants.DrivetrainConstants.m_2022ksVolts,
           Constants.DrivetrainConstants.m_2022kvVoltSecondsPerMeter,
