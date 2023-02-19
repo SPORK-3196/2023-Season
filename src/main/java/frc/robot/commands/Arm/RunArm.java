@@ -17,8 +17,8 @@ public class RunArm extends CommandBase {
     // eg. requires(chassis);
     addRequirements(arm);
   }
-    public void initialize() {
-        arm.ShoulderMotor.set(0);
+    public void initialize() {}
+   /*     arm.ShoulderMotor.set(0);
         arm.ShoulderPID.setP(0.05);
         arm.ShoulderPID.setI(0);
         arm.ShoulderPID.setD(0);
@@ -30,7 +30,7 @@ public class RunArm extends CommandBase {
         arm.ElbowPID.setD(0);
         arm.ElbowPID.setOutputRange(-0.4, 0.4);
       }
-    
+    */
 
 
   // Called repeatedly when this Command is scheduled to run

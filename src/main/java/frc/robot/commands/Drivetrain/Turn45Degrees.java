@@ -22,9 +22,10 @@ public class Turn45Degrees extends CommandBase  {
     }
     @Override
     public void execute(){ 
-        PIDController controller = new PIDController(.018, 0, 0);
-        heading = Drivetrain.getGyroHeading();
-        speed = controller.calculate(heading, 45);
+        PIDController controller = new PIDController(.018, 0, 0); 
+            heading = Drivetrain.getGyroHeading();
+            speed = controller.calculate(heading, 45);
+        
         drivetrain.arcadeDrive(0, speed);
     }
     @Override

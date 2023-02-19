@@ -1,39 +1,49 @@
 package frc.robot.subsystems;
 
-import com.revrobotics.CANSparkMax;
-import com.revrobotics.SparkMaxPIDController;
-import com.revrobotics.CANSparkMaxLowLevel.MotorType;
-
-import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.math.controller.ArmFeedforward;
+import edu.wpi.first.math.controller.ProfiledPIDController;
+import edu.wpi.first.math.trajectory.TrapezoidProfile;
+import edu.wpi.first.wpilibj.Encoder;
 import frc.robot.Constants.ArmConstants;
-import frc.robot.commands.Arm.RunArm;
+import edu.wpi.first.wpilibj.motorcontrol.PWMSparkMax;
+import edu.wpi.first.wpilibj2.command.ProfiledPIDSubsystem;
 
-public class Arm extends SubsystemBase {
+/** A robot arm subsystem that moves with a motion profile. */
+public class Arm extends ProfiledPIDSubsystem {
+  private final PWMSparkMax m_motor = new PWMSparkMax(ArmConstants.elbowPort);
+  private final Encoder m_encoder =
+      new Encoder(ArmConstants.elbowPort, ArmConstants.elbowPort);
+  private final ArmFeedforward m_feedforward =
+      new ArmFeedforward(
+          ArmConstants.kSVolts, ArmConstants.kGVolts,
+          ArmConstants.kVVoltSecondPerRad, ArmConstants.kAVoltSecondSquaredPerRad);
 
-    public double ElbowEnoder= 0;
-    public double ShoulderEncoder= 0;
+  /** Create a new ArmSubsystem. */
+  public Arm() {
+    super(
+        new ProfiledPIDController(
+            ArmConstants.kP,
+            0,
+            0,
+            new TrapezoidProfile.Constraints(
+                ArmConstants.kMaxVelocityRadPerSecond,
+                ArmConstants.kMaxAccelerationRadPerSecSquared)),
+        0);
+    m_encoder.setDistancePerPulse(ArmConstants.kEncoderDistancePerPulse);
+ 
+    setGoal(ArmConstants.kArmOffsetRads);
+  }
 
-    
-    /*public CANSparkMax ShoulderMotor = 
-        new CANSparkMax(ArmConstants.shoulderPort, MotorType.kBrushless);
-    
-    public CANSparkMax ElbowMotor = 
-        new CANSparkMax(ArmConstants.elbowPort,MotorType.kBrushless);*/
+  @Override
+  public void useOutput(double output, TrapezoidProfile.State setpoint) {
+    // Calculate feedforward
+    double feedforward = m_feedforward.calculate(setpoint.position, setpoint.velocity);
+    // add the feedforward to output 
+    m_motor.setVoltage(output + feedforward);
+  }
 
-    public CANSparkMax ShoulderMotor = new CANSparkMax(ArmConstants.shoulderPort, MotorType.kBrushless);
-    public SparkMaxPIDController ShoulderPID = ShoulderMotor.getPIDController();
-
-    public CANSparkMax ElbowMotor = new CANSparkMax(9, MotorType.kBrushless);
-    public SparkMaxPIDController ElbowPID = ElbowMotor.getPIDController();
-    public Object shoulderOut;
-    public Arm(){
-
-    }
-
-
-    
-    public void DefaltCommand(){
-    // run arm commands 
-    // setDefaultCommand(new RunArm());
-    }
+  @Override
+  public double getMeasurement() {
+    return m_encoder.getDistance() + ArmConstants.kArmOffsetRads;
+  }
 }

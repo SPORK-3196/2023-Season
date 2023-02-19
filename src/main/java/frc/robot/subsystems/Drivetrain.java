@@ -81,15 +81,24 @@ public class Drivetrain extends SubsystemBase {
     public void resetOdometry(){
         m_odometry.resetPosition(gyroscope.getRotation2d(), 0, 0, getPose());
     }
-
+    public static double getGyroHeading(){
+        return gyroscope.getYaw();
+    }
     public double getGyroHeadingRadians(){
-        return Units.degreesToRadians(gyroscope.getYaw());
+        return Units.degreesToRadians(getGyroHeading());
+    }
+    
+    public static double getGyroRate(){
+        return gyroscope.getRate();
     }
     
     public void zeroGyro(){
         gyroscope.setYaw(0);
     }
 
+    public static void zerogyro(){
+        gyroscope.setYaw(0);
+    }
     @Override
     public void periodic(){
         
