@@ -12,10 +12,14 @@ public class TracktoTag extends CommandBase {
     PIDController controller;
     double rotPower;
     double yaw;
+    double kp, kd, ki;
 
     public TracktoTag(Drivetrain drivetrain){
         this.drivetrain = drivetrain;
         addRequirements(drivetrain);
+        kp = .014;
+        kd = .0004;
+        ki = .005;
     }
 
     @Override
@@ -25,7 +29,12 @@ public class TracktoTag extends CommandBase {
         drivetrain.frontRight.setNeutralMode(NeutralMode.Coast);
         drivetrain.rearRight.setNeutralMode(NeutralMode.Coast);
         
-        controller = new PIDController(.014, .005, .0004);
+        //controller = new PIDController(.014, .005, .0004);
+        controller = new PIDController(0, 0, 0);
+        controller.setP(kp);
+        controller.setD(kd);
+        controller.setI(ki);
+
         if(RobotContainer.aprilYaw > 1) 
             rotPower -= .02;
         

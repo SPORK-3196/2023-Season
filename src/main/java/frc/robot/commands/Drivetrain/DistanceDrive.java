@@ -14,6 +14,7 @@ public class DistanceDrive extends CommandBase{
     double pos;
     Timer timer = new Timer();
     PIDController controller;
+    PIDController turnController;
     public DistanceDrive(Drivetrain drivetrain, double time){
         this.drivetrain = drivetrain;
         this.time = time;
@@ -27,6 +28,7 @@ public class DistanceDrive extends CommandBase{
         timer.reset();
         timer.start();
         controller = new PIDController(.01, .005, .01);
+        turnController = new PIDController(.0075, 0, 0);
     } 
 
     @Override

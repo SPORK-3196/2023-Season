@@ -6,10 +6,8 @@ package frc.robot;
 
 
 import org.photonvision.PhotonCamera;
-import org.photonvision.targeting.PhotonTrackedTarget;
 
 import edu.wpi.first.net.PortForwarder;
-import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.TimedRobot;
@@ -38,6 +36,7 @@ public class Robot extends TimedRobot {
       camInstance.startDSClient();
       
       m_robotContainer = new RobotContainer();
+
       Drivetrain.zerogyro();
 
       PortForwarder.add(5800, "10.31.96.11", 5800);
@@ -45,11 +44,15 @@ public class Robot extends TimedRobot {
 
       RobotContainer.aprilTagCam.setDriverMode(false);
       RobotContainer.aprilTagCam.setPipelineIndex(1);
+
+      RobotContainer.primaryCamera.setDriverMode(false);
       PhotonCamera.setVersionCheckEnabled(false);
       
       Shuffleboard.getTab("Autonomous Controls")
       .add(RobotContainer.autoChooser);
-      
+
+      DriverStation.silenceJoystickConnectionWarning(true);
+
   }
 
   /**
@@ -66,11 +69,16 @@ public class Robot extends TimedRobot {
       OI.Drivetrain.gyroRate = Drivetrain.getGyroRate();
       OI.Drivetrain.gyroHeading = Drivetrain.getGyroHeading();
       
+      OI.Vision.limeLighthasTargets = 
+         RobotContainer.hasTargets(
+            RobotContainer.pipelineResult(
+               RobotContainer.primaryCamera));
       
       RobotContainer.result = RobotContainer.aprilTagCam.getLatestResult();
-      if(RobotContainer.hasTargets(RobotContainer.pipelineResult(RobotContainer.aprilTagCam)))
+      if(RobotContainer.hasTargets(RobotContainer.result)){
          RobotContainer.bResult = RobotContainer.result.getBestTarget();
          RobotContainer.aprilYaw = RobotContainer.getCamYaw(RobotContainer.bResult);
+         }
 
       if(RobotContainer.primaryController.isConnected()) {
 
@@ -100,7 +108,10 @@ public class Robot extends TimedRobot {
          OI.Drivetrain.GyroRateEntry.setDouble(OI.Drivetrain.gyroRate);
          OI.Drivetrain.GyroHeadingEntry.setDouble(OI.Drivetrain.gyroHeading);
 
-         OI.Vision.MicroYawEntry.setDouble(RobotContainer.getCamYaw(RobotContainer.bResult));
+         if(RobotContainer.bResult != null)  
+            OI.Vision.MicroYawEntry.setDouble(RobotContainer.getCamYaw(RobotContainer.bResult));
+         
+         OI.Vision.LimelightTargetsEntry.setBoolean(OI.Vision.limeLighthasTargets);
       }
       CommandScheduler.getInstance().run();   
   }

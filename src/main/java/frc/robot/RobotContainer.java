@@ -7,13 +7,10 @@ import org.photonvision.targeting.PhotonTrackedTarget;
 import com.pathplanner.lib.PathPlanner;
 import com.pathplanner.lib.PathPlannerTrajectory;
 
-import edu.wpi.first.apriltag.AprilTag;
-import edu.wpi.first.apriltag.AprilTagPoseEstimate;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.RamseteController;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
-import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.RamseteCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
@@ -37,6 +34,7 @@ public class RobotContainer {
     private Turret turret = new Turret();
 
     public static PhotonCamera aprilTagCam = new PhotonCamera("Global_Shutter_Elevator");
+    // public static PhotonCamera visionCam = new PhotonCamera("Microsoft_");
     public static PhotonCamera primaryCamera = new PhotonCamera("Primary Camera");
     public static PhotonCamera backupCamera = new PhotonCamera("Backup Camera");
     public static double aprilYaw = 0;
@@ -111,5 +109,4 @@ public class RobotContainer {
     public static double getCamYaw(PhotonTrackedTarget target){
         return target.getYaw();
     }
-
 }

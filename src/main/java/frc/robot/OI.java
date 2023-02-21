@@ -95,7 +95,10 @@ public class OI {
 
         public static double microYaw = 0;
 
+        public static boolean limeLighthasTargets = false;
+
         public static GenericEntry MicroYawEntry = Vision_TAB.add("Microsoft Cam Yaw", 0).getEntry();
+        public static GenericEntry LimelightTargetsEntry = Vision_TAB.add("Limelight has Targets", false).getEntry();
 
     }
 }

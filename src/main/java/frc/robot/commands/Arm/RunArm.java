@@ -1,12 +1,7 @@
 
 package frc.robot.commands.Arm;
 
-import com.ctre.phoenix.motorcontrol.ControlMode;
-import com.revrobotics.CANSparkMax;
-import edu.wpi.first.wpilibj.GenericHID;
-
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.Robot;
 import frc.robot.subsystems.Arm;
 
 public class RunArm extends CommandBase {
@@ -18,17 +13,6 @@ public class RunArm extends CommandBase {
     addRequirements(arm);
   }
     public void initialize() {
-        arm.ShoulderMotor.set(0);
-        arm.ShoulderPID.setP(0.05);
-        arm.ShoulderPID.setI(0);
-        arm.ShoulderPID.setD(0);
-        arm.ShoulderPID.setOutputRange(-0.4, 0.4);
-    
-        arm.ElbowMotor.set(0);
-        arm.ElbowPID.setP(0.1);
-        arm.ElbowPID.setI(0);
-        arm.ElbowPID.setD(0);
-        arm.ElbowPID.setOutputRange(-0.4, 0.4);
       }
     
 

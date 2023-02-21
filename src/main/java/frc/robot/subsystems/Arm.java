@@ -3,37 +3,74 @@ package frc.robot.subsystems;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.SparkMaxPIDController;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+import com.revrobotics.RelativeEncoder;
 
+import edu.wpi.first.math.controller.ArmFeedforward;
+import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants;
 import frc.robot.Constants.ArmConstants;
-import frc.robot.commands.Arm.RunArm;
 
 public class Arm extends SubsystemBase {
 
-    public double ElbowEnoder= 0;
-    public double ShoulderEncoder= 0;
-
-    
-    /*public CANSparkMax ShoulderMotor = 
+    public CANSparkMax shoulderMotor = 
         new CANSparkMax(ArmConstants.shoulderPort, MotorType.kBrushless);
     
-    public CANSparkMax ElbowMotor = 
-        new CANSparkMax(ArmConstants.elbowPort,MotorType.kBrushless);*/
+    public CANSparkMax elbowMotor = 
+        new CANSparkMax(ArmConstants.elbowPort,MotorType.kBrushless);
 
-    public CANSparkMax ShoulderMotor = new CANSparkMax(ArmConstants.shoulderPort, MotorType.kBrushless);
-    public SparkMaxPIDController ShoulderPID = ShoulderMotor.getPIDController();
+    public RelativeEncoder elbowEncoder = elbowMotor.getEncoder();
+    public RelativeEncoder shoulderEncoder = shoulderMotor.getEncoder();
 
-    public CANSparkMax ElbowMotor = new CANSparkMax(9, MotorType.kBrushless);
-    public SparkMaxPIDController ElbowPID = ElbowMotor.getPIDController();
-    public Object shoulderOut;
+    public SparkMaxPIDController elbowController;
+    public SparkMaxPIDController shoulderController;
+
+    public ArmFeedforward shoulderFeedforward = new ArmFeedforward(
+        Constants.ArmConstants.shoulderKsVolts, 
+        Constants.ArmConstants.shoulderKgVolts, 
+        Constants.ArmConstants.shoulderKvVoltSecondPerRad, 
+        Constants.ArmConstants.shoulderKaVoltSecondSquaredPerRad);
+    
+    public ArmFeedforward elbowFeedForward = new ArmFeedforward(
+        Constants.ArmConstants.elbowKsVolts, 
+        Constants.ArmConstants.elbowKgVolts, 
+        Constants.ArmConstants.elbowKvVoltSecondPerRad, 
+        Constants.ArmConstants.elbowKaVoltSecondSquaredPerRad);
+
+    private double elbowKI, elbowKD, elbowKP, shoulderKI, shoulderKD, shoulderKP;
     public Arm(){
+        elbowController = elbowMotor.getPIDController();
+        shoulderController = shoulderMotor.getPIDController();
+
+        elbowKP = .007;
+        elbowKD = 0;
+        elbowKI = 0;
+        shoulderKP = .008;
+        shoulderKD = 0;
+        shoulderKI = 0;
+
+        elbowController.setP(elbowKP);
+        elbowController.setD(elbowKD);
+        elbowController.setI(elbowKI);
+        shoulderController.setP(shoulderKP);
+        shoulderController.setD(shoulderKD);
+        shoulderController.setI(shoulderKI);
+
 
     }
+    public CommandBase runElbowMotor(double speed){
+        return this.run(() -> elbowMotor.setVoltage(speed));
+    }
 
+    public CommandBase runShoulderMotor(double speed){
+        return this.run(() -> shoulderMotor.setVoltage(speed));
+    }
 
-    
-    public void DefaltCommand(){
-    // run arm commands 
-    // setDefaultCommand(new RunArm());
+    public CommandBase turnElbowOff(){
+        return this.runOnce(() -> elbowMotor.stopMotor());
+    }
+
+    public CommandBase turnShoulderOff(){
+        return this.runOnce(() -> shoulderMotor.stopMotor());
     }
 }
