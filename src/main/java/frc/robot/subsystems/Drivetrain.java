@@ -4,9 +4,11 @@ import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import com.ctre.phoenix.sensors.WPI_PigeonIMU;
 
+import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.kinematics.DifferentialDriveOdometry;
 import edu.wpi.first.math.kinematics.DifferentialDriveWheelSpeeds;
+import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
@@ -29,6 +31,12 @@ public class Drivetrain extends SubsystemBase {
     public DifferentialDrive differentialDrive = new DifferentialDrive(leftGroup, rightGroup);
     
     public DifferentialDriveOdometry m_odometry;
+    
+    public final SimpleMotorFeedforward m_feedforward =
+      new SimpleMotorFeedforward(
+          Constants.DrivetrainConstants.m_2022ksVolts,
+          Constants.DrivetrainConstants.m_2022kvVoltSecondsPerMeter,
+          Constants.DrivetrainConstants.m_2022kaVoltSecondsSquaredPerMeter);
     
     public Drivetrain() {
         rightGroup.setInverted(true);
@@ -54,8 +62,11 @@ public class Drivetrain extends SubsystemBase {
     }
     
     public void arcadeDrive(double speed, double rot){
-        differentialDrive.arcadeDrive(speed, rot);
+        differentialDrive.arcadeDrive(speed, rot, true);
     }
+    public void arcadeDriveAI(double speed, double rotation) {
+        differentialDrive.arcadeDrive(speed, rotation, false);
+      }
     
     public Pose2d getPose(){
         return m_odometry.getPoseMeters();

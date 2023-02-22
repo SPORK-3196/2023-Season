@@ -2,11 +2,9 @@ package frc.robot.commands.Lift;
 
 import java.util.Set;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import edu.wpi.first.wpilibj2.command.PIDSubsystem;
 import edu.wpi.first.wpilibj2.command.Subsystem;
 import frc.robot.subsystems.Lift;
-import frc.robot.Robot;
-import frc.robot.subsystems.Arm;
+import frc.robot.RobotContainer;
 
 public class LiftWithJoystick extends CommandBase {
   Lift lift;
@@ -29,7 +27,7 @@ public class LiftWithJoystick extends CommandBase {
     }
   
 
-    double liftInput = - Robot.primaryController.getRawAxis(1);
+    double liftInput = - RobotContainer.primaryController.getRawAxis(1);
     double liftSpeedCoef = -1.0;
 
    /*  System.out.println(Robot.lift.getEncoder());

@@ -83,6 +83,15 @@ public class Variables {
         public static GenericEntry X2_BButtonEntry = X2_TAB.add("B Button", false).getEntry();
 
         public static GenericEntry X2_DPadEntry = X2_TAB.add("DPad", 0).getEntry();
+
+    }
+    public static final class Vision {
+        public static ShuffleboardTab Vision_TAB = Shuffleboard.getTab("Vision");
+
+        public static double microYaw = 0;
+
+        public static GenericEntry MicroYawEntry = Vision_TAB.add("Microsoft Cam Yaw", 0).getEntry();
+
     }
     public static final class Drivetrain  {
         public static ShuffleboardTab Drive_TAB = Shuffleboard.getTab("Drivetrain");

@@ -7,46 +7,42 @@ import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Drivetrain;
 
-public class DistanceDrive extends CommandBase{
+public class Turn90RightDegrees extends CommandBase  {
     Drivetrain drivetrain;
-    double time;
-    double speed;
-    double pos;
+    public static double heading;
+    public double speed;
+    public PIDController controller;
+    private double time;
     Timer timer = new Timer();
-    PIDController controller;
-    public DistanceDrive(Drivetrain drivetrain, double time){
+    
+    public Turn90RightDegrees(Drivetrain drivetrain, double time){
         this.drivetrain = drivetrain;
-        this.time = time;
+        this.time=time;
         addRequirements(drivetrain);
     }
-
     @Override
     public void initialize(){
-        drivetrain.resetEncoders();
         drivetrain.zeroGyro();
+        controller = new PIDController(.006, .005, 0);
         timer.reset();
         timer.start();
-        controller = new PIDController(.01, .005, .01);
-    } 
 
-    @Override
-    public void execute(){
-        pos = drivetrain.sensorToMeters(drivetrain.rearLeft.getSelectedSensorPosition());
-        speed = controller.calculate(pos, .5);
-        drivetrain.arcadeDrive(speed, 0);
     }
-
+    @Override
+    public void execute(){ 
+        heading = Drivetrain.getGyroHeading();
+        speed = controller.calculate(heading, 90);
+        drivetrain.arcadeDrive(0, speed);
+    }
     @Override
     public void end(boolean interrupted){
         drivetrain.frontLeft.setNeutralMode(NeutralMode.Coast);
         drivetrain.rearLeft.setNeutralMode(NeutralMode.Coast);
         drivetrain.frontRight.setNeutralMode(NeutralMode.Coast);
         drivetrain.rearRight.setNeutralMode(NeutralMode.Coast);
-        drivetrain.zeroGyro();
     }
-
-    @Override
     public boolean isFinished(){
         return timer.get() >= time;
-    }
+        
+    } 
 }
