@@ -13,7 +13,6 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.OI;
 import frc.robot.subsystems.Drivetrain;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 /**
@@ -74,10 +73,11 @@ public class Robot extends TimedRobot {
             RobotContainer.pipelineResult(
                RobotContainer.primaryCamera));
       
-      RobotContainer.result = RobotContainer.aprilTagCam.getLatestResult();
+      RobotContainer.result = RobotContainer.pipelineResult(RobotContainer.aprilTagCam);
       if(RobotContainer.hasTargets(RobotContainer.result)){
          RobotContainer.bResult = RobotContainer.result.getBestTarget();
          RobotContainer.aprilYaw = RobotContainer.getCamYaw(RobotContainer.bResult);
+         RobotContainer.aprilX = RobotContainer.distanceToVisionPose(RobotContainer.bResult).getX();
          }
 
       if(RobotContainer.primaryController.isConnected()) {
@@ -107,10 +107,9 @@ public class Robot extends TimedRobot {
 
          OI.Drivetrain.GyroRateEntry.setDouble(OI.Drivetrain.gyroRate);
          OI.Drivetrain.GyroHeadingEntry.setDouble(OI.Drivetrain.gyroHeading);
-
          if(RobotContainer.bResult != null)  
             OI.Vision.MicroYawEntry.setDouble(RobotContainer.getCamYaw(RobotContainer.bResult));
-         
+            OI.Vision.distanceToTagEntry.setDouble(RobotContainer.aprilX);
          OI.Vision.LimelightTargetsEntry.setBoolean(OI.Vision.limeLighthasTargets);
       }
       CommandScheduler.getInstance().run();   

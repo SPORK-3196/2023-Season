@@ -66,4 +66,11 @@ public final class Constants {
         public static double kMaxAccelerationMetersPerSecSquared = 1;
 
     }
+    public static final class Vision{
+        public static double globalShutterHeightMeters = Units.inchesToMeters(50.75);
+        // public static double aprilTagHeightMeters = Units.inchesToMeters(15.25);
+         public static double aprilTagHeightMeters = Units.inchesToMeters(21.125);
+
+        public static double globalShutterPitch = 0;
+    }
 }

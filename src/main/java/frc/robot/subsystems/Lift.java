@@ -5,7 +5,6 @@ import com.revrobotics.RelativeEncoder;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj2.command.PIDSubsystem;
-import frc.robot.commands.Lift.LiftWithJoystick;
 
 /**
  * Add your docs here.
@@ -19,25 +18,23 @@ public class Lift extends PIDSubsystem {
 
   //public PWMSparkMax liftMotor = new PWMSparkMax(10);
   public CANSparkMax liftMotor = new CANSparkMax(10, MotorType.kBrushless);
-
+  public RelativeEncoder liftEncoder = liftMotor.getEncoder();
   //public Servo cameraServo = new Servo(0);
 
   public double getEncoder() {
-    RelativeEncoder liftEncoder = liftMotor.getEncoder();
     return offset;
   }
 
   public void resetEncoder() {
-    RelativeEncoder liftEncoder = liftMotor.getEncoder();
+    liftEncoder.setPosition(0);
   }
 
   public void resetEncoderTo(int val) {
     //SparkMaxAbsoluteEncoder current = liftMotor.getAbsoluteEncoder(Type.kDutyCycle);
-    //current.getPosition();
-    RelativeEncoder liftEncoder = liftMotor.getEncoder();
-    return;
-    // offset = liftMotor.getEncoder();
-    //offset = liftMotor.getSelectedSensorValue() - val;
+    //current.getPosition();    // offset = liftMotor.getEncoder();
+    offset = liftEncoder.getPosition() - val;
+    liftEncoder.setPosition(val);
+
   }
   
   public Lift() {

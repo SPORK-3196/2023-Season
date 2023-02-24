@@ -1,5 +1,6 @@
 package frc.robot;
 
+
 import org.photonvision.PhotonCamera;
 import org.photonvision.targeting.PhotonPipelineResult;
 import org.photonvision.targeting.PhotonTrackedTarget;
@@ -9,6 +10,7 @@ import com.pathplanner.lib.PathPlannerTrajectory;
 
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.RamseteController;
+import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -18,8 +20,9 @@ import frc.robot.commands.Autonomous.Cone.PickupConeStation;
 import frc.robot.commands.Autonomous.Cube.PickupCubeStation;
 import frc.robot.commands.Autonomous.Positions.Square;
 import frc.robot.commands.Claw.OpenClaw;
+import frc.robot.commands.Drivetrain.DistanceToVisionTarget;
 import frc.robot.commands.Drivetrain.DriveWithJoyStick;
-import frc.robot.commands.Drivetrain.TracktoTag;
+import frc.robot.commands.Drivetrain.TracktoVisionTarget;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Claw;
 import frc.robot.subsystems.Drivetrain;
@@ -33,17 +36,19 @@ public class RobotContainer {
     private Lift lift= new Lift();
     private Turret turret = new Turret();
 
+    private DriveWithJoyStick joystickDrive = new DriveWithJoyStick(drivetrain);
+
     public static PhotonCamera aprilTagCam = new PhotonCamera("Global_Shutter_Elevator");
-    // public static PhotonCamera visionCam = new PhotonCamera("Microsoft_");
+    public static PhotonCamera visionCam = new PhotonCamera("Microsoft_Life_Cam_Turret");
     public static PhotonCamera primaryCamera = new PhotonCamera("Primary Camera");
     public static PhotonCamera backupCamera = new PhotonCamera("Backup Camera");
     public static double aprilYaw = 0;
 
-    public static PhotonPipelineResult result = aprilTagCam.getLatestResult();
-    public static PhotonTrackedTarget bResult = result.getBestTarget();
+    public static PhotonPipelineResult result;
+    public static PhotonTrackedTarget bResult;
+    public static double aprilX;
 
     public static SendableChooser<Command> autoChooser = new SendableChooser<Command>();
-    private DriveWithJoyStick joystickDrive = new DriveWithJoyStick(drivetrain);
 
     public static XboxController primaryController = new XboxController(0);
     public static XboxController armController = new XboxController(1);
@@ -57,6 +62,7 @@ public class RobotContainer {
     public static JoystickButton Y_Arm = new JoystickButton(armController, XboxController.Button.kY.value); 
 
     public static JoystickButton A_Prim = new JoystickButton(primaryController, XboxController.Button.kA.value);
+    public static JoystickButton B_Prim = new JoystickButton(primaryController, XboxController.Button.kB.value);
 
 
     public RobotContainer(){
@@ -64,14 +70,15 @@ public class RobotContainer {
         drivetrain.setDefaultCommand(joystickDrive);
         claw.setDefaultCommand(new OpenClaw(claw));
         autoChooser.addOption("Straight Traj", trajectory());
-        autoChooser.setDefaultOption("Turn 45 Degrees", new Square(drivetrain));
+        autoChooser.setDefaultOption("Make Square", new Square(drivetrain));
     }
 
     public void configureButtonBindings() {
         if(OI.XboxController.X2_DPad == 0) A_Arm.onTrue(new PickupConeStation(arm, lift, claw));
         if(OI.XboxController.X2_DPad == 0) X_Arm.onTrue(new PickupCubeStation(arm, lift, claw));
         
-        A_Prim.whileTrue(new TracktoTag(drivetrain));
+        A_Prim.whileTrue(new TracktoVisionTarget(drivetrain));
+        B_Prim.whileTrue(new DistanceToVisionTarget(drivetrain, aprilTagCam));
     }   
      
     public static Command trajectory(){
@@ -99,7 +106,6 @@ public class RobotContainer {
     public Command getSelected(){
         return autoChooser.getSelected();
     } 
-
     public static PhotonPipelineResult pipelineResult(PhotonCamera camera){
         return camera.getLatestResult();
     }
@@ -109,4 +115,17 @@ public class RobotContainer {
     public static double getCamYaw(PhotonTrackedTarget target){
         return target.getYaw();
     }
+    public static double getCamPitch(PhotonTrackedTarget target){
+        return target.getPitch();
+    }
+    public static double distanceToVisionTargetMeters(){
+        return aprilX;
+    }
+    public static Transform3d distanceToVisionPose(PhotonTrackedTarget target){
+        return target.getBestCameraToTarget();
+    }
+    public static int getFudicialID(PhotonTrackedTarget target){
+        return target.getFiducialId();
+    }
+
 }
