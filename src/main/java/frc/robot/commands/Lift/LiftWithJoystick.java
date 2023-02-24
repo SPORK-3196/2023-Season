@@ -22,9 +22,6 @@ public class LiftWithJoystick extends CommandBase {
   // Called repeatedly when this Command is scheduled to run
   
   public void execute() {
-    if(lift.getEncoder() > 20000) {
-    } else if(lift.getEncoder() > 10000) {
-    }
   
 
     double liftInput = - RobotContainer.primaryController.getRawAxis(1);

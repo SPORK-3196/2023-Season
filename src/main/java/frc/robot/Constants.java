@@ -66,7 +66,15 @@ public final class Constants {
         public static double kMaxAccelerationMetersPerSecSquared = 1;
 
     }
-    public static final class Vision{
+
+    public static final class LiftConstants {
+        public static int liftMotorID = 14;
+
+        public static double liftKP = 0.014;
+        public static double liftKD = 0;
+        public static double liftKI = 0;
+    }
+    public static final class VisionConstants {
         public static double globalShutterHeightMeters = Units.inchesToMeters(50.75);
         // public static double aprilTagHeightMeters = Units.inchesToMeters(15.25);
          public static double aprilTagHeightMeters = Units.inchesToMeters(21.125);
