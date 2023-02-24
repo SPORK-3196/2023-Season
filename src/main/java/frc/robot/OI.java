@@ -1,5 +1,6 @@
 package frc.robot;
 
+import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.networktables.GenericEntry;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
@@ -89,6 +90,8 @@ public class OI {
 
         public static GenericEntry GyroRateEntry = Drive_TAB.add("Gyro rate", 0).getEntry();
         public static GenericEntry GyroHeadingEntry = Drive_TAB.add("Gyro Heading", 0).getEntry();
+
+        
     }
     public static final class Vision {
         public static ShuffleboardTab Vision_TAB = Shuffleboard.getTab("Vision");
@@ -97,8 +100,12 @@ public class OI {
 
         public static boolean limeLighthasTargets = false;
 
+        public static Transform3d distanceToTag;
+        public static double pitchToTag= 0;
+
         public static GenericEntry MicroYawEntry = Vision_TAB.add("Microsoft Cam Yaw", 0).getEntry();
         public static GenericEntry LimelightTargetsEntry = Vision_TAB.add("Limelight has Targets", false).getEntry();
-
+        public static GenericEntry distanceToTagEntry = Vision_TAB.add("Distance to Tag", 0).getEntry();
+        public static GenericEntry camTagPitchEntry = Vision_TAB.add("Pitch to Tag", 0).getEntry();
     }
 }
