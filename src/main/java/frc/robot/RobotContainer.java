@@ -70,8 +70,8 @@ public class RobotContainer {
     }
 
     public void configureButtonBindings() {
-        if(Variables.XboxController.X2_DPad == 0) A_Arm.onTrue(new PickupConeStation(arm, lift, claw));
-        if(Variables.XboxController.X2_DPad == 0) X_Arm.onTrue(new PickupCubeStation(arm, lift, claw));
+        if(OI.XboxController.X2_DPad == 0) A_Arm.onTrue(new PickupConeStation(arm, lift, claw));
+        if(OI.XboxController.X2_DPad == 0) X_Arm.onTrue(new PickupCubeStation(arm, lift, claw));
         
         A_Prim.whileTrue(new TracktoTag(drivetrain));
     }   

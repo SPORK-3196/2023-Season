@@ -15,7 +15,7 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.Variables;
+import frc.robot.OI;
 import frc.robot.subsystems.Drivetrain;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 /**
@@ -62,8 +62,8 @@ public class Robot extends TimedRobot {
   public void robotPeriodic() {
       RobotContainer.LJSX_Primary = RobotContainer.primaryController.getLeftX();
       RobotContainer.LJSY_Primary = RobotContainer.primaryController.getLeftY();
-      Variables.Drivetrain.gyroRate = Drivetrain.getGyroRate();
-      Variables.Drivetrain.gyroHeading = Drivetrain.getGyroHeading();
+      OI.Drivetrain.gyroRate = Drivetrain.getGyroRate();
+      OI.Drivetrain.gyroHeading = Drivetrain.getGyroHeading();
       
       
       RobotContainer.result = RobotContainer.aprilTagCam.getLatestResult();
@@ -73,16 +73,16 @@ public class Robot extends TimedRobot {
 
       if(RobotContainer.primaryController.isConnected()) {
 
-         Variables.XboxController.X1_AButton = RobotContainer.primaryController.getAButton();
-         Variables.XboxController.X1_BButton = RobotContainer.primaryController.getBButton();
-         Variables.XboxController.X1_XButton = RobotContainer.primaryController.getXButton();
-         Variables.XboxController.X1_YButton = RobotContainer.primaryController.getYButton();
+         OI.XboxController.X1_AButton = RobotContainer.primaryController.getAButton();
+         OI.XboxController.X1_BButton = RobotContainer.primaryController.getBButton();
+         OI.XboxController.X1_XButton = RobotContainer.primaryController.getXButton();
+         OI.XboxController.X1_YButton = RobotContainer.primaryController.getYButton();
 
-         Variables.XboxController.X1_LJX = RobotContainer.primaryController.getLeftX();
-         Variables.XboxController.X1_LJY = RobotContainer.primaryController.getLeftY();
+         OI.XboxController.X1_LJX = RobotContainer.primaryController.getLeftX();
+         OI.XboxController.X1_LJY = RobotContainer.primaryController.getLeftY();
       }
       if(RobotContainer.armController.isConnected()){
-         Variables.XboxController.X2_DPad = RobotContainer.armController.getPOV();
+         OI.XboxController.X2_DPad = RobotContainer.armController.getPOV();
       }
 
      /*  if(!DriverStation.isFMSAttached()){
