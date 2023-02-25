@@ -12,27 +12,33 @@ public class Turn90LeftDegrees extends CommandBase  {
     public static double heading;
     public double speed;
     public PIDController controller;
-    private double time;
-    Timer timer = new Timer();
+    double kp, kd, ki;
     
-    public Turn90LeftDegrees(Drivetrain drivetrain, double time){
+    public Turn90LeftDegrees(Drivetrain drivetrain){
         this.drivetrain = drivetrain;
-        this.time=time;
         addRequirements(drivetrain);
+        kp = .015;
+        kd= 0;
+        ki = 0;
     }
     @Override
     public void initialize(){
         drivetrain.zeroGyro();
-        controller = new PIDController(.006, .005, 0);
-        timer.reset();
-        timer.start();
-
+        controller = new PIDController(kp, ki, kd);
+        controller.setTolerance(1);
     }
     @Override
     public void execute(){ 
         heading = Drivetrain.getGyroHeading();
         speed = controller.calculate(heading, -90);
-        drivetrain.arcadeDrive(0, speed);
+        
+        if(speed < 0)
+            speed = Math.max(speed, -0.3);
+        
+        else 
+            speed = Math.min(speed, .3);
+
+        drivetrain.arcadeDrive(0, speed);      
     }
     @Override
     public void end(boolean interrupted){
@@ -42,7 +48,7 @@ public class Turn90LeftDegrees extends CommandBase  {
         drivetrain.rearRight.setNeutralMode(NeutralMode.Coast);
     }
     public boolean isFinished(){
-        return timer.get() >= time;
+        return controller.atSetpoint();
         
     } 
 }

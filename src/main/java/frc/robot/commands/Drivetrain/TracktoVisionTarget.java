@@ -18,8 +18,8 @@ public class TracktoVisionTarget extends CommandBase {
         this.drivetrain = drivetrain;
         addRequirements(drivetrain);
         kp = .014;
-        kd = .0004;
-        ki = .005;
+        kd = 0;
+        ki = 0;
     }
 
     @Override
@@ -30,10 +30,7 @@ public class TracktoVisionTarget extends CommandBase {
         drivetrain.rearRight.setNeutralMode(NeutralMode.Coast);
         
         //controller = new PIDController(.014, .005, .0004);
-        controller = new PIDController(0, 0, 0);
-        controller.setP(kp);
-        controller.setD(kd);
-        controller.setI(ki);
+        controller = new PIDController(kp, ki, kd);
 
         if(RobotContainer.aprilYaw > 1) 
             rotPower -= .02;

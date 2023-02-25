@@ -23,6 +23,7 @@ import frc.robot.commands.Claw.OpenClaw;
 import frc.robot.commands.Drivetrain.DistanceToVisionTarget;
 import frc.robot.commands.Drivetrain.DriveWithJoyStick;
 import frc.robot.commands.Drivetrain.TracktoVisionTarget;
+import frc.robot.commands.Drivetrain.Turn90LeftDegrees;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Claw;
 import frc.robot.subsystems.Drivetrain;
@@ -70,7 +71,7 @@ public class RobotContainer {
         drivetrain.setDefaultCommand(joystickDrive);
         claw.setDefaultCommand(new OpenClaw(claw));
         autoChooser.addOption("Straight Traj", trajectory());
-        autoChooser.setDefaultOption("Make Square", new Square(drivetrain));
+        autoChooser.setDefaultOption("Turn left 90 degrees", new Turn90LeftDegrees(drivetrain));
     }
 
     public void configureButtonBindings() {
@@ -87,21 +88,8 @@ public class RobotContainer {
         PathPlanner.loadPath("Straight",
          1, .25);
 
-        RamseteCommand ramseteCommand = 
-            new RamseteCommand(trajectory, 
-            drivetrain::getPose, 
-            new RamseteController(2, .7), 
-            drivetrain.m_feedforward,
-            Constants.DrivetrainConstants.m_2022DifferentialDriveKinematics,
-            drivetrain::motorWheelSpeeds,
-            new PIDController(Constants.DrivetrainConstants.m_2022kP, 0, 0),
-            new PIDController(Constants.DrivetrainConstants.m_2022kP, 0, 0),
-            drivetrain::tankDriveVolts,
-            drivetrain);
-
-        drivetrain.resetOdometry();
-
-        return ramseteCommand.andThen(() -> drivetrain.tankDriveVolts(0, 0));
+        return PathGenerator.generateRamseteCommand(trajectory, drivetrain)
+            .andThen(() -> drivetrain.tankDriveVolts(0, 0));
     }
     public Command getSelected(){
         return autoChooser.getSelected();

@@ -11,20 +11,15 @@ import frc.robot.OI;
 
 public class DistanceToVisionTarget extends CommandBase {
     Drivetrain drivetrain;
-    PIDController controller;
-    double kp, kd, ki;
+    PIDController distanceController;
+    PIDController turnController; 
     double speed;
+    double rotation;
 
     public DistanceToVisionTarget(Drivetrain drivetrain){
         this.drivetrain = drivetrain;
 
         addRequirements(drivetrain);
-        
-        kp = 5;
-        kd= 1;
-        ki = 0;
-                
-
     }
 
     @Override
@@ -39,24 +34,34 @@ public class DistanceToVisionTarget extends CommandBase {
         drivetrain.frontRight.setNeutralMode(NeutralMode.Brake);
         drivetrain.rearRight.setNeutralMode(NeutralMode.Brake);
 
-        controller = new PIDController(kp, ki, kd);
+        distanceController = new PIDController(1, 0, 0);
+        turnController = new PIDController(0.05, 0, 0);
 
     }
     @Override
     public void execute(){
-        if(RobotContainer.hasTargets(RobotContainer.result))
-            speed = controller.calculate(RobotContainer.distanceToVisionTargetMeters(), 1.5);       
-        OI.Vision.PIDOutput = speed;
+        if(RobotContainer.hasTargets(RobotContainer.result)){
+            speed = distanceController.calculate(RobotContainer.distanceToVisionTargetMeters(), 1.5);
+            rotation = turnController.calculate(RobotContainer.getCamYaw(RobotContainer.bResult), 0);
+        }
+
+        OI.Vision.PIDOutput = rotation;
         OI.Vision.PIDoutputEntry.setDouble(OI.Vision.PIDOutput);
-        OI.Vision.error = controller.getPositionError();
+        OI.Vision.error = turnController.getPositionError();
         OI.Vision.PIDError.setDouble(OI.Vision.error);
+
         if(speed < 0)
-            speed = Math.max(speed, -0.5);
-        
+            speed = Math.max(speed, -0.5);    
         else 
             speed = Math.min(speed, .5);
+
+        if(rotation < 0)
+            rotation = Math.max(rotation, -0.4);    
+        else 
+            rotation = Math.min(rotation, .4);
         
-        drivetrain.arcadeDrive(speed, 0);
+        drivetrain.arcadeDrive(speed, rotation);
+        
     }
     @Override 
     public void end(boolean interrupted){
@@ -64,9 +69,10 @@ public class DistanceToVisionTarget extends CommandBase {
         drivetrain.rearLeft.setNeutralMode(NeutralMode.Brake);
         drivetrain.frontRight.setNeutralMode(NeutralMode.Brake);
         drivetrain.rearRight.setNeutralMode(NeutralMode.Brake);
+
     }
     @Override
     public boolean isFinished(){
-        return Math.abs(controller.getPositionError()) < 0.05; 
+        return Math.abs(distanceController.getPositionError()) < 0.05; 
     }
 }
