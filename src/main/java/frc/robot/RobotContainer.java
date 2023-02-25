@@ -26,14 +26,14 @@ import frc.robot.commands.Drivetrain.TracktoTag;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Claw;
 import frc.robot.subsystems.Drivetrain;
-import frc.robot.subsystems.Lift;
+import frc.robot.subsystems.Elevator;
 import frc.robot.subsystems.Turret;
 
 public class RobotContainer {
     private Claw claw = new Claw();
     private static Drivetrain drivetrain = new Drivetrain(); 
     private Arm arm = new Arm(); 
-    private Lift lift= new Lift();
+    private Elevator lift= new Elevator();
     private Turret turret = new Turret();
 
     public static PhotonCamera aprilTagCam = new PhotonCamera("Global_Shutter_Elevator");

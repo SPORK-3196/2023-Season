@@ -5,13 +5,13 @@ import frc.robot.commands.Autonomous.Positions.ArmStationPosition;
 import frc.robot.commands.Claw.OpenClaw;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Claw;
-import frc.robot.subsystems.Lift;
+import frc.robot.subsystems.Elevator;
 
 public class PickupConeStation extends SequentialCommandGroup {
     private Arm arm;
-    private Lift lift;
+    private Elevator lift;
 
-    public PickupConeStation(Arm arm, Lift lift, Claw claw){
+    public PickupConeStation(Arm arm, Elevator lift, Claw claw){
         super(
             new ArmStationPosition(arm, lift),
             new OpenClaw(claw)
