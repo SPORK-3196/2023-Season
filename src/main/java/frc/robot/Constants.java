@@ -75,9 +75,9 @@ public final class Constants {
         public static double liftKI = 0;
     }
     public static final class VisionConstants {
-        public static double globalShutterHeightMeters = Units.inchesToMeters(50.75);
-        // public static double aprilTagHeightMeters = Units.inchesToMeters(15.25);
-         public static double aprilTagHeightMeters = Units.inchesToMeters(21.125);
+        public static double globalShutterHeightMeters = Units.inchesToMeters(33.5);
+        public static double aprilTagHeightMeters = Units.inchesToMeters(15.25);
+        //  public static double aprilTagHeightMeters = Units.inchesToMeters(21.125);
 
         public static double globalShutterPitch = 0;
     }

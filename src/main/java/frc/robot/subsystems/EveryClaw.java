@@ -17,4 +17,7 @@ public class EveryClaw extends SubsystemBase{
     public CommandBase runMotor(double speed){
         return this.run(() -> clawMotor.setVoltage(speed));
     } 
+    public CommandBase stopMotor(){
+        return this.runOnce(() -> clawMotor.stopMotor());
+    }
 }

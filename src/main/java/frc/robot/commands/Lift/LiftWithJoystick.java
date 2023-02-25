@@ -23,7 +23,7 @@ public class LiftWithJoystick extends CommandBase {
   
   public void execute() {
   
-
+    
     double liftInput = - RobotContainer.primaryController.getRawAxis(1);
     double liftSpeedCoef = -1.0;
 

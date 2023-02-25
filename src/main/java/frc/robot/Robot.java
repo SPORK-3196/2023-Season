@@ -68,10 +68,10 @@ public class Robot extends TimedRobot {
       OI.Drivetrain.gyroRate = Drivetrain.getGyroRate();
       OI.Drivetrain.gyroHeading = Drivetrain.getGyroHeading();
       
-      OI.Vision.limeLighthasTargets = 
+      OI.Vision.aprilCamHasTargets = 
          RobotContainer.hasTargets(
             RobotContainer.pipelineResult(
-               RobotContainer.primaryCamera));
+               RobotContainer.aprilTagCam));
       
       RobotContainer.result = RobotContainer.pipelineResult(RobotContainer.aprilTagCam);
       if(RobotContainer.hasTargets(RobotContainer.result)){
@@ -110,7 +110,7 @@ public class Robot extends TimedRobot {
          if(RobotContainer.bResult != null)  
             OI.Vision.MicroYawEntry.setDouble(RobotContainer.getCamYaw(RobotContainer.bResult));
             OI.Vision.distanceToTagEntry.setDouble(RobotContainer.aprilX);
-         OI.Vision.LimelightTargetsEntry.setBoolean(OI.Vision.limeLighthasTargets);
+         OI.Vision.LimelightTargetsEntry.setBoolean(OI.Vision.aprilCamHasTargets);
       }
       CommandScheduler.getInstance().run();   
   }

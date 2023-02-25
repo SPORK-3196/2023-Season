@@ -78,7 +78,7 @@ public class RobotContainer {
         if(OI.XboxController.X2_DPad == 0) X_Arm.onTrue(new PickupCubeStation(arm, lift, claw));
         
         A_Prim.whileTrue(new TracktoVisionTarget(drivetrain));
-        B_Prim.whileTrue(new DistanceToVisionTarget(drivetrain, aprilTagCam));
+        B_Prim.onTrue(new DistanceToVisionTarget(drivetrain));
     }   
      
     public static Command trajectory(){
