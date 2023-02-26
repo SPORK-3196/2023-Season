@@ -17,8 +17,8 @@ public class Elbow45Up extends ProfiledPIDSubsystem {
       new Encoder(ArmConstants.elbowPort, ArmConstants.elbowPort);
   private final ArmFeedforward m_feedforward =
       new ArmFeedforward(
-          ArmConstants.kSVolts, ArmConstants.kGVolts,
-          ArmConstants.kVVoltSecondPerRad, ArmConstants.kAVoltSecondSquaredPerRad);
+          ArmConstants.elbowKsVolts, ArmConstants.elbowKgVolts,
+          ArmConstants.elbowKvVoltSecondPerRad, ArmConstants.elbowKaVoltSecondSquaredPerRad);
 
   public Elbow45Up() {
     super(
