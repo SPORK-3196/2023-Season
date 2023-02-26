@@ -4,6 +4,7 @@
 
 package frc.robot;
 
+import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.networktables.GenericEntry;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
@@ -85,14 +86,6 @@ public class OI {
         public static GenericEntry X2_DPadEntry = X2_TAB.add("DPad", 0).getEntry();
 
     }
-    public static final class Vision {
-        public static ShuffleboardTab Vision_TAB = Shuffleboard.getTab("Vision");
-
-        public static double microYaw = 0;
-
-        public static GenericEntry MicroYawEntry = Vision_TAB.add("Microsoft Cam Yaw", 0).getEntry();
-
-    }
     public static final class Drivetrain  {
         public static ShuffleboardTab Drive_TAB = Shuffleboard.getTab("Drivetrain");
 
@@ -102,17 +95,27 @@ public class OI {
         public static GenericEntry GyroRateEntry = Drive_TAB.add("Gyro rate", 0).getEntry();
         public static GenericEntry GyroHeadingEntry = Drive_TAB.add("Gyro Heading", 0).getEntry();
 
-        public static GenericEntry Kp_Entry = Drive_TAB.add("drive kp",1).getEntry();
-        public static GenericEntry Ki_Entry = Drive_TAB.add("drive ki", 0).getEntry();
-        public static GenericEntry Kd_Entry = Drive_TAB.add("drive kd", 0).getEntry();
-    }
-    public static final class ShoulderPID{
-        public static ShuffleboardTab PIDSholder_TAB =  Shuffleboard.getTab("PID Sholder");
         
+    }
+    public static final class Vision {
+        public static ShuffleboardTab Vision_TAB = Shuffleboard.getTab("Vision");
 
-        public static GenericEntry Kp_Entry = PIDSholder_TAB.add("sholder kp",1).getEntry();
-        public static GenericEntry Ki_Entry = PIDSholder_TAB.add("sholder ki", 0).getEntry();
-        public static GenericEntry Kd_Entry = PIDSholder_TAB.add("sholder kd", 0).getEntry();
+        public static double microYaw = 0;
+
+        public static boolean aprilCamHasTargets = false;
+
+        public static Transform3d distanceToTag;
+        public static double pitchToTag= 0;
+
+        public static double PIDOutput = 0;
+        public static double error = 0;
+
+        public static GenericEntry MicroYawEntry = Vision_TAB.add("Microsoft Cam Yaw", 0).getEntry();
+        public static GenericEntry LimelightTargetsEntry = Vision_TAB.add("Limelight has Targets", false).getEntry();
+        public static GenericEntry distanceToTagEntry = Vision_TAB.add("Distance to Tag", 0).getEntry();
+        public static GenericEntry PIDoutputEntry = Vision_TAB.add("PID Output", 0).getEntry();
+        public static GenericEntry PIDError = Vision_TAB.add("PID Error", 0).getEntry();
+
     }
     public static final class ElbowPID{
     public static ShuffleboardTab PIDElbow_TAB =  Shuffleboard.getTab("PID Sholder");

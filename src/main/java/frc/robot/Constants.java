@@ -9,6 +9,8 @@ public final class Constants {
         public static final int piston1Port = 10;
         public static final int piston2Port = 11;
 
+        public static final int clawMotorPort = 13;
+        
         public static final int kSolenoidButton = 1;
         public static final boolean kSolenoidForward = true;
         public static final boolean kSolenoidReverse = false;
@@ -20,10 +22,15 @@ public final class Constants {
         
         public static final double kP = 1;
 
-        public static final double kSVolts = 1;
-        public static final double kGVolts = 1;
-        public static final double kVVoltSecondPerRad = 0.5;
-        public static final double kAVoltSecondSquaredPerRad = 0.1;
+        public static final double shoulderKsVolts = 1;
+        public static final double shoulderKgVolts = 1;
+        public static final double shoulderKvVoltSecondPerRad = 0.5;
+        public static final double shoulderKaVoltSecondSquaredPerRad = 0.1;
+
+        public static final double elbowKsVolts = 1;
+        public static final double elbowKgVolts = 1;
+        public static final double elbowKvVoltSecondPerRad = 0.5;
+        public static final double elbowKaVoltSecondSquaredPerRad = 0.1;
 
         public static final double kMaxVelocityRadPerSecond = 3;
         public static final double kMaxAccelerationRadPerSecSquared = 1;
@@ -58,5 +65,20 @@ public final class Constants {
         public static double maxSpeed = 3;
         public static double kMaxAccelerationMetersPerSecSquared = 1;
 
+    }
+
+    public static final class LiftConstants {
+        public static int liftMotorID = 14;
+
+        public static double liftKP = 0.014;
+        public static double liftKD = 0;
+        public static double liftKI = 0;
+    }
+    public static final class VisionConstants {
+        public static double globalShutterHeightMeters = Units.inchesToMeters(33.5);
+        public static double aprilTagHeightMeters = Units.inchesToMeters(15.25);
+        //  public static double aprilTagHeightMeters = Units.inchesToMeters(21.125);
+
+        public static double globalShutterPitch = 0;
     }
 }

@@ -1,49 +1,76 @@
 package frc.robot.subsystems;
 
+import com.revrobotics.CANSparkMax;
+import com.revrobotics.SparkMaxPIDController;
+import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+import com.revrobotics.RelativeEncoder;
+
 import edu.wpi.first.math.controller.ArmFeedforward;
-import edu.wpi.first.math.controller.ProfiledPIDController;
-import edu.wpi.first.math.trajectory.TrapezoidProfile;
-import edu.wpi.first.wpilibj.Encoder;
+import edu.wpi.first.wpilibj2.command.CommandBase;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants;
 import frc.robot.Constants.ArmConstants;
-import edu.wpi.first.wpilibj.motorcontrol.PWMSparkMax;
-import edu.wpi.first.wpilibj2.command.ProfiledPIDSubsystem;
 
-/** A robot arm subsystem that moves with a motion profile. */
-public class Arm extends ProfiledPIDSubsystem {
-  private final PWMSparkMax m_motor = new PWMSparkMax(ArmConstants.elbowPort);
-  private final Encoder m_encoder =
-      new Encoder(ArmConstants.elbowPort, ArmConstants.elbowPort);
-  private final ArmFeedforward m_feedforward =
-      new ArmFeedforward(
-          ArmConstants.kSVolts, ArmConstants.kGVolts,
-          ArmConstants.kVVoltSecondPerRad, ArmConstants.kAVoltSecondSquaredPerRad);
+public class Arm extends SubsystemBase {
 
-  /** Create a new ArmSubsystem. */
-  public Arm() {
-    super(
-        new ProfiledPIDController(
-            ArmConstants.kP,
-            0,
-            0,
-            new TrapezoidProfile.Constraints(
-                ArmConstants.kMaxVelocityRadPerSecond,
-                ArmConstants.kMaxAccelerationRadPerSecSquared)),
-        0);
-    m_encoder.setDistancePerPulse(ArmConstants.kEncoderDistancePerPulse);
- 
-    setGoal(ArmConstants.kArmOffsetRads);
-  }
+    public CANSparkMax shoulderMotor = 
+        new CANSparkMax(ArmConstants.shoulderPort, MotorType.kBrushless);
+    
+    public CANSparkMax elbowMotor = 
+        new CANSparkMax(ArmConstants.elbowPort,MotorType.kBrushless);
 
-  @Override
-  public void useOutput(double output, TrapezoidProfile.State setpoint) {
-    // Calculate feedforward
-    double feedforward = m_feedforward.calculate(setpoint.position, setpoint.velocity);
-    // add the feedforward to output 
-    m_motor.setVoltage(output + feedforward);
-  }
+    public RelativeEncoder elbowEncoder = elbowMotor.getEncoder();
+    public RelativeEncoder shoulderEncoder = shoulderMotor.getEncoder();
 
-  @Override
-  public double getMeasurement() {
-    return m_encoder.getDistance() + ArmConstants.kArmOffsetRads;
-  }
+    public SparkMaxPIDController elbowController;
+    public SparkMaxPIDController shoulderController;
+
+    public ArmFeedforward shoulderFeedforward = new ArmFeedforward(
+        Constants.ArmConstants.shoulderKsVolts, 
+        Constants.ArmConstants.shoulderKgVolts, 
+        Constants.ArmConstants.shoulderKvVoltSecondPerRad, 
+        Constants.ArmConstants.shoulderKaVoltSecondSquaredPerRad);
+    
+    public ArmFeedforward elbowFeedForward = new ArmFeedforward(
+        Constants.ArmConstants.elbowKsVolts, 
+        Constants.ArmConstants.elbowKgVolts, 
+        Constants.ArmConstants.elbowKvVoltSecondPerRad, 
+        Constants.ArmConstants.elbowKaVoltSecondSquaredPerRad);
+
+    private double elbowKI, elbowKD, elbowKP, shoulderKI, shoulderKD, shoulderKP;
+    public Arm(){
+        elbowController = elbowMotor.getPIDController();
+        shoulderController = shoulderMotor.getPIDController();
+
+        elbowKP = .007;
+        elbowKD = 0;
+        elbowKI = 0;
+        shoulderKP = .008;
+        shoulderKD = 0;
+        shoulderKI = 0;
+
+        elbowController.setP(elbowKP);
+        elbowController.setD(elbowKD);
+        elbowController.setI(elbowKI);
+        shoulderController.setP(shoulderKP);
+        shoulderController.setD(shoulderKD);
+        shoulderController.setI(shoulderKI);
+
+
+    }
+    public CommandBase runElbowMotor(double speed){
+        return this.run(() -> elbowMotor.setVoltage(speed));
+    }
+
+    public CommandBase runShoulderMotor(double speed){
+        return this.run(() -> shoulderMotor.setVoltage(speed));
+    }
+
+    public CommandBase turnElbowOff(){
+        return this.runOnce(() -> elbowMotor.stopMotor());
+    }
+
+    public CommandBase turnShoulderOff(){
+        return this.runOnce(() -> shoulderMotor.stopMotor());
+    }
 }

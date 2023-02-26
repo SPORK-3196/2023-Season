@@ -6,16 +6,13 @@ package frc.robot;
 
 
 import org.photonvision.PhotonCamera;
-import org.photonvision.targeting.PhotonTrackedTarget;
 
 import edu.wpi.first.net.PortForwarder;
-import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.OI;
 import frc.robot.subsystems.Drivetrain;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 /**
@@ -38,6 +35,7 @@ public class Robot extends TimedRobot {
       camInstance.startDSClient();
       
       m_robotContainer = new RobotContainer();
+
       Drivetrain.zerogyro();
 
       PortForwarder.add(5800, "10.31.96.11", 5800);
@@ -45,11 +43,15 @@ public class Robot extends TimedRobot {
 
       RobotContainer.aprilTagCam.setDriverMode(false);
       RobotContainer.aprilTagCam.setPipelineIndex(1);
+
+      RobotContainer.primaryCamera.setDriverMode(false);
       PhotonCamera.setVersionCheckEnabled(false);
       
       Shuffleboard.getTab("Autonomous Controls")
       .add(RobotContainer.autoChooser);
-      
+
+      DriverStation.silenceJoystickConnectionWarning(true);
+
   }
   /**
    * This function is called every 20 ms, no matter the mode. Use this for items like diagnostics
@@ -65,11 +67,17 @@ public class Robot extends TimedRobot {
       OI.Drivetrain.gyroRate = Drivetrain.getGyroRate();
       OI.Drivetrain.gyroHeading = Drivetrain.getGyroHeading();
       
+      OI.Vision.aprilCamHasTargets = 
+         RobotContainer.hasTargets(
+            RobotContainer.pipelineResult(
+               RobotContainer.aprilTagCam));
       
-      RobotContainer.result = RobotContainer.aprilTagCam.getLatestResult();
-      if(RobotContainer.hasTargets(RobotContainer.pipelineResult(RobotContainer.aprilTagCam)))
+      RobotContainer.result = RobotContainer.pipelineResult(RobotContainer.aprilTagCam);
+      if(RobotContainer.hasTargets(RobotContainer.result)){
          RobotContainer.bResult = RobotContainer.result.getBestTarget();
          RobotContainer.aprilYaw = RobotContainer.getCamYaw(RobotContainer.bResult);
+         RobotContainer.aprilX = RobotContainer.distanceToVisionPose(RobotContainer.bResult).getX();
+         }
 
       if(RobotContainer.primaryController.isConnected()) {
 
@@ -83,7 +91,7 @@ public class Robot extends TimedRobot {
       }
       if(RobotContainer.armController.isConnected()){
          OI.XboxController.X2_DPad = RobotContainer.armController.getPOV();
-      }
+      }}
 
      /*  if(!DriverStation.isFMSAttached()){
         X2_RT_Entry.setDouble(X1_RTValue);
@@ -99,11 +107,13 @@ public class Robot extends TimedRobot {
 
         Variables.XboxController.X2_DPadEntry.setDouble(Variables.XboxController.X2_DPad);
 
-        Variables.Drivetrain.GyroRateEntry.setDouble(Variables.Drivetrain.gyroRate);
-        Variables.Drivetrain.GyroHeadingEntry.setDouble(Variables.Drivetrain.gyroHeading);
-
-        Variables.Vision.MicroYawEntry.setDouble(RobotContainer.getCamYaw(RobotContainer.bResult));
-      }*/
+         OI.Drivetrain.GyroRateEntry.setDouble(OI.Drivetrain.gyroRate);
+         OI.Drivetrain.GyroHeadingEntry.setDouble(OI.Drivetrain.gyroHeading);
+         if(RobotContainer.bResult != null)  
+            OI.Vision.MicroYawEntry.setDouble(RobotContainer.getCamYaw(RobotContainer.bResult));
+            OI.Vision.distanceToTagEntry.setDouble(RobotContainer.aprilX);
+         OI.Vision.LimelightTargetsEntry.setBoolean(OI.Vision.aprilCamHasTargets);
+      }
       CommandScheduler.getInstance().run();   
   }
 

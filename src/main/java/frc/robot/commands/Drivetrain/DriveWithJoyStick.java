@@ -22,28 +22,29 @@ public class DriveWithJoyStick extends CommandBase {
 
     @Override
     public void initialize() {
-        drivetrain.frontLeft.setNeutralMode(NeutralMode.Coast);
-        drivetrain.rearLeft.setNeutralMode(NeutralMode.Coast);
-        drivetrain.frontRight.setNeutralMode(NeutralMode.Coast);
-        drivetrain.rearRight.setNeutralMode(NeutralMode.Coast);
+
+        drivetrain.frontLeft.setNeutralMode(NeutralMode.Brake);
+        drivetrain.rearLeft.setNeutralMode(NeutralMode.Brake);
+        drivetrain.frontRight.setNeutralMode(NeutralMode.Brake);
+        drivetrain.rearRight.setNeutralMode(NeutralMode.Brake);
 
         drivetrain.differentialDrive.setDeadband(.08);
     }
     
     @Override
     public void execute() {
-        speedFiltered = RobotContainer.LJSY_Primary * 2/3;
-        rotationFiltered = RobotContainer.LJSX_Primary * 2/3;
+        speedFiltered = RobotContainer.LJSY_Primary * 0.67;
+        rotationFiltered = RobotContainer.LJSX_Primary * 0.5;
 
         drivetrain.arcadeDrive(speedFiltered, -rotationFiltered);
     }
 
     @Override
     public void end(boolean interrupted) {
-        drivetrain.frontLeft.setNeutralMode(NeutralMode.Coast);
-        drivetrain.rearLeft.setNeutralMode(NeutralMode.Coast);
-        drivetrain.frontRight.setNeutralMode(NeutralMode.Coast);
-        drivetrain.rearRight.setNeutralMode(NeutralMode.Coast);
+        drivetrain.frontLeft.setNeutralMode(NeutralMode.Brake);
+        drivetrain.rearLeft.setNeutralMode(NeutralMode.Brake);
+        drivetrain.frontRight.setNeutralMode(NeutralMode.Brake);
+        drivetrain.rearRight.setNeutralMode(NeutralMode.Brake);
         
         drivetrain.differentialDrive.setDeadband(0);
     }

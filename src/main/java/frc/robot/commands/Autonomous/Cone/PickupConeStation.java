@@ -8,8 +8,6 @@ import frc.robot.subsystems.Claw;
 import frc.robot.subsystems.Elevator;
 
 public class PickupConeStation extends SequentialCommandGroup {
-    private Arm arm;
-    private Elevator lift;
 
     public PickupConeStation(Arm arm, Elevator lift, Claw claw){
         super(
