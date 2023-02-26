@@ -57,13 +57,13 @@ public final class Constants {
         public static double m_2022ksVolts = 0.67962;
         public static double m_2022kvVoltSecondsPerMeter = 1.8334;
         public static double m_2022kaVoltSecondsSquaredPerMeter = 0.45089;
-        public static double m_2022kP = 2.7381;
+        public static double m_2022kP = 0;//1.7381;
         
-        public static double m_2022DrivetrainTrackWidthMeters = Units.inchesToMeters(28);
+        public static double m_2022DrivetrainTrackWidthMeters = Units.inchesToMeters(26);
         public static DifferentialDriveKinematics m_2022DifferentialDriveKinematics = new DifferentialDriveKinematics(m_2022DrivetrainTrackWidthMeters);
 
-        public static double maxSpeed = 3;
-        public static double kMaxAccelerationMetersPerSecSquared = 1;
+        public static double maxSpeed = .5;
+        public static double kMaxAccelerationMetersPerSecSquared = .1;
 
     }
 

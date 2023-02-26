@@ -41,7 +41,7 @@ public class DistanceToVisionTarget extends CommandBase {
     @Override
     public void execute(){
         if(RobotContainer.hasTargets(RobotContainer.result)){
-            speed = distanceController.calculate(RobotContainer.distanceToVisionTargetMeters(), 1.5);
+            speed = distanceController.calculate(RobotContainer.distanceToVisionXTargetMeters(), 1.5);
             rotation = turnController.calculate(RobotContainer.getCamYaw(RobotContainer.bResult), 0);
         }
 

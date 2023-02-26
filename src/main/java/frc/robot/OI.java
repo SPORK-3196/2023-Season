@@ -88,11 +88,15 @@ public class OI {
         public static double gyroRate = 0;
         public static double gyroHeading = 0;
 
+        public static double poseX;
+        public static double poseY;
+
         public static GenericEntry GyroRateEntry = Drive_TAB.add("Gyro rate", 0).getEntry();
         public static GenericEntry GyroHeadingEntry = Drive_TAB.add("Gyro Heading", 0).getEntry();
-
-        
+        public static GenericEntry PoseXEntry = Drive_TAB.add("Pose X Meters", 0).getEntry();
+        public static GenericEntry PoseYEntry = Drive_TAB.add("Pose Y Meters", 0).getEntry();
     }
+    
     public static final class Vision {
         public static ShuffleboardTab Vision_TAB = Shuffleboard.getTab("Vision");
 

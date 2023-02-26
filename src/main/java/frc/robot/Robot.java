@@ -7,6 +7,8 @@ package frc.robot;
 
 import org.photonvision.PhotonCamera;
 
+import com.ctre.phoenix.motorcontrol.NeutralMode;
+
 import edu.wpi.first.net.PortForwarder;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.DriverStation;
@@ -66,7 +68,7 @@ public class Robot extends TimedRobot {
       RobotContainer.LJSX_Primary = RobotContainer.primaryController.getLeftX();
       RobotContainer.LJSY_Primary = RobotContainer.primaryController.getLeftY();
       OI.Drivetrain.gyroRate = Drivetrain.getGyroRate();
-      OI.Drivetrain.gyroHeading = Drivetrain.getGyroHeading();
+      OI.Drivetrain.gyroHeading = RobotContainer.getPoseRotation();
       
       OI.Vision.aprilCamHasTargets = 
          RobotContainer.hasTargets(
@@ -78,6 +80,7 @@ public class Robot extends TimedRobot {
          RobotContainer.bResult = RobotContainer.result.getBestTarget();
          RobotContainer.aprilYaw = RobotContainer.getCamYaw(RobotContainer.bResult);
          RobotContainer.aprilX = RobotContainer.distanceToVisionPose(RobotContainer.bResult).getX();
+         RobotContainer.aprilY = RobotContainer.distanceToVisionPose(RobotContainer.bResult).getY();
          }
 
       if(RobotContainer.primaryController.isConnected()) {
@@ -107,6 +110,11 @@ public class Robot extends TimedRobot {
 
          OI.Drivetrain.GyroRateEntry.setDouble(OI.Drivetrain.gyroRate);
          OI.Drivetrain.GyroHeadingEntry.setDouble(OI.Drivetrain.gyroHeading);
+
+         OI.Drivetrain.poseX = RobotContainer.getPoseX();
+         OI.Drivetrain.poseY = RobotContainer.getPoseY();
+         OI.Drivetrain.PoseXEntry.setDouble(OI.Drivetrain.poseX);
+         OI.Drivetrain.PoseYEntry.setDouble(OI.Drivetrain.poseY);
          if(RobotContainer.bResult != null)  
             OI.Vision.MicroYawEntry.setDouble(RobotContainer.getCamYaw(RobotContainer.bResult));
             OI.Vision.distanceToTagEntry.setDouble(RobotContainer.aprilX);
@@ -127,13 +135,19 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void autonomousInit() {
+      RobotContainer.drivetrain.frontLeft.setNeutralMode(NeutralMode.Brake);
+      RobotContainer.drivetrain.rearLeft.setNeutralMode(NeutralMode.Brake);
+      RobotContainer.drivetrain.frontRight.setNeutralMode(NeutralMode.Brake);
+      RobotContainer.drivetrain.rearRight.setNeutralMode(NeutralMode.Brake);
+      
+      RobotContainer.drivetrain.resetOdometry();
      autoCommand = m_robotContainer.getSelected();
      System.out.println("Got here-autonomous init");
      System.out.println("Got here: " + autoCommand);
 
      if(autoCommand != null)
      {
-        autoCommand.schedule();
+         autoCommand.schedule();
      }
 
      //m_Timer.restart();
@@ -154,6 +168,8 @@ public class Robot extends TimedRobot {
   /** This function is called once when teleop is enabled. */
   @Override
   public void teleopInit() {
+      RobotContainer.drivetrain.resetOdometry();
+
      if(autoCommand != null){
        autoCommand.cancel();
     }
