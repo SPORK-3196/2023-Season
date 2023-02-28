@@ -6,6 +6,7 @@ import com.ctre.phoenix.sensors.WPI_PigeonIMU;
 
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.DifferentialDriveOdometry;
 import edu.wpi.first.math.kinematics.DifferentialDriveWheelSpeeds;
 import edu.wpi.first.math.util.Units;
@@ -29,7 +30,7 @@ public class Drivetrain extends SubsystemBase {
 
     public DifferentialDrive differentialDrive = new DifferentialDrive(leftGroup, rightGroup);
     
-    public DifferentialDriveOdometry m_odometry;
+    public  DifferentialDriveOdometry m_odometry;
     
     public final SimpleMotorFeedforward m_feedforward =
       new SimpleMotorFeedforward(
@@ -89,7 +90,7 @@ public class Drivetrain extends SubsystemBase {
     }
 
     public void resetOdometry(){
-        m_odometry.resetPosition(gyroscope.getRotation2d(), 0, 0, getPose());
+        m_odometry.resetPosition(gyroscope.getRotation2d(), 0, 0, new Pose2d(0, 0, new Rotation2d(0)));
     }
     public static double getGyroHeading(){
         return gyroscope.getYaw();
