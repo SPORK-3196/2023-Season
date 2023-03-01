@@ -33,20 +33,20 @@ public class Robot extends TimedRobot {
   @Override
   public void robotInit() {
       NetworkTableInstance camInstance = NetworkTableInstance.getDefault();
-      camInstance.startClient4("10.31.96.50");
+      camInstance.startClient4("10.31.96.16");
       camInstance.startDSClient();
       
       m_robotContainer = new RobotContainer();
 
       Drivetrain.zerogyro();
 
-      PortForwarder.add(5800, "10.31.96.11", 5800);
-      PortForwarder.add(5800, "10.31.96.50", 5800);
+      PortForwarder.add(5800, "10.31.96.16", 5800);
+      PortForwarder.add(5800, "10.31.96.44", 5800);
 
       RobotContainer.aprilTagCam.setDriverMode(false);
       RobotContainer.aprilTagCam.setPipelineIndex(1);
+      RobotContainer.raspiCam.setDriverMode(false);
 
-      RobotContainer.primaryCamera.setDriverMode(false);
       PhotonCamera.setVersionCheckEnabled(false);
       
       Shuffleboard.getTab("Autonomous Controls")
@@ -78,6 +78,7 @@ public class Robot extends TimedRobot {
       RobotContainer.result = RobotContainer.pipelineResult(RobotContainer.aprilTagCam);
       if(RobotContainer.hasTargets(RobotContainer.result)){
          RobotContainer.bResult = RobotContainer.result.getBestTarget();
+         RobotContainer.rasbResult = RobotContainer.pipelineResult(RobotContainer.raspiCam).getBestTarget();
          RobotContainer.aprilYaw = RobotContainer.getCamYaw(RobotContainer.bResult);
          RobotContainer.aprilX = RobotContainer.distanceToVisionPose(RobotContainer.bResult).getX();
          RobotContainer.aprilY = RobotContainer.distanceToVisionPose(RobotContainer.bResult).getY();
@@ -117,10 +118,12 @@ public class Robot extends TimedRobot {
          OI.Drivetrain.PoseYEntry.setDouble(OI.Drivetrain.poseY);
          if(RobotContainer.bResult != null)  
             OI.Vision.MicroYawEntry.setDouble(RobotContainer.getCamYaw(RobotContainer.bResult));
-            OI.Vision.distanceToTagEntry.setDouble(RobotContainer.aprilX);
+            OI.Vision.distanceToTagXEntry.setDouble(RobotContainer.aprilX);
+            OI.Vision.distanceToTagYEntry.setDouble(RobotContainer.aprilY);
          OI.Vision.LimelightTargetsEntry.setBoolean(OI.Vision.aprilCamHasTargets);
       }
-      CommandScheduler.getInstance().run();   
+      CommandScheduler.getInstance().run();  
+
   }
 
   /**
@@ -139,7 +142,7 @@ public class Robot extends TimedRobot {
       RobotContainer.drivetrain.rearLeft.setNeutralMode(NeutralMode.Brake);
       RobotContainer.drivetrain.frontRight.setNeutralMode(NeutralMode.Brake);
       RobotContainer.drivetrain.rearRight.setNeutralMode(NeutralMode.Brake);
-      
+
       RobotContainer.drivetrain.resetOdometry();
      autoCommand = m_robotContainer.getSelected();
      System.out.println("Got here-autonomous init");
@@ -169,10 +172,14 @@ public class Robot extends TimedRobot {
   @Override
   public void teleopInit() {
       RobotContainer.drivetrain.resetOdometry();
+      RobotContainer.drivetrain.resetOdometry();
 
      if(autoCommand != null){
        autoCommand.cancel();
     }
+    RobotContainer.drivetrain.resetOdometry();
+    RobotContainer.drivetrain.resetOdometry();
+
   }
 
   /** This function is called periodically during operator control. */
