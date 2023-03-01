@@ -1,6 +1,5 @@
 package frc.robot;
 
-
 import org.photonvision.PhotonCamera;
 import org.photonvision.targeting.PhotonPipelineResult;
 import org.photonvision.targeting.PhotonTrackedTarget;
@@ -21,6 +20,10 @@ import frc.robot.commands.Drivetrain.DriveWithJoyStick;
 import frc.robot.commands.Drivetrain.FindAndRunTarget;
 import frc.robot.commands.Drivetrain.TracktoVisionTarget;
 import frc.robot.commands.Drivetrain.Turn90LeftDegrees;
+import edu.wpi.first.wpilibj.XboxController; 
+
+import frc.robot.commands.DriveWithJoyStick;
+import frc.robot.commands.TurretDrive;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Claw;
 import frc.robot.subsystems.Drivetrain;
@@ -35,6 +38,7 @@ public class RobotContainer {
     private Turret turret = new Turret();
 
     private DriveWithJoyStick joystickDrive = new DriveWithJoyStick(drivetrain);
+
 
     public static PhotonCamera aprilTagCam = new PhotonCamera("Global_Shutter_Elevator");
     public static PhotonCamera raspiCam = new PhotonCamera("mmal_service_16.1");
@@ -64,7 +68,9 @@ public class RobotContainer {
     public static JoystickButton Y_Prim = new JoystickButton(primaryController, XboxController.Button.kY.value);
 
 
+
     public RobotContainer(){
+        turret.setDefaultCommand(new TurretDrive(turret));
         configureButtonBindings();
         drivetrain.setDefaultCommand(joystickDrive);
         claw.setDefaultCommand(new OpenClaw(claw));

@@ -15,8 +15,13 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj2.command.Command;
+
 import frc.robot.subsystems.Drivetrain;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+
+import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import edu.wpi.first.wpilibj2.command.button.Trigger;
+
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
  * each mode, as described in the TimedRobot documentation. If you change the name of this class or
@@ -25,7 +30,19 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
  */
 public class Robot extends TimedRobot {
    private Command autoCommand;
-   private RobotContainer m_robotContainer;
+  private RobotContainer m_robotContainer;
+  
+  public static XboxController primaryController = new XboxController(0);
+  public static XboxController armController = new XboxController(1);
+
+  public static double LJSX_Primary = primaryController.getLeftX();
+  public static double LJSY_Primary = primaryController.getLeftY();
+
+  public static double LJSX_Secondary = armController.getLeftX();
+  public static double LJSY_Secondary = armController.getLeftY();
+
+  public static SlewRateLimiter filter = new SlewRateLimiter(.5);
+  
   /**
    * This function is run when the robot is first started up and should be used for any
    * initialization code.
