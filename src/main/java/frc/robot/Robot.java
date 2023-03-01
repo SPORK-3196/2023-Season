@@ -123,7 +123,6 @@ public class Robot extends TimedRobot {
          OI.Vision.LimelightTargetsEntry.setBoolean(OI.Vision.aprilCamHasTargets);
       }
       CommandScheduler.getInstance().run();  
-
   }
 
   /**
@@ -145,8 +144,6 @@ public class Robot extends TimedRobot {
 
       RobotContainer.drivetrain.resetOdometry();
      autoCommand = m_robotContainer.getSelected();
-     System.out.println("Got here-autonomous init");
-     System.out.println("Got here: " + autoCommand);
 
      if(autoCommand != null)
      {
@@ -171,14 +168,12 @@ public class Robot extends TimedRobot {
   /** This function is called once when teleop is enabled. */
   @Override
   public void teleopInit() {
+      RobotContainer.drivetrain.resetEncoders();
       RobotContainer.drivetrain.resetOdometry();
-      RobotContainer.drivetrain.resetOdometry();
-
+   
      if(autoCommand != null){
        autoCommand.cancel();
     }
-    RobotContainer.drivetrain.resetOdometry();
-    RobotContainer.drivetrain.resetOdometry();
 
   }
 

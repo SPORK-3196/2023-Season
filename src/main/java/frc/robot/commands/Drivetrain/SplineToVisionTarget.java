@@ -51,7 +51,7 @@ public class SplineToVisionTarget {
         Pose2d robPose = new Pose2d(x0, y0, new Rotation2d(heading));
         drivetrain.m_odometry.resetPosition(Drivetrain.gyroscope.getRotation2d() , 0, 0, robPose);
 
-        l = dToTarget * 0.3;
+        l = dToTarget * 0.2;
         x1 = (l *Math.cos(Units.degreesToRadians(180 - heading))) + x0;
         y1 = -(l * Math.sin(Units.degreesToRadians(180 - heading))) + y0;
         x2 = 1.5 + (l);

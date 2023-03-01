@@ -32,6 +32,7 @@ public class Drivetrain extends SubsystemBase {
     
     public  DifferentialDriveOdometry m_odometry;
     
+    
     public final SimpleMotorFeedforward m_feedforward =
       new SimpleMotorFeedforward(
           Constants.DrivetrainConstants.m_2022ksVolts,
@@ -41,10 +42,7 @@ public class Drivetrain extends SubsystemBase {
     public Drivetrain() {
         rightGroup.setInverted(true);
 
-        frontLeft.setSelectedSensorPosition(0);
-        rearLeft.setSelectedSensorPosition(0);
-        frontRight.setSelectedSensorPosition(0);
-        rearRight.setSelectedSensorPosition(0);
+        resetEncoders();
         gyroscope.setYaw(0);
 
         frontLeft.setNeutralMode(NeutralMode.Coast);
@@ -59,6 +57,7 @@ public class Drivetrain extends SubsystemBase {
         rearLeft.setSelectedSensorPosition(0);
         frontRight.setSelectedSensorPosition(0);
         rearRight.setSelectedSensorPosition(0);
+        
     }
     
     public void arcadeDrive(double speed, double rot){
@@ -90,6 +89,7 @@ public class Drivetrain extends SubsystemBase {
     }
 
     public void resetOdometry(){
+        resetEncoders();
         m_odometry.resetPosition(gyroscope.getRotation2d(), 0, 0, new Pose2d(0, 0, new Rotation2d(0)));
         System.out.println("-------------------------");
         System.out.println("-------------------------");
