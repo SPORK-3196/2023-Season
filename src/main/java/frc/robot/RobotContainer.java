@@ -38,13 +38,12 @@ public class RobotContainer {
     private DriveWithJoyStick joystickDrive = new DriveWithJoyStick(drivetrain);
 
     public static PhotonCamera aprilTagCam = new PhotonCamera("Global_Shutter_Elevator");
-    public static PhotonCamera visionCam = new PhotonCamera("Microsoft_Life_Cam_Turret");
-    public static PhotonCamera primaryCamera = new PhotonCamera("Primary Camera");
-    public static PhotonCamera backupCamera = new PhotonCamera("Backup Camera");
+    public static PhotonCamera raspiCam = new PhotonCamera("mmal_service_16.1");
     public static double aprilYaw = 0;
 
     public static PhotonPipelineResult result;
     public static PhotonTrackedTarget bResult;
+    public static PhotonTrackedTarget rasbResult;
     public static double aprilX;
     public static double aprilY;
 

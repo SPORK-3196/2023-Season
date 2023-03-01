@@ -91,6 +91,22 @@ public class Drivetrain extends SubsystemBase {
 
     public void resetOdometry(){
         m_odometry.resetPosition(gyroscope.getRotation2d(), 0, 0, new Pose2d(0, 0, new Rotation2d(0)));
+        System.out.println("-------------------------");
+        System.out.println("-------------------------");
+        System.out.println("-------------------------");
+        System.out.println("-------------------------");
+        System.out.println("-------------------------");
+        System.out.println("-------------------------");
+        System.out.println("Pose X: " + getPose().getX());
+        System.out.println("Pose Y: " + getPose().getY());
+        System.out.println("Pose Heading: " + getPose().getRotation());
+        System.out.println("-------------------------");
+        System.out.println("-------------------------");
+        System.out.println("-------------------------");
+        System.out.println("-------------------------");
+        System.out.println("-------------------------");
+        System.out.println("-------------------------");
+        System.out.println("-------------------------");
     }
     public static double getGyroHeading(){
         return gyroscope.getYaw();
