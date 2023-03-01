@@ -14,8 +14,7 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
-import frc.robot.commands.Autonomous.Cone.PickupConeStation;
-import frc.robot.commands.Autonomous.Cube.PickupCubeStation;
+import frc.robot.commands.Autonomous.HighRung;
 import frc.robot.commands.Claw.OpenClaw;
 import frc.robot.commands.Drivetrain.DistanceToVisionTarget;
 import frc.robot.commands.Drivetrain.DriveWithJoyStick;
@@ -75,8 +74,8 @@ public class RobotContainer {
 
     public void configureButtonBindings() {
 
-        if(OI.XboxController.X2_DPad == 0) A_Arm.onTrue(new PickupConeStation(arm, lift, claw));
-        if(OI.XboxController.X2_DPad == 0) X_Arm.onTrue(new PickupCubeStation(arm, lift, claw));
+        // if(OI.XboxController.X2_DPad == 0) A_Arm.onTrue(new HighRung());
+        // if(OI.XboxController.X2_DPad == 0) X_Arm.onTrue(new PickupCubeStation(arm, lift, claw));
         
         
         A_Prim.whileTrue(new TracktoVisionTarget(drivetrain));
