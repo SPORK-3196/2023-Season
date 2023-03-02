@@ -6,14 +6,9 @@ import edu.wpi.first.math.util.Units;
 public final class Constants {
     
     public static final class ClawConstants {
-        public static final int piston1Port = 10;
-        public static final int piston2Port = 11;
 
-        public static final int clawMotorPort = 13;
+        public static final int clawMotorPort = 10;
         
-        public static final int kSolenoidButton = 1;
-        public static final boolean kSolenoidForward = true;
-        public static final boolean kSolenoidReverse = false;
     }
 
     public static final class ArmConstants {
@@ -21,6 +16,19 @@ public final class Constants {
         public static final int shoulderPort = 7;
         
         public static final double kP = 1;
+
+        public static final int restShoulderTick = 0;
+        public static final int restElbowTick = 0;
+        public static final int lowShoulderTick = 0;
+        public static final int lowElbowTick = 0;
+        public static final int midShoulderTick = 0;
+        public static final int midElbowTick = 0;
+        public static final int highShoulderTick = 0;
+        public static final int highElbowTick = 0;
+        public static final int pickUpShoulderTick = 0;
+        public static final int pickUpElbowTick = 0;
+        public static final int pickUpStationShoulderTick = 0;
+        public static final int pickUpStationElbowTick = 0;
 
         public static final double shoulderKsVolts = 1;
         public static final double shoulderKgVolts = 1;
@@ -47,7 +55,7 @@ public final class Constants {
         public static final int rearRightPort = 4;
         public static final int frontRightPort = 2;
 
-        public static final int gyroPort = 12;
+        public static final int gyroPort = 11;
 
         public static final double wheelRadiusMeter = Units.inchesToMeters(3);
         public static final double m_2023gearRatio = 11.7;
@@ -68,11 +76,18 @@ public final class Constants {
     }
 
     public static final class LiftConstants {
-        public static int liftMotorID = 14;
+        public static final int liftMotorID = 8;
 
-        public static double liftKP = 0.014;
-        public static double liftKD = 0;
-        public static double liftKI = 0;
+        public static final double liftKP = 0.014;
+        public static final double liftKD = 0;
+        public static final double liftKI = 0;
+
+        public static final int liftRestTick = 0;
+        public static final int liftBottomTick = 500;
+        public static final int liftMidTick = 3500;
+        public static final int liftTopTick = 7000;
+        public static final int liftPickUpTick = 450;
+        public static final int liftStationTick = 4000;
     }
     public static final class VisionConstants {
         public static double globalShutterHeightMeters = Units.inchesToMeters(33.5);
