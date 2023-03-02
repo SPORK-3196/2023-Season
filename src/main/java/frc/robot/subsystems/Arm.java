@@ -6,7 +6,6 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import com.revrobotics.RelativeEncoder;
 
 import edu.wpi.first.math.controller.ArmFeedforward;
-import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.Constants.ArmConstants;
@@ -58,19 +57,19 @@ public class Arm extends SubsystemBase {
 
 
     }
-    public CommandBase runElbowMotor(double speed){
-        return this.run(() -> elbowMotor.setVoltage(speed));
+    public void runElbowMotor(double speed){
+        elbowMotor.set(speed);
     }
 
-    public CommandBase runShoulderMotor(double speed){
-        return this.run(() -> shoulderMotor.setVoltage(speed));
+    public void runShoulderMotor(double speed){
+        shoulderMotor.set(speed);
     }
 
-    public CommandBase turnElbowOff(){
-        return this.runOnce(() -> elbowMotor.stopMotor());
+    public void turnElbowOff(){
+        elbowMotor.stopMotor();
     }
 
-    public CommandBase turnShoulderOff(){
-        return this.runOnce(() -> shoulderMotor.stopMotor());
+    public void turnShoulderOff(){
+        shoulderMotor.stopMotor();
     }
 }

@@ -1,20 +1,20 @@
 package frc.robot.commands.Claw;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.Claw;
+import frc.robot.subsystems.EveryClaw;
 
 public class OpenClaw extends CommandBase{
-    public Claw claw;
+    public EveryClaw claw;
 
-    public OpenClaw(Claw claw){
-        this.claw = claw;
+    public OpenClaw(EveryClaw claw2){
+        this.claw = claw2;
 
-        addRequirements(claw);
+        addRequirements(claw2);
     }
 
     @Override
     public void initialize(){
-        claw.openPistons();
+      //  claw.openPistons();
     }
     @Override
     public void execute(){

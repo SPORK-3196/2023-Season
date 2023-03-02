@@ -19,9 +19,6 @@ import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.Drivetrain;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 
-import edu.wpi.first.wpilibj2.command.button.JoystickButton;
-import edu.wpi.first.wpilibj2.command.button.Trigger;
-
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
  * each mode, as described in the TimedRobot documentation. If you change the name of this class or
@@ -31,17 +28,8 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 public class Robot extends TimedRobot {
    private Command autoCommand;
   private RobotContainer m_robotContainer;
-  
-  public static XboxController primaryController = new XboxController(0);
-  public static XboxController armController = new XboxController(1);
 
-  public static double LJSX_Primary = primaryController.getLeftX();
-  public static double LJSY_Primary = primaryController.getLeftY();
 
-  public static double LJSX_Secondary = armController.getLeftX();
-  public static double LJSY_Secondary = armController.getLeftY();
-
-  public static SlewRateLimiter filter = new SlewRateLimiter(.5);
   
   /**
    * This function is run when the robot is first started up and should be used for any
@@ -84,8 +72,15 @@ public class Robot extends TimedRobot {
   public void robotPeriodic() {
       RobotContainer.LJSX_Primary = RobotContainer.primaryController.getLeftX();
       RobotContainer.LJSY_Primary = RobotContainer.primaryController.getLeftY();
+      RobotContainer.LJSY_Arm = RobotContainer.armController.getLeftY();
+      RobotContainer.RJSX_Arm = RobotContainer.armController.getRightX();
+
       OI.Drivetrain.gyroRate = Drivetrain.getGyroRate();
       OI.Drivetrain.gyroHeading = RobotContainer.getPoseRotation();
+
+      RobotContainer.elevatorSetPos = RobotContainer.getElevatorSetPoint();
+      RobotContainer.shoulderSetPos = RobotContainer.getShoulderSetPoint();
+      RobotContainer.elbowSetPos = RobotContainer.getElbowSetPoint();
       
       OI.Vision.aprilCamHasTargets = 
          RobotContainer.hasTargets(
@@ -113,6 +108,7 @@ public class Robot extends TimedRobot {
       }
       if(RobotContainer.armController.isConnected()){
          OI.XboxController.X2_DPad = RobotContainer.armController.getPOV();
+
       }
 
       if(!DriverStation.isFMSAttached()){

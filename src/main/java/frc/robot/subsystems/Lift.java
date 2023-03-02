@@ -6,7 +6,6 @@ import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkMaxPIDController;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
-import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
@@ -38,11 +37,11 @@ public class Lift extends SubsystemBase {
       return liftEncoder;
     }
 
-    public CommandBase runLift(double speed){
-      return this.run(() -> liftMotor.setVoltage(speed));
+    public void runLift(double speed){
+      liftMotor.set(speed);
     }
 
-    public CommandBase stopLift(){
-      return this.runOnce(() -> liftMotor.stopMotor());
+    public void stopLift(){
+      liftMotor.stopMotor();
     }
 }
