@@ -1,6 +1,5 @@
 package frc.robot;
 
-
 import org.photonvision.PhotonCamera;
 import org.photonvision.targeting.PhotonPipelineResult;
 import org.photonvision.targeting.PhotonTrackedTarget;
@@ -14,8 +13,6 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
-import frc.robot.commands.Autonomous.Cone.PickupConeStation;
-import frc.robot.commands.Autonomous.Cube.PickupCubeStation;
 import frc.robot.commands.Claw.OpenClaw;
 import frc.robot.commands.Drivetrain.DistanceToVisionTarget;
 import frc.robot.commands.Drivetrain.DriveWithJoyStick;
@@ -27,6 +24,7 @@ import frc.robot.subsystems.Claw;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Elevator;
 import frc.robot.subsystems.Turret;
+import frc.robot.commands.Turret.TurretDrive;
 
 public class RobotContainer {
     private Claw claw = new Claw();
@@ -37,14 +35,14 @@ public class RobotContainer {
 
     private DriveWithJoyStick joystickDrive = new DriveWithJoyStick(drivetrain);
 
+
     public static PhotonCamera aprilTagCam = new PhotonCamera("Global_Shutter_Elevator");
-    public static PhotonCamera visionCam = new PhotonCamera("Microsoft_Life_Cam_Turret");
-    public static PhotonCamera primaryCamera = new PhotonCamera("Primary Camera");
-    public static PhotonCamera backupCamera = new PhotonCamera("Backup Camera");
+    public static PhotonCamera raspiCam = new PhotonCamera("mmal_service_16.1");
     public static double aprilYaw = 0;
 
     public static PhotonPipelineResult result;
     public static PhotonTrackedTarget bResult;
+    public static PhotonTrackedTarget rasbResult;
     public static double aprilX;
     public static double aprilY;
 
@@ -66,7 +64,9 @@ public class RobotContainer {
     public static JoystickButton Y_Prim = new JoystickButton(primaryController, XboxController.Button.kY.value);
 
 
+
     public RobotContainer(){
+        turret.setDefaultCommand(new TurretDrive(turret));
         configureButtonBindings();
         drivetrain.setDefaultCommand(joystickDrive);
         claw.setDefaultCommand(new OpenClaw(claw));
@@ -76,8 +76,8 @@ public class RobotContainer {
 
     public void configureButtonBindings() {
 
-        if(OI.XboxController.X2_DPad == 0) A_Arm.onTrue(new PickupConeStation(arm, lift, claw));
-        if(OI.XboxController.X2_DPad == 0) X_Arm.onTrue(new PickupCubeStation(arm, lift, claw));
+        // if(OI.XboxController.X2_DPad == 0) A_Arm.onTrue(new HighRung());
+        // if(OI.XboxController.X2_DPad == 0) X_Arm.onTrue(new PickupCubeStation(arm, lift, claw));
         
         
         A_Prim.whileTrue(new TracktoVisionTarget(drivetrain));

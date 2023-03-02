@@ -9,14 +9,21 @@ import org.photonvision.PhotonCamera;
 
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 
+import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.net.PortForwarder;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj2.command.Command;
+
 import frc.robot.subsystems.Drivetrain;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+
+import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import edu.wpi.first.wpilibj2.command.button.Trigger;
+
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
  * each mode, as described in the TimedRobot documentation. If you change the name of this class or
@@ -25,7 +32,19 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
  */
 public class Robot extends TimedRobot {
    private Command autoCommand;
-   private RobotContainer m_robotContainer;
+  private RobotContainer m_robotContainer;
+  
+  public static XboxController primaryController = new XboxController(0);
+  public static XboxController armController = new XboxController(1);
+
+  public static double LJSX_Primary = primaryController.getLeftX();
+  public static double LJSY_Primary = primaryController.getLeftY();
+
+  public static double LJSX_Secondary = armController.getLeftX();
+  public static double LJSY_Secondary = armController.getLeftY();
+
+  public static SlewRateLimiter filter = new SlewRateLimiter(.5);
+  
   /**
    * This function is run when the robot is first started up and should be used for any
    * initialization code.
@@ -33,20 +52,20 @@ public class Robot extends TimedRobot {
   @Override
   public void robotInit() {
       NetworkTableInstance camInstance = NetworkTableInstance.getDefault();
-      camInstance.startClient4("10.31.96.50");
+      camInstance.startClient4("10.31.96.16");
       camInstance.startDSClient();
       
       m_robotContainer = new RobotContainer();
 
       Drivetrain.zerogyro();
 
-      PortForwarder.add(5800, "10.31.96.11", 5800);
-      PortForwarder.add(5800, "10.31.96.50", 5800);
+      PortForwarder.add(5800, "10.31.96.16", 5800);
+      PortForwarder.add(5800, "10.31.96.44", 5800);
 
       RobotContainer.aprilTagCam.setDriverMode(false);
       RobotContainer.aprilTagCam.setPipelineIndex(1);
+      RobotContainer.raspiCam.setDriverMode(false);
 
-      RobotContainer.primaryCamera.setDriverMode(false);
       PhotonCamera.setVersionCheckEnabled(false);
       
       Shuffleboard.getTab("Autonomous Controls")
@@ -77,6 +96,7 @@ public class Robot extends TimedRobot {
       RobotContainer.result = RobotContainer.pipelineResult(RobotContainer.aprilTagCam);
       if(RobotContainer.hasTargets(RobotContainer.result)){
          RobotContainer.bResult = RobotContainer.result.getBestTarget();
+         RobotContainer.rasbResult = RobotContainer.pipelineResult(RobotContainer.raspiCam).getBestTarget();
          RobotContainer.aprilYaw = RobotContainer.getCamYaw(RobotContainer.bResult);
          RobotContainer.aprilX = RobotContainer.distanceToVisionPose(RobotContainer.bResult).getX();
          RobotContainer.aprilY = RobotContainer.distanceToVisionPose(RobotContainer.bResult).getY();
@@ -119,10 +139,11 @@ public class Robot extends TimedRobot {
          OI.Drivetrain.PoseYEntry.setDouble(OI.Drivetrain.poseY);
          if(RobotContainer.bResult != null)  
             OI.Vision.MicroYawEntry.setDouble(RobotContainer.getCamYaw(RobotContainer.bResult));
-            OI.Vision.distanceToTagEntry.setDouble(RobotContainer.aprilX);
+            OI.Vision.distanceToTagXEntry.setDouble(RobotContainer.aprilX);
+            OI.Vision.distanceToTagYEntry.setDouble(RobotContainer.aprilY);
          OI.Vision.LimelightTargetsEntry.setBoolean(OI.Vision.aprilCamHasTargets);
       }
-      CommandScheduler.getInstance().run();   
+      CommandScheduler.getInstance().run();  
   }
 
   /**
@@ -141,11 +162,9 @@ public class Robot extends TimedRobot {
       RobotContainer.drivetrain.rearLeft.setNeutralMode(NeutralMode.Brake);
       RobotContainer.drivetrain.frontRight.setNeutralMode(NeutralMode.Brake);
       RobotContainer.drivetrain.rearRight.setNeutralMode(NeutralMode.Brake);
-      
+
       RobotContainer.drivetrain.resetOdometry();
      autoCommand = m_robotContainer.getSelected();
-     System.out.println("Got here-autonomous init");
-     System.out.println("Got here: " + autoCommand);
 
      if(autoCommand != null)
      {
@@ -170,11 +189,13 @@ public class Robot extends TimedRobot {
   /** This function is called once when teleop is enabled. */
   @Override
   public void teleopInit() {
+      RobotContainer.drivetrain.resetEncoders();
       RobotContainer.drivetrain.resetOdometry();
-
+   
      if(autoCommand != null){
        autoCommand.cancel();
     }
+
   }
 
   /** This function is called periodically during operator control. */

@@ -48,14 +48,15 @@ public class SplineToVisionTarget {
         dToTarget = Math.sqrt(Math.pow(x0 - 1.5, 2) + Math.pow(y0, 2));
         heading = Units.radiansToDegrees(Math.atan2(y0,x0)) - targetRot0;
 
-        Pose2d robPose = new Pose2d(-x0, -y0, new Rotation2d(heading));
+        Pose2d robPose = new Pose2d(x0, y0, new Rotation2d(heading));
         drivetrain.m_odometry.resetPosition(Drivetrain.gyroscope.getRotation2d() , 0, 0, robPose);
 
-        l = dToTarget * 0.3;
+        l = dToTarget * 0.2;
         x1 = (l *Math.cos(Units.degreesToRadians(180 - heading))) + x0;
         y1 = -(l * Math.sin(Units.degreesToRadians(180 - heading))) + y0;
-        x2 = 1.5 + l;
+        x2 = 1.5 + (l);
         y2 = 0;
+
         System.out.println("---------------------------------------------");
         System.out.println("---------------------------------------------");
         System.out.println("---------------------------------------------");
@@ -63,10 +64,10 @@ public class SplineToVisionTarget {
         System.out.println("---------------------------------------------");
         System.out.println("---------------------------------------------");
         System.out.println("---------------------------------------------");
-        System.out.println("x0: " + -x0 + ", " + " y0: " + -y0 + 
+        System.out.println("x0: " + x0 + ", " + " y0: " + y0 + 
             ", " + " dToTarget: " + dToTarget + ", " + " heading: " +
-             heading + " l: " + l + " x1: " + -x1 +
-              " y1: " + -y1 + " x2: " + -x2 + " y2: " + -y2);
+             heading + " l: " + l + " x1: " + x1 +
+              " y1: " + y1 + " x2: " + x2 + " y2: " + y2);
         System.out.println("---------------------------------------------");
         System.out.println("---------------------------------------------");
         System.out.println("---------------------------------------------");
@@ -77,16 +78,16 @@ public class SplineToVisionTarget {
         System.out.println("---------------------------------------------");
         System.out.println("---------------------------------------------");
         
-        // An example trajectory to follow.  All units in meters.
+        // Trajectory to April Tag.  All units in meters.
         Trajectory trajectory =
             TrajectoryGenerator.generateTrajectory(
-                // Start at the origin facing the +X direction
-                new Pose2d(-x0, -y0, 
+                // Start at pose distance from the April Tag
+                new Pose2d(x0, y0, 
                             new Rotation2d(heading)),
                 // Pass through these two interior waypoints, making an 's' curve path
-                List.of(new Translation2d(-x1, -y1), new Translation2d(-x2, -y2)),
-                // End 3 meters straight ahead of where we started, facing forward
-                new Pose2d(-1.5, 0, new Rotation2d(0)),
+                List.of(new Translation2d(x1, y1), new Translation2d(x2, y2)),
+                // End 1.5 meters straight away from the April Tag, facing towards it.
+                new Pose2d(1.5, 0, new Rotation2d(0)),
                 // Pass config
                 config);
             

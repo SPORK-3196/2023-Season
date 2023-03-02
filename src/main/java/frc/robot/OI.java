@@ -108,7 +108,9 @@ public class OI {
 
         public static boolean aprilCamHasTargets = false;
 
-        public static Transform3d distanceToTag;
+        public static Transform3d distanceToTagX;
+        public static Transform3d distanceToTagY;
+
         public static double pitchToTag= 0;
 
         public static double PIDOutput = 0;
@@ -116,7 +118,8 @@ public class OI {
 
         public static GenericEntry MicroYawEntry = Vision_TAB.add("Microsoft Cam Yaw", 0).getEntry();
         public static GenericEntry LimelightTargetsEntry = Vision_TAB.add("Limelight has Targets", false).getEntry();
-        public static GenericEntry distanceToTagEntry = Vision_TAB.add("Distance to Tag", 0).getEntry();
+        public static GenericEntry distanceToTagXEntry = Vision_TAB.add("Distance to Tag X", 0).getEntry();
+        public static GenericEntry distanceToTagYEntry = Vision_TAB.add("Distance to Tag Y", 0).getEntry();
         public static GenericEntry PIDoutputEntry = Vision_TAB.add("PID Output", 0).getEntry();
         public static GenericEntry PIDError = Vision_TAB.add("PID Error", 0).getEntry();
 
