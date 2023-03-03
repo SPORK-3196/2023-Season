@@ -14,7 +14,7 @@ public class CloseClawCube extends CommandBase{
 
     @Override
     public void initialize(){
-        claw.runMotor(.3);
+        claw.runMotor(.5);
     }
     @Override
     public void execute(){

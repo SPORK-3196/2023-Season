@@ -44,4 +44,8 @@ public class Lift extends SubsystemBase {
     public void stopLift(){
       liftMotor.stopMotor();
     }
+
+    public double getEncoderTick(){
+      return liftEncoder.getCountsPerRevolution() * liftEncoder.getPosition(); 
+    }
 }

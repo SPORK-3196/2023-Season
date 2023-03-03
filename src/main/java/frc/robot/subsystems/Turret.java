@@ -35,6 +35,6 @@ public class Turret extends SubsystemBase {
     }
 
     public void setPIDSetpoint(double degrees){
-        turretController.setReference(degrees * Constants.TurretConstants.motorRotationsPerDegree, CANSparkMax.ControlType.kPosition);
+        turretController.setReference(degrees * Constants.TurretConstants.motorRotationsPerDegree2023, CANSparkMax.ControlType.kPosition);
     }
 }

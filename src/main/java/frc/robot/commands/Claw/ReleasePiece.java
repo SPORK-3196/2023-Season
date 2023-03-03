@@ -3,10 +3,10 @@ package frc.robot.commands.Claw;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.EveryClaw;
 
-public class OpenClaw extends CommandBase{
+public class ReleasePiece extends CommandBase{
     public EveryClaw claw;
 
-    public OpenClaw(EveryClaw claw2){
+    public ReleasePiece(EveryClaw claw2){
         this.claw = claw2;
 
         addRequirements(claw2);
@@ -14,10 +14,10 @@ public class OpenClaw extends CommandBase{
 
     @Override
     public void initialize(){
-      //  claw.openPistons();
     }
     @Override
     public void execute(){
+        claw.runMotor(.1);
     }
     @Override 
     public void end(boolean isFinished){

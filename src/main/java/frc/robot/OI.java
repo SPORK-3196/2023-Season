@@ -118,6 +118,6 @@ public class OI {
         public static GenericEntry distanceToTagYEntry = Vision_TAB.add("Distance to Tag Y", 0).getEntry();
         public static GenericEntry PIDoutputEntry = Vision_TAB.add("PID Output", 0).getEntry();
         public static GenericEntry PIDError = Vision_TAB.add("PID Error", 0).getEntry();
-
+        public static GenericEntry TypeOfPieceEntry = Vision_TAB.add("Piece Selected", "Cube").getEntry();
     }
 }

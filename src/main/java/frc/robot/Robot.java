@@ -81,6 +81,77 @@ public class Robot extends TimedRobot {
       RobotContainer.elevatorSetPos = RobotContainer.getElevatorSetPoint();
       RobotContainer.shoulderSetPos = RobotContainer.getShoulderSetPoint();
       RobotContainer.elbowSetPos = RobotContainer.getElbowSetPoint();
+
+      m_robotContainer.currentElevatorPosition = m_robotContainer.getLiftEncoderTick();
+
+      if(RobotContainer.getPickUp() == false){
+
+         //Update Elbow and Shoulder Position based off elevator position between rest and low position
+
+         if(m_robotContainer.currentElevatorPosition > Constants.LiftConstants.liftRestTick && m_robotContainer.currentElevatorPosition < Constants.LiftConstants.liftBottomTick){
+            RobotContainer.currentShoulderSetPos = Constants.ArmConstants.restShoulderTick + 
+               (((m_robotContainer.currentElevatorPosition-Constants.LiftConstants.liftRestTick)/
+                  (Constants.LiftConstants.liftBottomTick- Constants.LiftConstants.liftRestTick)) * 
+                  (Constants.ArmConstants.lowShoulderTick - Constants.ArmConstants.restShoulderTick));  
+            RobotContainer.currentElbowSetPos =  Constants.ArmConstants.restElbowTick +
+               (((m_robotContainer.currentElevatorPosition - Constants.LiftConstants.liftRestTick) /
+               (Constants.LiftConstants.liftBottomTick - Constants.LiftConstants.liftRestTick)) *
+               (Constants.ArmConstants.lowElbowTick - Constants.ArmConstants.restElbowTick));
+         }
+         //Update Elbow and Shoulder Position based off elevator position between low and mid position
+
+         else if(m_robotContainer.currentElevatorPosition > Constants.LiftConstants.liftBottomTick && m_robotContainer.currentElevatorPosition < Constants.LiftConstants.liftMidTick){
+            RobotContainer.currentShoulderSetPos = Constants.ArmConstants.lowShoulderTick + 
+               (((m_robotContainer.currentElevatorPosition-Constants.LiftConstants.liftBottomTick)/
+                  (Constants.LiftConstants.liftMidTick- Constants.LiftConstants.liftBottomTick)) * 
+                  (Constants.ArmConstants.midShoulderTick - Constants.ArmConstants.lowShoulderTick));  
+            RobotContainer.currentElbowSetPos =  Constants.ArmConstants.lowElbowTick +
+               (((m_robotContainer.currentElevatorPosition - Constants.LiftConstants.liftBottomTick) /
+               (Constants.LiftConstants.liftMidTick - Constants.LiftConstants.liftBottomTick)) *
+               (Constants.ArmConstants.midElbowTick - Constants.ArmConstants.lowElbowTick));
+         }
+         //Update Elbow and Shoulder Position based off elevator position between mid and high position
+
+         else if(m_robotContainer.currentElevatorPosition > Constants.LiftConstants.liftMidTick && m_robotContainer.currentElevatorPosition < Constants.LiftConstants.liftTopTick){
+            RobotContainer.currentShoulderSetPos = Constants.ArmConstants.midShoulderTick + 
+               (((m_robotContainer.currentElevatorPosition-Constants.LiftConstants.liftMidTick)/
+                  (Constants.LiftConstants.liftTopTick- Constants.LiftConstants.liftMidTick)) * 
+                  (Constants.ArmConstants.highShoulderTick - Constants.ArmConstants.midShoulderTick));  
+            RobotContainer.currentElbowSetPos =  Constants.ArmConstants.midElbowTick +
+               (((m_robotContainer.currentElevatorPosition - Constants.LiftConstants.liftMidTick) /
+               (Constants.LiftConstants.liftTopTick - Constants.LiftConstants.liftMidTick)) *
+               (Constants.ArmConstants.highElbowTick - Constants.ArmConstants.midElbowTick));
+         }
+      }
+      else{
+         //Update Elbow and Shoulder Position based off elevator position between rest and station position
+
+         if(m_robotContainer.currentElevatorPosition < Constants.LiftConstants.liftStationTick && m_robotContainer.currentElevatorPosition > Constants.LiftConstants.liftRestTick){
+            RobotContainer.currentShoulderSetPos = Constants.ArmConstants.restShoulderTick + 
+               (((m_robotContainer.currentElevatorPosition-Constants.LiftConstants.liftRestTick)/
+                  (Constants.LiftConstants.liftStationTick- Constants.LiftConstants.liftRestTick)) * 
+                  (Constants.ArmConstants.pickUpStationShoulderTick - Constants.ArmConstants.restShoulderTick));  
+            RobotContainer.currentElbowSetPos =  Constants.ArmConstants.restElbowTick +
+               (((m_robotContainer.currentElevatorPosition - Constants.LiftConstants.liftRestTick) /
+               (Constants.LiftConstants.liftStationTick - Constants.LiftConstants.liftRestTick)) *
+               (Constants.ArmConstants.pickUpStationElbowTick - Constants.ArmConstants.restElbowTick));
+         }
+         //Update Elbow and Shoulder Position based off elevator position between rest and station position
+         else if(m_robotContainer.currentElevatorPosition < Constants.LiftConstants.liftPickUpTick && m_robotContainer.currentElevatorPosition > Constants.LiftConstants.liftStationTick){
+            RobotContainer.currentShoulderSetPos = Constants.ArmConstants.pickUpStationShoulderTick + 
+               (((m_robotContainer.currentElevatorPosition-Constants.LiftConstants.liftStationTick)/
+                  (Constants.LiftConstants.liftPickUpTick - Constants.LiftConstants.liftStationTick)) * 
+                  (Constants.ArmConstants.pickUpShoulderTick - Constants.ArmConstants.pickUpStationShoulderTick));  
+            RobotContainer.currentElbowSetPos =  Constants.ArmConstants.pickUpStationElbowTick +
+               (((m_robotContainer.currentElevatorPosition - Constants.LiftConstants.liftStationTick) /
+               (Constants.LiftConstants.liftPickUpTick - Constants.LiftConstants.liftStationTick)) *
+               (Constants.ArmConstants.pickUpElbowTick - Constants.ArmConstants.pickUpStationElbowTick));
+         }
+      }
+      if(RobotContainer.isCube == false)
+         OI.Vision.TypeOfPieceEntry.setString("Cone");
+      else
+         OI.Vision.TypeOfPieceEntry.setString("Cube");
       
       OI.Vision.aprilCamHasTargets = 
          RobotContainer.hasTargets(
@@ -135,6 +206,7 @@ public class Robot extends TimedRobot {
             OI.Vision.distanceToTagYEntry.setDouble(RobotContainer.aprilY);
          OI.Vision.LimelightTargetsEntry.setBoolean(OI.Vision.aprilCamHasTargets);
       }
+   
       CommandScheduler.getInstance().run();  
   }
 
