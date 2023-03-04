@@ -120,4 +120,12 @@ public class OI {
         public static GenericEntry PIDError = Vision_TAB.add("PID Error", 0).getEntry();
         public static GenericEntry TypeOfPieceEntry = Vision_TAB.add("Piece Selected", "Cube").getEntry();
     }
+    
+    public static final class ArmElevator {
+        public static ShuffleboardTab ArmElevator_TAB = Shuffleboard.getTab("Arm & Elevator");
+
+        public static GenericEntry ElevatorPosEntry = ArmElevator_TAB.add("Elevator Set Pos", 0).getEntry();
+        public static GenericEntry ShoulderPosEntry = ArmElevator_TAB.add("Shoulder Set Pos", 0).getEntry();
+        public static GenericEntry ElbowPosEntry = ArmElevator_TAB.add("Elbow Set Pos", 0).getEntry();
+    }
 }

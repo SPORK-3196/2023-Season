@@ -28,6 +28,8 @@ public class TrackToCube extends CommandBase{
         controller.setTolerance(.5);
         
         RobotContainer.raspiCam.setPipelineIndex(1);
+        RobotContainer.raspiCam.setDriverMode(false);
+
     }
 
     @Override
@@ -44,6 +46,7 @@ public class TrackToCube extends CommandBase{
         drivetrain.frontLeft.setNeutralMode(NeutralMode.Brake);
         drivetrain.rearRight.setNeutralMode(NeutralMode.Brake);
         drivetrain.frontRight.setNeutralMode(NeutralMode.Brake);
+        RobotContainer.raspiCam.setDriverMode(true);
 
     }
 

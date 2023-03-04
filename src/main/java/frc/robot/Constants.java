@@ -29,6 +29,8 @@ public final class Constants {
         public static final int pickUpElbowTick = 0;
         public static final int pickUpStationShoulderTick = 0;
         public static final int pickUpStationElbowTick = 0;
+        public static final int startElbowTick = -500 ;
+        public static final int startShoulderTick = 16300;
 
         public static final double shoulderKsVolts = 1;
         public static final double shoulderKgVolts = 1;
@@ -88,6 +90,7 @@ public final class Constants {
         public static final int liftTopTick = 7000;
         public static final int liftPickUpTick = 450;
         public static final int liftStationTick = 4000;
+        public static final int liftStartTick = -15500;
     }
     public static final class VisionConstants {
         public static double globalShutterHeightMeters = Units.inchesToMeters(33.5);

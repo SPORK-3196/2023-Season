@@ -3,6 +3,7 @@ package frc.robot.subsystems;
 
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
+import com.revrobotics.SparkMaxLimitSwitch;
 import com.revrobotics.SparkMaxPIDController;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
@@ -16,6 +17,8 @@ public class Lift extends SubsystemBase {
 
     public CANSparkMax liftMotor = new CANSparkMax(Constants.LiftConstants.liftMotorID, MotorType.kBrushless);
     public RelativeEncoder liftEncoder = liftMotor.getEncoder();
+
+    public SparkMaxLimitSwitch lifSwitch = liftMotor.getForwardLimitSwitch(SparkMaxLimitSwitch.Type.kNormallyClosed);
 
     public SparkMaxPIDController liftController;
 
@@ -48,4 +51,9 @@ public class Lift extends SubsystemBase {
     public double getEncoderTick(){
       return liftEncoder.getCountsPerRevolution() * liftEncoder.getPosition(); 
     }
+
+    public boolean isResetLift(){
+      return lifSwitch.isPressed();
+    }
+
 }

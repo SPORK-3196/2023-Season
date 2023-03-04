@@ -28,6 +28,7 @@ public class TrackToCone extends CommandBase{
         controller.setTolerance(.5);
         
         RobotContainer.raspiCam.setPipelineIndex(0);
+        RobotContainer.raspiCam.setDriverMode(false);
     }
 
     @Override
@@ -44,7 +45,7 @@ public class TrackToCone extends CommandBase{
         drivetrain.frontLeft.setNeutralMode(NeutralMode.Brake);
         drivetrain.rearRight.setNeutralMode(NeutralMode.Brake);
         drivetrain.frontRight.setNeutralMode(NeutralMode.Brake);
-
+        RobotContainer.raspiCam.setDriverMode(true);
     }
 
     @Override

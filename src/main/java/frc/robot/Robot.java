@@ -9,6 +9,7 @@ import org.photonvision.PhotonCamera;
 
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 
+import edu.wpi.first.cscore.HttpCamera;
 import edu.wpi.first.net.PortForwarder;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.DriverStation;
@@ -48,9 +49,15 @@ public class Robot extends TimedRobot {
       PortForwarder.add(5800, "10.31.96.16", 5800);
       PortForwarder.add(5800, "10.31.96.44", 5800);
 
-      RobotContainer.aprilTagCam.setDriverMode(false);
+      // HttpCamera aprilCameraVideoFeed = new HttpCamera("G_S", "10.31.96.16:5800");
+      // HttpCamera raspberryPiVideoFeed = new HttpCamera("Raspi Cam", "10.31.96.44:5800");
+
+      // OI.Vision.Vision_TAB.add("Global Shutter Feed", aprilCameraVideoFeed);
+      // OI.Vision.Vision_TAB.add("Raspi Cam Feed", raspberryPiVideoFeed);
+
+      RobotContainer.aprilTagCam.setDriverMode(true);
       RobotContainer.aprilTagCam.setPipelineIndex(1);
-      RobotContainer.raspiCam.setDriverMode(false);
+      RobotContainer.raspiCam.setDriverMode(true);
 
       PhotonCamera.setVersionCheckEnabled(false);
       
@@ -83,6 +90,10 @@ public class Robot extends TimedRobot {
       RobotContainer.elbowSetPos = RobotContainer.getElbowSetPoint();
 
       m_robotContainer.currentElevatorPosition = m_robotContainer.getLiftEncoderTick();
+
+      OI.ArmElevator.ElbowPosEntry.setDouble(m_robotContainer.getElbowEncoderTick());
+      OI.ArmElevator.ShoulderPosEntry.setDouble(m_robotContainer.getShoulderEncoderTick());
+      OI.ArmElevator.ElevatorPosEntry.setDouble(m_robotContainer.currentElevatorPosition);
 
       if(RobotContainer.getPickUp() == false){
 
@@ -148,6 +159,17 @@ public class Robot extends TimedRobot {
                (Constants.ArmConstants.pickUpElbowTick - Constants.ArmConstants.pickUpStationElbowTick));
          }
       }
+
+      if(m_robotContainer.lift.isResetLift() == true){
+         m_robotContainer.resetLiftEncoderTick();
+      }
+      if(m_robotContainer.arm.isResetElbow() == true){
+         m_robotContainer.resetElbowEncoderTick();
+      }
+      if(m_robotContainer.arm.isResetShoulder() == true){
+         m_robotContainer.resetShoulderTick();
+      }
+
       if(RobotContainer.isCube == false)
          OI.Vision.TypeOfPieceEntry.setString("Cone");
       else
@@ -222,6 +244,10 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void autonomousInit() {
+      RobotContainer.elevatorSetPos = Constants.LiftConstants.liftRestTick;
+      RobotContainer.elbowSetPos = Constants.ArmConstants.restElbowTick;
+      RobotContainer.shoulderSetPos = Constants.ArmConstants.restShoulderTick;
+      
       RobotContainer.drivetrain.frontLeft.setNeutralMode(NeutralMode.Brake);
       RobotContainer.drivetrain.rearLeft.setNeutralMode(NeutralMode.Brake);
       RobotContainer.drivetrain.frontRight.setNeutralMode(NeutralMode.Brake);

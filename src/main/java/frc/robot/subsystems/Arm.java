@@ -4,6 +4,7 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.SparkMaxPIDController;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import com.revrobotics.RelativeEncoder;
+import com.revrobotics.SparkMaxLimitSwitch;
 
 import edu.wpi.first.math.controller.ArmFeedforward;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -20,6 +21,10 @@ public class Arm extends SubsystemBase {
 
     public RelativeEncoder elbowEncoder = elbowMotor.getEncoder();
     public RelativeEncoder shoulderEncoder = shoulderMotor.getEncoder();
+
+    public SparkMaxLimitSwitch elbowLimitSwitch = elbowMotor.getForwardLimitSwitch(SparkMaxLimitSwitch.Type.kNormallyClosed);
+    public SparkMaxLimitSwitch shoulderLimitSwitch = shoulderMotor.getForwardLimitSwitch(SparkMaxLimitSwitch.Type.kNormallyClosed);
+
 
     public SparkMaxPIDController elbowController;
     public SparkMaxPIDController shoulderController;
@@ -72,4 +77,20 @@ public class Arm extends SubsystemBase {
     public void turnShoulderOff(){
         shoulderMotor.stopMotor();
     }
+    public double getShoulderTick(){
+        return shoulderEncoder.getCountsPerRevolution() * shoulderEncoder.getPosition(); 
+    }
+    public double getElbowTick(){
+        return elbowEncoder.getCountsPerRevolution() * elbowEncoder.getPosition(); 
+
+    }
+    public boolean isResetElbow(){
+        return elbowLimitSwitch.isPressed();
+    }
+
+    public boolean isResetShoulder(){
+        return shoulderLimitSwitch.isPressed();
+    }
+    
+    
 }

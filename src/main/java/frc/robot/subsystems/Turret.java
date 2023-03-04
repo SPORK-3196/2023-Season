@@ -2,6 +2,7 @@ package frc.robot.subsystems;
 
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
+import com.revrobotics.SparkMaxLimitSwitch;
 import com.revrobotics.SparkMaxPIDController;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
@@ -9,9 +10,14 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
 public class Turret extends SubsystemBase {
-    public CANSparkMax turretMotor = new CANSparkMax(10, MotorType.kBrushless);
+    public CANSparkMax turretMotor = new CANSparkMax(Constants.TurretConstants.turretPort, MotorType.kBrushless);
+
     public SparkMaxPIDController turretController = turretMotor.getPIDController();
+
+    public SparkMaxLimitSwitch turretLimitSwitch = turretMotor.getForwardLimitSwitch(SparkMaxLimitSwitch.Type.kNormallyClosed);
+
     public RelativeEncoder turretEncoder = turretMotor.getEncoder();
+
     public double kp, ki, kd, max;
     
     public Turret(){

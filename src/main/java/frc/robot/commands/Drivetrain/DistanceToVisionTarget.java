@@ -37,6 +37,9 @@ public class DistanceToVisionTarget extends CommandBase {
         distanceController = new PIDController(1, 0, 0);
         turnController = new PIDController(0.05, 0, 0);
 
+        RobotContainer.aprilTagCam.setDriverMode(false);
+
+
     }
     @Override
     public void execute(){
@@ -69,6 +72,7 @@ public class DistanceToVisionTarget extends CommandBase {
         drivetrain.rearLeft.setNeutralMode(NeutralMode.Brake);
         drivetrain.frontRight.setNeutralMode(NeutralMode.Brake);
         drivetrain.rearRight.setNeutralMode(NeutralMode.Brake);
+        RobotContainer.aprilTagCam.setDriverMode(true);
 
     }
     @Override

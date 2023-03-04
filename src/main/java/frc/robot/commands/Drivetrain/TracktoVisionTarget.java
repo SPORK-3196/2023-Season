@@ -24,6 +24,7 @@ public class TracktoVisionTarget extends CommandBase {
 
     @Override
     public void initialize(){
+        RobotContainer.aprilTagCam.setDriverMode(false);
         drivetrain.frontLeft.setNeutralMode(NeutralMode.Coast);
         drivetrain.rearLeft.setNeutralMode(NeutralMode.Coast);
         drivetrain.frontRight.setNeutralMode(NeutralMode.Coast);
@@ -37,6 +38,7 @@ public class TracktoVisionTarget extends CommandBase {
         
         else if(RobotContainer.aprilYaw < 1)
             rotPower += .02;
+
     }
 
     @Override
@@ -53,6 +55,7 @@ public class TracktoVisionTarget extends CommandBase {
         drivetrain.rearLeft.setNeutralMode(NeutralMode.Coast);
         drivetrain.frontRight.setNeutralMode(NeutralMode.Coast);
         drivetrain.rearRight.setNeutralMode(NeutralMode.Coast);
+        RobotContainer.aprilTagCam.setDriverMode(true);
     }
 
     @Override

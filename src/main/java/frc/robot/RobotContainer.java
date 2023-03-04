@@ -23,6 +23,7 @@ import frc.robot.commands.Drivetrain.TracktoVisionTarget;
 import frc.robot.commands.Drivetrain.Turn90LeftDegrees;
 
 import frc.robot.commands.TurretDrive;
+import frc.robot.commands.Autonomous.SimpleAuto;
 import frc.robot.commands.Autonomous.Positions.ArmPosition;
 import frc.robot.commands.Autonomous.Positions.ElevatorPosition;
 import frc.robot.subsystems.Arm;
@@ -34,8 +35,8 @@ import frc.robot.subsystems.Turret;
 public class RobotContainer {
     private EveryClaw claw = new EveryClaw();
     public static Drivetrain drivetrain = new Drivetrain();
-    private Arm arm = new Arm();
-    private Lift lift = new Lift();
+    public Arm arm = new Arm();
+    public Lift lift = new Lift();
     private Turret turret = new Turret();
 
     private DriveWithJoyStick joystickDrive = new DriveWithJoyStick(drivetrain);
@@ -98,8 +99,7 @@ public class RobotContainer {
         claw.setDefaultCommand(new ReleasePiece(claw));
         lift.setDefaultCommand(moveElevator);
         arm.setDefaultCommand(moveArm);
-        autoChooser.addOption("Straight Traj", trajectory());
-        autoChooser.setDefaultOption("Turn left 90 degrees", new Turn90LeftDegrees(drivetrain));
+        autoChooser.setDefaultOption("Basic Auto", new SimpleAuto(drivetrain, arm, lift));
     }
 
     public void configureButtonBindings() {
@@ -214,16 +214,8 @@ public class RobotContainer {
         return elevatorSetPos;
     }
 
-    public static void setShoulderSetPoint(int setPoint) {
-        shoulderSetPos = setPoint;
-    }
-
     public static int getShoulderSetPoint() {
         return shoulderSetPos;
-    }
-
-    public static void setElbowSetPoint(int setpoint) {
-        elbowSetPos = setpoint;
     }
 
     public static int getElbowSetPoint() {
@@ -247,5 +239,25 @@ public class RobotContainer {
     }
     public double getLiftEncoderTick(){
         return lift.getEncoderTick();
+    }
+
+    public double getShoulderEncoderTick(){
+        return arm.getShoulderTick();
+    }
+    
+    public double getElbowEncoderTick(){
+        return arm.getElbowTick();
+    }
+
+    public void resetLiftEncoderTick(){
+        currentElbowSetPos = 0;
+    }
+
+    public void resetElbowEncoderTick(){
+        currentElbowSetPos = 0;
+    }
+
+    public void resetShoulderTick(){
+        currentShoulderSetPos = 0;
     }
 }
