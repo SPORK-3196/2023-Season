@@ -39,6 +39,10 @@ public class Turret extends SubsystemBase {
         turretMotor.set(speed);
 
     }
+    
+    public double getTurretTick(){
+        return turretEncoder.getPosition();
+    }
 
     public void setPIDSetpoint(double degrees){
         turretController.setReference(degrees * Constants.TurretConstants.motorRotationsPerDegree2023, CANSparkMax.ControlType.kPosition);

@@ -4,25 +4,24 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.RobotContainer;
 import frc.robot.subsystems.EveryClaw;
 
-public class ReleasePiece extends CommandBase{
+public class CloseClaw extends CommandBase{
     public EveryClaw claw;
 
-    public ReleasePiece(EveryClaw claw2){
-        this.claw = claw2;
+    public CloseClaw(EveryClaw claw){
+        this.claw = claw;
 
-        addRequirements(claw2);
+        addRequirements(claw);
     }
 
     @Override
     public void initialize(){
-        claw.stopMotor();
     }
     @Override
     public void execute(){
         if(RobotContainer.isCube)
-            claw.runMotor(.8);
+            claw.runMotor(-.8);
         else
-            claw.runMotor(-.3);
+            claw.runMotor(.8);
     }
     @Override 
     public void end(boolean isFinished){

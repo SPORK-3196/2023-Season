@@ -9,7 +9,6 @@ import org.photonvision.PhotonCamera;
 
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 
-import edu.wpi.first.cscore.HttpCamera;
 import edu.wpi.first.net.PortForwarder;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.DriverStation;
@@ -39,21 +38,15 @@ public class Robot extends TimedRobot {
   @Override
   public void robotInit() {
       NetworkTableInstance camInstance = NetworkTableInstance.getDefault();
-      camInstance.startClient4("10.31.96.16");
+      camInstance.startClient4("10.31.96.203");
       camInstance.startDSClient();
       
       m_robotContainer = new RobotContainer();
 
       Drivetrain.zerogyro();
 
-      PortForwarder.add(5800, "10.31.96.16", 5800);
+      PortForwarder.add(5800, "10.31.96.33", 5800);
       PortForwarder.add(5800, "10.31.96.44", 5800);
-
-      // HttpCamera aprilCameraVideoFeed = new HttpCamera("G_S", "10.31.96.16:5800");
-      // HttpCamera raspberryPiVideoFeed = new HttpCamera("Raspi Cam", "10.31.96.44:5800");
-
-      // OI.Vision.Vision_TAB.add("Global Shutter Feed", aprilCameraVideoFeed);
-      // OI.Vision.Vision_TAB.add("Raspi Cam Feed", raspberryPiVideoFeed);
 
       RobotContainer.aprilTagCam.setDriverMode(true);
       RobotContainer.aprilTagCam.setPipelineIndex(1);
@@ -65,7 +58,7 @@ public class Robot extends TimedRobot {
       .add(RobotContainer.autoChooser);
 
       DriverStation.silenceJoystickConnectionWarning(true);
-
+      
   }
 
   /**
@@ -85,9 +78,11 @@ public class Robot extends TimedRobot {
       OI.Drivetrain.gyroRate = Drivetrain.getGyroRate();
       OI.Drivetrain.gyroHeading = RobotContainer.getPoseRotation();
 
-      RobotContainer.elevatorSetPos = RobotContainer.getElevatorSetPoint();
-      RobotContainer.shoulderSetPos = RobotContainer.getShoulderSetPoint();
-      RobotContainer.elbowSetPos = RobotContainer.getElbowSetPoint();
+      m_robotContainer.elbowAngle = m_robotContainer.getElbowAngle();
+      m_robotContainer.shoulderAngle = m_robotContainer.getShoulderAngle();
+
+      OI.ArmElevator.ElbowAngleEntry.setDouble(m_robotContainer.elbowAngle);
+      OI.ArmElevator.ShoulderAngleEntry.setDouble(m_robotContainer.shoulderAngle);
 
       m_robotContainer.currentElevatorPosition = m_robotContainer.getLiftEncoderTick();
 
@@ -95,80 +90,18 @@ public class Robot extends TimedRobot {
       OI.ArmElevator.ShoulderPosEntry.setDouble(m_robotContainer.getShoulderEncoderTick());
       OI.ArmElevator.ElevatorPosEntry.setDouble(m_robotContainer.currentElevatorPosition);
 
-      if(RobotContainer.getPickUp() == false){
+      OI.ArmElevator.ElbowSetPosEntry.setDouble(RobotContainer.elbowSetPos);
+      OI.ArmElevator.ElevatorSetPosEntry.setDouble(RobotContainer.elevatorSetPos);
+      OI.ArmElevator.ShoulderSetPosEntry.setDouble(RobotContainer.shoulderSetPos);
 
-         //Update Elbow and Shoulder Position based off elevator position between rest and low position
-
-         if(m_robotContainer.currentElevatorPosition > Constants.LiftConstants.liftRestTick && m_robotContainer.currentElevatorPosition < Constants.LiftConstants.liftBottomTick){
-            RobotContainer.currentShoulderSetPos = Constants.ArmConstants.restShoulderTick + 
-               (((m_robotContainer.currentElevatorPosition-Constants.LiftConstants.liftRestTick)/
-                  (Constants.LiftConstants.liftBottomTick- Constants.LiftConstants.liftRestTick)) * 
-                  (Constants.ArmConstants.lowShoulderTick - Constants.ArmConstants.restShoulderTick));  
-            RobotContainer.currentElbowSetPos =  Constants.ArmConstants.restElbowTick +
-               (((m_robotContainer.currentElevatorPosition - Constants.LiftConstants.liftRestTick) /
-               (Constants.LiftConstants.liftBottomTick - Constants.LiftConstants.liftRestTick)) *
-               (Constants.ArmConstants.lowElbowTick - Constants.ArmConstants.restElbowTick));
-         }
-         //Update Elbow and Shoulder Position based off elevator position between low and mid position
-
-         else if(m_robotContainer.currentElevatorPosition > Constants.LiftConstants.liftBottomTick && m_robotContainer.currentElevatorPosition < Constants.LiftConstants.liftMidTick){
-            RobotContainer.currentShoulderSetPos = Constants.ArmConstants.lowShoulderTick + 
-               (((m_robotContainer.currentElevatorPosition-Constants.LiftConstants.liftBottomTick)/
-                  (Constants.LiftConstants.liftMidTick- Constants.LiftConstants.liftBottomTick)) * 
-                  (Constants.ArmConstants.midShoulderTick - Constants.ArmConstants.lowShoulderTick));  
-            RobotContainer.currentElbowSetPos =  Constants.ArmConstants.lowElbowTick +
-               (((m_robotContainer.currentElevatorPosition - Constants.LiftConstants.liftBottomTick) /
-               (Constants.LiftConstants.liftMidTick - Constants.LiftConstants.liftBottomTick)) *
-               (Constants.ArmConstants.midElbowTick - Constants.ArmConstants.lowElbowTick));
-         }
-         //Update Elbow and Shoulder Position based off elevator position between mid and high position
-
-         else if(m_robotContainer.currentElevatorPosition > Constants.LiftConstants.liftMidTick && m_robotContainer.currentElevatorPosition < Constants.LiftConstants.liftTopTick){
-            RobotContainer.currentShoulderSetPos = Constants.ArmConstants.midShoulderTick + 
-               (((m_robotContainer.currentElevatorPosition-Constants.LiftConstants.liftMidTick)/
-                  (Constants.LiftConstants.liftTopTick- Constants.LiftConstants.liftMidTick)) * 
-                  (Constants.ArmConstants.highShoulderTick - Constants.ArmConstants.midShoulderTick));  
-            RobotContainer.currentElbowSetPos =  Constants.ArmConstants.midElbowTick +
-               (((m_robotContainer.currentElevatorPosition - Constants.LiftConstants.liftMidTick) /
-               (Constants.LiftConstants.liftTopTick - Constants.LiftConstants.liftMidTick)) *
-               (Constants.ArmConstants.highElbowTick - Constants.ArmConstants.midElbowTick));
-         }
-      }
-      else{
-         //Update Elbow and Shoulder Position based off elevator position between rest and station position
-
-         if(m_robotContainer.currentElevatorPosition < Constants.LiftConstants.liftStationTick && m_robotContainer.currentElevatorPosition > Constants.LiftConstants.liftRestTick){
-            RobotContainer.currentShoulderSetPos = Constants.ArmConstants.restShoulderTick + 
-               (((m_robotContainer.currentElevatorPosition-Constants.LiftConstants.liftRestTick)/
-                  (Constants.LiftConstants.liftStationTick- Constants.LiftConstants.liftRestTick)) * 
-                  (Constants.ArmConstants.pickUpStationShoulderTick - Constants.ArmConstants.restShoulderTick));  
-            RobotContainer.currentElbowSetPos =  Constants.ArmConstants.restElbowTick +
-               (((m_robotContainer.currentElevatorPosition - Constants.LiftConstants.liftRestTick) /
-               (Constants.LiftConstants.liftStationTick - Constants.LiftConstants.liftRestTick)) *
-               (Constants.ArmConstants.pickUpStationElbowTick - Constants.ArmConstants.restElbowTick));
-         }
-         //Update Elbow and Shoulder Position based off elevator position between rest and station position
-         else if(m_robotContainer.currentElevatorPosition < Constants.LiftConstants.liftPickUpTick && m_robotContainer.currentElevatorPosition > Constants.LiftConstants.liftStationTick){
-            RobotContainer.currentShoulderSetPos = Constants.ArmConstants.pickUpStationShoulderTick + 
-               (((m_robotContainer.currentElevatorPosition-Constants.LiftConstants.liftStationTick)/
-                  (Constants.LiftConstants.liftPickUpTick - Constants.LiftConstants.liftStationTick)) * 
-                  (Constants.ArmConstants.pickUpShoulderTick - Constants.ArmConstants.pickUpStationShoulderTick));  
-            RobotContainer.currentElbowSetPos =  Constants.ArmConstants.pickUpStationElbowTick +
-               (((m_robotContainer.currentElevatorPosition - Constants.LiftConstants.liftStationTick) /
-               (Constants.LiftConstants.liftPickUpTick - Constants.LiftConstants.liftStationTick)) *
-               (Constants.ArmConstants.pickUpElbowTick - Constants.ArmConstants.pickUpStationElbowTick));
-         }
-      }
-
-      if(m_robotContainer.lift.isResetLift() == true){
-         m_robotContainer.resetLiftEncoderTick();
-      }
-      if(m_robotContainer.arm.isResetElbow() == true){
+      if(m_robotContainer.arm.isResetElbow() != RobotContainer.isElbowSwitchHit){
          m_robotContainer.resetElbowEncoderTick();
       }
-      if(m_robotContainer.arm.isResetShoulder() == true){
+      if(m_robotContainer.arm.isResetShoulder() != RobotContainer.isShoulderSwitchHit){
          m_robotContainer.resetShoulderTick();
       }
+      RobotContainer.isElbowSwitchHit = m_robotContainer.arm.isResetElbow();
+      RobotContainer.isShoulderSwitchHit = m_robotContainer.arm.isResetShoulder();
 
       if(RobotContainer.isCube == false)
          OI.Vision.TypeOfPieceEntry.setString("Cone");
@@ -244,14 +177,16 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void autonomousInit() {
-      RobotContainer.elevatorSetPos = Constants.LiftConstants.liftRestTick;
-      RobotContainer.elbowSetPos = Constants.ArmConstants.restElbowTick;
-      RobotContainer.shoulderSetPos = Constants.ArmConstants.restShoulderTick;
+      // RobotContainer.setElbowSetPoint(-7.2);
       
       RobotContainer.drivetrain.frontLeft.setNeutralMode(NeutralMode.Brake);
       RobotContainer.drivetrain.rearLeft.setNeutralMode(NeutralMode.Brake);
       RobotContainer.drivetrain.frontRight.setNeutralMode(NeutralMode.Brake);
       RobotContainer.drivetrain.rearRight.setNeutralMode(NeutralMode.Brake);
+
+      RobotContainer.setElbowSetPoint(0);
+      RobotContainer.setElevatorSetPoint(40);
+      RobotContainer.setShoulderSetPoint(-3);
 
       RobotContainer.drivetrain.resetOdometry();
      autoCommand = m_robotContainer.getSelected();
@@ -267,6 +202,9 @@ public class Robot extends TimedRobot {
   /** This function is called periodically during autonomous. */
   @Override
   public void autonomousPeriodic() {
+   if(m_robotContainer.isElevLimitPressed() ==true)
+      RobotContainer.setShoulderSetPoint(Constants.ArmConstants.highCubeShoulderTick);
+      RobotContainer.setElbowSetPoint(Constants.ArmConstants.highCubeElbowTick);
    /*  rightGroup.setInverted(true);
     if(m_Timer.get()< 1.5){
     differentialDrive.arcadeDrive(0.1,0,false);
@@ -279,8 +217,12 @@ public class Robot extends TimedRobot {
   /** This function is called once when teleop is enabled. */
   @Override
   public void teleopInit() {
+
       RobotContainer.drivetrain.resetEncoders();
       RobotContainer.drivetrain.resetOdometry();
+      m_robotContainer.resetElevatorIAccum();
+      RobotContainer.setElbowSetPoint(0);
+      RobotContainer.setShoulderSetPoint(0);
    
      if(autoCommand != null){
        autoCommand.cancel();
@@ -290,7 +232,42 @@ public class Robot extends TimedRobot {
 
   /** This function is called periodically during operator control. */
   @Override
-  public void teleopPeriodic() {}
+  public void teleopPeriodic() {
+      //  if(Math.abs(RobotContainer.LJSY_Arm) < 0.08)
+      //     RobotContainer.LJSY_Arm = 0;
+      //  RobotContainer.setElevatorSetPoint(RobotContainer.getElevatorSetPoint() + (RobotContainer.LJSY_Arm * -2));
+      // if(RobotContainer.getElbowSetPoint() < -7.6){
+      //    RobotContainer.setElbowSetPoint(-7.6);
+      // }
+      // if(RobotContainer.getElbowSetPoint() >0){
+      //    RobotContainer.setElbowSetPoint(0);
+      // }
+      if (OI.XboxController.X2_DPad == 270) {
+
+         m_robotContainer.resetElevatorIAccum();
+         RobotContainer.setShoulderSetPoint(Constants.ArmConstants.restShoulderTick);
+         RobotContainer.setElbowSetPoint(Constants.ArmConstants.restElbowTick);
+         
+     }
+      //Low Pos Pickup Position
+      if(OI.XboxController.X2_DPad == 0)  {
+          RobotContainer.setShoulderSetPoint(Constants.ArmConstants.highCubeShoulderTick);
+          RobotContainer.setElbowSetPoint(Constants.ArmConstants.highCubeElbowTick);
+      }
+      if (OI.XboxController.X2_DPad == 180) {
+            RobotContainer.setElbowSetPoint(Constants.ArmConstants.lowElbowTick);
+            RobotContainer.setShoulderSetPoint(Constants.ArmConstants.lowShoulderTick);
+      }
+      if(OI.XboxController.X2_DPad == 90 && RobotContainer.isCube) {
+            RobotContainer.setElbowSetPoint(Constants.ArmConstants.midCubeElbowTick);
+            RobotContainer.setShoulderSetPoint(Constants.ArmConstants.midCubeShoulderTick);
+      }
+      else if(OI.XboxController.X2_DPad == 90 && RobotContainer.isCube == false){
+            RobotContainer.setElbowSetPoint(Constants.ArmConstants.midConeElbowTick);
+            RobotContainer.setShoulderSetPoint(Constants.ArmConstants.midConeShoulderTick);
+      }
+
+  }
 
   /** This function is called once when the robot is disabled. */
   @Override

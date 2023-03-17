@@ -41,25 +41,39 @@ public class Arm extends SubsystemBase {
         Constants.ArmConstants.elbowKvVoltSecondPerRad, 
         Constants.ArmConstants.elbowKaVoltSecondSquaredPerRad);
 
-    private double elbowKI, elbowKD, elbowKP, shoulderKI, shoulderKD, shoulderKP;
+    public double elbowKI, elbowKD, elbowKP, shoulderKI, shoulderKD, shoulderKP, elbowFFa, shoulderFFa, shoulderFFb, elbowMax, elbowMin, shoulderMax, shoulderMin;
     public Arm(){
         elbowController = elbowMotor.getPIDController();
         shoulderController = shoulderMotor.getPIDController();
 
-        elbowKP = .007;
+        elbowKP = 1.8;
         elbowKD = 0;
-        elbowKI = 0;
-        shoulderKP = .008;
+        elbowKI = .0006;
+        elbowFFa = 1.4;
+        elbowMax = .13;
+        elbowMin = -.11;
+
+        shoulderFFa = -1.4;
+        shoulderFFb = -1.4;
+        shoulderMax = .13;
+        shoulderMin = -.19;
+        shoulderKP = 2;
         shoulderKD = 0;
-        shoulderKI = 0;
+        shoulderKI = .0007;
 
         elbowController.setP(elbowKP);
         elbowController.setD(elbowKD);
         elbowController.setI(elbowKI);
+        elbowController.setOutputRange(elbowMin, elbowMax);
+        elbowController.setIMaxAccum(3, 0);
+        elbowController.setIZone(2.5);
+
         shoulderController.setP(shoulderKP);
         shoulderController.setD(shoulderKD);
         shoulderController.setI(shoulderKI);
-
+        shoulderController.setOutputRange(shoulderMin, shoulderMax);
+        shoulderController.setIMaxAccum(10, 0);
+        shoulderController.setIZone(4.5);
 
     }
     public void runElbowMotor(double speed){
@@ -78,10 +92,10 @@ public class Arm extends SubsystemBase {
         shoulderMotor.stopMotor();
     }
     public double getShoulderTick(){
-        return shoulderEncoder.getCountsPerRevolution() * shoulderEncoder.getPosition(); 
+        return  shoulderEncoder.getPosition();
     }
     public double getElbowTick(){
-        return elbowEncoder.getCountsPerRevolution() * elbowEncoder.getPosition(); 
+        return  elbowEncoder.getPosition(); 
 
     }
     public boolean isResetElbow(){
@@ -91,6 +105,13 @@ public class Arm extends SubsystemBase {
     public boolean isResetShoulder(){
         return shoulderLimitSwitch.isPressed();
     }
-    
-    
+
+    public double getElbowAngle(){
+        return ((elbowEncoder.getPosition() / (20*2)) * 360) + 165 + getShoulderAngle();
+    }
+
+    public double getShoulderAngle(){
+        return -((shoulderEncoder.getPosition() / (36*2)) * 360) - 75;
+    }
 }
+

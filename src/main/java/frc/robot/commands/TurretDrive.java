@@ -21,7 +21,7 @@ public class TurretDrive extends CommandBase{
     @Override
     public void execute() {
         speed = RobotContainer.RJSX_Arm;
-        turret.moveMotor(speed * .33);
+        turret.moveMotor(speed * .25);
     }
 
     @Override

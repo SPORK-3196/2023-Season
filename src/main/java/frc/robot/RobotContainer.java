@@ -13,19 +13,17 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
-import frc.robot.commands.Claw.CloseClawCone;
-import frc.robot.commands.Claw.CloseClawCube;
+import frc.robot.commands.Claw.CloseClaw;
 import frc.robot.commands.Claw.ReleasePiece;
-import frc.robot.commands.Drivetrain.DistanceToVisionTarget;
+import frc.robot.commands.Drivetrain.BrakeModeDrive;
 import frc.robot.commands.Drivetrain.DriveWithJoyStick;
-import frc.robot.commands.Drivetrain.FindAndRunTarget;
-import frc.robot.commands.Drivetrain.TracktoVisionTarget;
-import frc.robot.commands.Drivetrain.Turn90LeftDegrees;
+
 
 import frc.robot.commands.TurretDrive;
-import frc.robot.commands.Autonomous.SimpleAuto;
+import frc.robot.commands.Autonomous.HighRungAuto;
+import frc.robot.commands.Autonomous.LowRungAuto;
+import frc.robot.commands.Autonomous.MiddleRungAuto;
 import frc.robot.commands.Autonomous.Positions.ArmPosition;
-import frc.robot.commands.Autonomous.Positions.ElevatorPosition;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.EveryClaw;
@@ -42,7 +40,6 @@ public class RobotContainer {
     private DriveWithJoyStick joystickDrive = new DriveWithJoyStick(drivetrain);
     private TurretDrive turretRotate = new TurretDrive(turret);
 
-    private ElevatorPosition moveElevator = new ElevatorPosition(lift);
     private ArmPosition moveArm = new ArmPosition(arm);
 
     public static PhotonCamera aprilTagCam = new PhotonCamera("Global_Shutter_Elevator");
@@ -67,6 +64,7 @@ public class RobotContainer {
     public static double LJSY_Arm = armController.getLeftY();
 
     public static double RJSX_Arm = armController.getRightX();
+    public static double RJSY_Arm = armController.getRightY();
 
     public static JoystickButton B_Arm = new JoystickButton(armController, XboxController.Button.kB.value);
     public static JoystickButton A_Arm = new JoystickButton(armController, XboxController.Button.kA.value);
@@ -80,74 +78,54 @@ public class RobotContainer {
     public static JoystickButton B_Prim = new JoystickButton(primaryController, XboxController.Button.kB.value);
     public static JoystickButton Y_Prim = new JoystickButton(primaryController, XboxController.Button.kY.value);
 
-    public static int elevatorSetPos = 0;
-    public static int shoulderSetPos = 0;
-    public static int elbowSetPos = 0;
+
+    public static double elevatorSetPos = 0;
+    public static boolean elevatorUpdated = false;
+
+    public static double shoulderSetPos = 0;
+    public static double elbowSetPos = 0;
+
+    public double elbowAngle = 0; 
+    public double shoulderAngle = 0;
 
     public double currentElevatorPosition;
+    public static double currentElbowPos = 0;
+    public static double currentShoulderPos = 0;
 
-    public static double currentElbowSetPos;
-    public static double currentShoulderSetPos;
-
-    public static boolean isCube = false;
+    public static boolean isCube = true;
     public static boolean pickUp = true;
+
+    public static boolean isElbowSwitchHit = false;
+    public static boolean isShoulderSwitchHit = false;
 
     public RobotContainer() {
         configureButtonBindings();
         turret.setDefaultCommand(turretRotate);
         drivetrain.setDefaultCommand(joystickDrive);
-        claw.setDefaultCommand(new ReleasePiece(claw));
-        lift.setDefaultCommand(moveElevator);
         arm.setDefaultCommand(moveArm);
-        autoChooser.setDefaultOption("Basic Auto", new SimpleAuto(drivetrain, arm, lift));
+        autoChooser.addOption("Mid Rung Auto", new MiddleRungAuto(drivetrain, claw));
+        autoChooser.setDefaultOption("High Rung Auto", new HighRungAuto(drivetrain, claw));
+        autoChooser.addOption("Low Rung Auto", new LowRungAuto(drivetrain, claw));
+        
     }
 
     public void configureButtonBindings() {
             //Station Pos Pickup Position
 
-        if (getPickUp() == true && OI.XboxController.X2_DPad == 0) {
-            setElevatorSetPoint(Constants.LiftConstants.liftStationTick);
-        }
-                //Low Pos Pickup Position
-
-        if (getPickUp() == true && OI.XboxController.X2_DPad == 180) {
-            setElevatorSetPoint(Constants.LiftConstants.liftPickUpTick);
-        }
-        //High Rung Position
-
-        // if (getPickUp() == false && OI.XboxController.X2_DPad == 0) {
-        //     setElevatorSetPoint(Constants.LiftConstants.liftTopTick);
-        // }
-        
-        //Low Rung Position
-
-        if (getPickUp() == false && OI.XboxController.X2_DPad == 180) {
-            setElevatorSetPoint(Constants.LiftConstants.liftMidTick);
-        }
-        //Mid Rung Position
-
-        if (getPickUp() == false && OI.XboxController.X2_DPad == 270) {
-            setElevatorSetPoint(Constants.LiftConstants.liftMidTick);
-        }
-        //Rest Position
-                
-        if (OI.XboxController.X2_DPad == 90) {
-            setElevatorSetPoint(Constants.LiftConstants.liftRestTick);
-        }
-
         B_Arm.onTrue(Commands.runOnce(() -> changePickUp()));
 
-        if (isCube == false)
-            X_Arm.whileTrue(new CloseClawCone(claw));
-        if (isCube == true)
-            X_Arm.whileTrue(new CloseClawCube(claw));
+            X_Arm.whileTrue(new ReleasePiece(claw));
+            A_Arm.whileTrue(new CloseClaw(claw));
+            Y_Arm.onTrue(Commands.runOnce(() -> setSetPointsToPickUp()));
 
         LBP_Arm.onTrue(Commands.runOnce(() -> changeCube()));
         RBP_Arm.onTrue(Commands.runOnce(() -> changeCone()));
 
-        A_Prim.whileTrue(new TracktoVisionTarget(drivetrain));
-        B_Prim.onTrue(new DistanceToVisionTarget(drivetrain));
-        Y_Prim.onTrue(new FindAndRunTarget(drivetrain));
+        // A_Prim.whileTrue(new TracktoVisionTarget(drivetrain));
+        // B_Prim.onTrue(new DistanceToVisionTarget(drivetrain));
+        // Y_Prim.onTrue(new FindAndRunTarget(drivetrain));
+
+        A_Prim.whileTrue(new BrakeModeDrive(drivetrain));
 
     }
 
@@ -206,19 +184,20 @@ public class RobotContainer {
         return drivetrain.getPose().getRotation().getDegrees();
     }
 
-    public static void setElevatorSetPoint(int setPoint) {
+    public static void setElevatorSetPoint(double setPoint) {
+        elevatorUpdated = true;
         elevatorSetPos = setPoint;
     }
 
-    public static int getElevatorSetPoint() {
+    public static double getElevatorSetPoint() {
         return elevatorSetPos;
     }
 
-    public static int getShoulderSetPoint() {
+    public static double getShoulderSetPoint() {
         return shoulderSetPos;
     }
 
-    public static int getElbowSetPoint() {
+    public static double getElbowSetPoint() {
         return elbowSetPos;
     }
 
@@ -250,14 +229,43 @@ public class RobotContainer {
     }
 
     public void resetLiftEncoderTick(){
-        currentElbowSetPos = 0;
+        lift.liftEncoder.setPosition(0);
     }
 
     public void resetElbowEncoderTick(){
-        currentElbowSetPos = 0;
+        arm.elbowEncoder.setPosition(0);
     }
 
     public void resetShoulderTick(){
-        currentShoulderSetPos = 0;
+        arm.shoulderEncoder.setPosition(0);
+    }
+
+    public static void setShoulderSetPoint(double setPoint){
+        shoulderSetPos = setPoint;
+    }
+    public static void setElbowSetPoint(double setpoint){
+        
+        elbowSetPos = setpoint;
+    }
+
+    public double getShoulderAngle(){
+        return arm.getShoulderAngle();
+    }
+
+    public double getElbowAngle(){
+        return arm.getElbowAngle();
+    }
+    public void resetElevatorIAccum(){
+        lift.liftController.setIAccum(0);
+    }
+    public boolean isElevLimitPressed(){
+        return lift.isResetLift();
+    }
+    public boolean isShoulderLimitPressed(){
+        return arm.isResetShoulder();
+    }
+    public void setSetPointsToPickUp(){
+        RobotContainer.setElbowSetPoint(Constants.ArmConstants.pickUpElbowTick);
+        RobotContainer.setShoulderSetPoint(Constants.ArmConstants.pickUpShoulderTick);
     }
 }

@@ -124,8 +124,16 @@ public class OI {
     public static final class ArmElevator {
         public static ShuffleboardTab ArmElevator_TAB = Shuffleboard.getTab("Arm & Elevator");
 
-        public static GenericEntry ElevatorPosEntry = ArmElevator_TAB.add("Elevator Set Pos", 0).getEntry();
-        public static GenericEntry ShoulderPosEntry = ArmElevator_TAB.add("Shoulder Set Pos", 0).getEntry();
-        public static GenericEntry ElbowPosEntry = ArmElevator_TAB.add("Elbow Set Pos", 0).getEntry();
+        public static GenericEntry ElevatorPosEntry = ArmElevator_TAB.add("Elevator Pos", 0).getEntry();
+        public static GenericEntry ShoulderPosEntry = ArmElevator_TAB.add("Shoulder Pos", 0).getEntry();
+        public static GenericEntry ElbowPosEntry = ArmElevator_TAB.add("Elbow Pos", 0).getEntry();
+
+        public static GenericEntry ElevatorSetPosEntry = ArmElevator_TAB.add("Elevator Set Pos", 0).getEntry();
+        public static GenericEntry ElbowSetPosEntry = ArmElevator_TAB.add("Elbow Set Pos", 0).getEntry();
+        public static GenericEntry ShoulderSetPosEntry = ArmElevator_TAB.add("Shoulder Set Pos", 0).getEntry();
+
+        public static GenericEntry ShoulderAngleEntry = ArmElevator_TAB.add("Shoulder Angle", 0).getEntry();
+        public static GenericEntry ElbowAngleEntry = ArmElevator_TAB.add("Elbow Angle", 0).getEntry();
+
     }
 }

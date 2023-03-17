@@ -17,20 +17,24 @@ public final class Constants {
         
         public static final double kP = 1;
 
-        public static final int restShoulderTick = 0;
-        public static final int restElbowTick = 0;
-        public static final int lowShoulderTick = 0;
-        public static final int lowElbowTick = 0;
-        public static final int midShoulderTick = 0;
-        public static final int midElbowTick = 0;
-        public static final int highShoulderTick = 0;
-        public static final int highElbowTick = 0;
-        public static final int pickUpShoulderTick = 0;
-        public static final int pickUpElbowTick = 0;
+        public static final double restShoulderTick = -0;
+        public static final double restElbowTick = -0;
+        public static final double lowShoulderTick = -.4;
+        public static final double lowElbowTick = -7;
+        public static final double midCubeShoulderTick = -3;
+        public static final double midCubeElbowTick = -5.3;
+        public static final double midConeShoulderTick = -4.6;
+        public static final double midConeElbowTick = -6.2;
+        public static final double highCubeShoulderTick = -14.5;
+        public static final double highCubeElbowTick = -12.5;
+        public static final double highConeElbowTick = -12.5;
+        public static final double highConeShoulderTick = -14.5;
+        public static final double pickUpShoulderTick = -.1;
+        public static final double pickUpElbowTick = -9.4;
         public static final int pickUpStationShoulderTick = 0;
         public static final int pickUpStationElbowTick = 0;
-        public static final int startElbowTick = -500 ;
-        public static final int startShoulderTick = 16300;
+        public static final int startElbowTick = 0;
+        public static final double startShoulderTick = -5.19;
 
         public static final double shoulderKsVolts = 1;
         public static final double shoulderKgVolts = 1;
@@ -80,17 +84,18 @@ public final class Constants {
     public static final class LiftConstants {
         public static final int liftMotorID = 8;
 
-        public static final double liftKP = 0.014;
+        public static final double liftKP = .5;
         public static final double liftKD = 0;
-        public static final double liftKI = 0;
+        public static final double liftKI = .0005;
+        public static final double liftKFF = 1;
 
-        public static final int liftRestTick = 0;
-        public static final int liftBottomTick = 500;
-        public static final int liftMidTick = 3500;
-        public static final int liftTopTick = 7000;
-        public static final int liftPickUpTick = 450;
-        public static final int liftStationTick = 4000;
-        public static final int liftStartTick = -15500;
+        public static final double liftRestTick = -25.7;
+        public static final double liftBottomTick = -20;
+        public static final double liftMidTick = -7.5;
+        public static final double liftTopTick = -7.5;
+        public static final double liftPickUpTick = -25.7;
+        // public static final int liftStationTick = 4000;
+        public static final double liftStartTick = -25;
     }
     public static final class VisionConstants {
         public static double globalShutterHeightMeters = Units.inchesToMeters(33.5);
