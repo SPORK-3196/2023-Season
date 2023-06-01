@@ -110,7 +110,6 @@ public class RobotContainer {
     }
 
     public void configureButtonBindings() {
-            //Station Pos Pickup Position
 
         B_Arm.onTrue(Commands.runOnce(() -> changePickUp()));
 
@@ -121,9 +120,6 @@ public class RobotContainer {
         LBP_Arm.onTrue(Commands.runOnce(() -> changeCube()));
         RBP_Arm.onTrue(Commands.runOnce(() -> changeCone()));
 
-        // A_Prim.whileTrue(new TracktoVisionTarget(drivetrain));
-        // B_Prim.onTrue(new DistanceToVisionTarget(drivetrain));
-        // Y_Prim.onTrue(new FindAndRunTarget(drivetrain));
 
         A_Prim.whileTrue(new BrakeModeDrive(drivetrain));
 
