@@ -7,35 +7,45 @@ import org.photonvision.targeting.PhotonTrackedTarget;
 import com.pathplanner.lib.PathPlanner;
 import com.pathplanner.lib.PathPlannerTrajectory;
 
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Transform3d;
+import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.commands.Claw.CloseClaw;
 import frc.robot.commands.Claw.ReleasePiece;
 import frc.robot.commands.Drivetrain.BrakeModeDrive;
 import frc.robot.commands.Drivetrain.DriveWithJoyStick;
-
-
+import frc.robot.commands.Drivetrain.TurnSetDegrees;
+import frc.robot.commands.Lighting.LightingControl;
+import frc.robot.commands.Turret.TurretToCenter;
+import frc.robot.commands.Turret.TurretToTag;
 import frc.robot.commands.TurretDrive;
+import frc.robot.commands.Arm.TurnArmOff;
+import frc.robot.commands.Autonomous.AutoHighChargeStation;
 import frc.robot.commands.Autonomous.HighRungAuto;
-import frc.robot.commands.Autonomous.LowRungAuto;
+import frc.robot.commands.Autonomous.HighRungPlace;
 import frc.robot.commands.Autonomous.MiddleRungAuto;
+import frc.robot.commands.Autonomous.Cube.TrackToCube;
 import frc.robot.commands.Autonomous.Positions.ArmPosition;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.EveryClaw;
-import frc.robot.subsystems.Lift;
+import frc.robot.subsystems.Lighting;
 import frc.robot.subsystems.Turret;
 
 public class RobotContainer {
-    private EveryClaw claw = new EveryClaw();
+    private static EveryClaw claw = new EveryClaw();
     public static Drivetrain drivetrain = new Drivetrain();
     public Arm arm = new Arm();
-    public Lift lift = new Lift();
     private Turret turret = new Turret();
+    private Lighting lighting = new Lighting();
 
     private DriveWithJoyStick joystickDrive = new DriveWithJoyStick(drivetrain);
     private TurretDrive turretRotate = new TurretDrive(turret);
@@ -45,13 +55,12 @@ public class RobotContainer {
     public static PhotonCamera aprilTagCam = new PhotonCamera("Global_Shutter_Elevator");
     public static PhotonCamera raspiCam = new PhotonCamera("mmal_service_16.1");
 
-    public static double aprilYaw = 0;
+    public static double aprilYaw, piYaw = 0;
 
-    public static PhotonPipelineResult result;
-    public static PhotonTrackedTarget bResult;
-    public static PhotonTrackedTarget rasbResult;
-    public static double aprilX;
-    public static double aprilY;
+    public static PhotonPipelineResult result, piResult;
+    public static PhotonTrackedTarget bResult, piBResult;
+    public static double aprilX, piX;
+    public static double aprilY, piY;
 
     public static SendableChooser<Command> autoChooser = new SendableChooser<Command>();
 
@@ -76,7 +85,13 @@ public class RobotContainer {
 
     public static JoystickButton A_Prim = new JoystickButton(primaryController, XboxController.Button.kA.value);
     public static JoystickButton B_Prim = new JoystickButton(primaryController, XboxController.Button.kB.value);
+    public static JoystickButton X_Prim = new JoystickButton(primaryController, XboxController.Button.kX.value);
+
     public static JoystickButton Y_Prim = new JoystickButton(primaryController, XboxController.Button.kY.value);
+    public static JoystickButton LJSButton = new JoystickButton(armController, XboxController.Button.kLeftStick.value);
+    public static JoystickButton L_Start = new JoystickButton(armController, XboxController.Button.kStart.value);
+
+    public static double R_TPrimary = primaryController.getRightTriggerAxis();
 
 
     public static double elevatorSetPos = 0;
@@ -93,7 +108,7 @@ public class RobotContainer {
     public static double currentShoulderPos = 0;
 
     public static boolean isCube = true;
-    public static boolean pickUp = true;
+    public static boolean isHigh = true;
 
     public static boolean isElbowSwitchHit = false;
     public static boolean isShoulderSwitchHit = false;
@@ -103,33 +118,45 @@ public class RobotContainer {
         turret.setDefaultCommand(turretRotate);
         drivetrain.setDefaultCommand(joystickDrive);
         arm.setDefaultCommand(moveArm);
-        autoChooser.addOption("Mid Rung Auto", new MiddleRungAuto(drivetrain, claw));
-        autoChooser.setDefaultOption("High Rung Auto", new HighRungAuto(drivetrain, claw));
-        autoChooser.addOption("Low Rung Auto", new LowRungAuto(drivetrain, claw));
+        lighting.setDefaultCommand(new LightingControl(lighting));
+
+        autoChooser.addOption("Mid Rung Taxi", new MiddleRungAuto(drivetrain, claw));
+        autoChooser.setDefaultOption("High Rung Taxi", new HighRungAuto(drivetrain, claw));
+        autoChooser.addOption("High Rung Place", new HighRungPlace(drivetrain, claw));
+        autoChooser.addOption("High Rung Charge", new AutoHighChargeStation(drivetrain, claw));
+        autoChooser.addOption("Straight Test", trajectory());
         
     }
 
     public void configureButtonBindings() {
+            //Station Pos Pickup Position
 
-        B_Arm.onTrue(Commands.runOnce(() -> changePickUp()));
+        X_Arm.whileTrue(new ReleasePiece(claw));
+        A_Arm.whileTrue(new CloseClaw(claw));
+        Y_Arm.onTrue(Commands.runOnce(() -> setSetPointsToPickUp()));
 
-            X_Arm.whileTrue(new ReleasePiece(claw));
-            A_Arm.whileTrue(new CloseClaw(claw));
-            Y_Arm.onTrue(Commands.runOnce(() -> setSetPointsToPickUp()));
+        LBP_Arm.onTrue(Commands.runOnce(() -> changePosPlaceHigh()));
+        RBP_Arm.onTrue(Commands.runOnce(() -> changePosPlaceMid()));
 
-        LBP_Arm.onTrue(Commands.runOnce(() -> changeCube()));
-        RBP_Arm.onTrue(Commands.runOnce(() -> changeCone()));
+        L_Start.whileTrue(new TurretToTag(turret));
+        B_Arm.onTrue(new TurretToCenter(turret));
 
+        LJSButton.whileTrue(new TurnArmOff(arm));
+
+        // A_Prim.whileTrue(new TracktoVisionTarget(drivetrain));
+        // B_Prim.onTrue(new DistanceToVisionTarget(drivetrain));
+        Y_Prim.onTrue(new TurnSetDegrees(drivetrain, 180));
+
+        X_Prim.whileTrue(new TrackToCube(drivetrain));
 
         A_Prim.whileTrue(new BrakeModeDrive(drivetrain));
 
     }
 
     public static Command trajectory() {
-        PathPlannerTrajectory trajectory = PathPlanner.loadPath("StraightPath",
-                .75, .25);
-        return PathGenerator.generateRamseteCommand(trajectory, drivetrain)
-                .andThen(() -> drivetrain.tankDriveVolts(0, 0));
+        PathPlannerTrajectory trajectory = PathPlanner.loadPath("Aroosh",
+                1, .1);
+        return PathGenerator.generateRamseteCommand(drivetrain, claw).fullAuto(trajectory).beforeStarting(new InstantCommand(drivetrain::resetOdometry, drivetrain)).beforeStarting(new InstantCommand(drivetrain::zeroGyro, drivetrain));
     }
 
     public Command getSelected() {
@@ -145,7 +172,12 @@ public class RobotContainer {
     }
 
     public static double getCamYaw(PhotonTrackedTarget target) {
-        return target.getYaw();
+        try {
+            return target.getYaw();
+        } catch(Exception e) {
+            return 0;
+        }
+        
     }
 
     public static double getCamPitch(PhotonTrackedTarget target) {
@@ -161,7 +193,12 @@ public class RobotContainer {
     }
 
     public static Transform3d distanceToVisionPose(PhotonTrackedTarget target) {
-        return target.getBestCameraToTarget();
+        try {
+            return target.getBestCameraToTarget();
+        } catch(Exception e) {
+            return new Transform3d(new Translation3d(0,0,0), new Rotation3d(0,0,0));
+        }
+        
     }
 
     public static int getFudicialID(PhotonTrackedTarget target) {
@@ -197,14 +234,15 @@ public class RobotContainer {
         return elbowSetPos;
     }
 
-    public static void changePickUp() {
-        pickUp = !pickUp;
+    public static void changePosPlaceHigh() {
+        isHigh = true;
     }
-
-    public static boolean getPickUp() {
-        return pickUp;
+    public static void changePosPlaceMid() {
+        isHigh = false;
     }
-
+    public static boolean getPosPlace() {
+        return isHigh;
+    }
     public static void changeCube() {
         RobotContainer.isCube = true;
     }
@@ -212,9 +250,9 @@ public class RobotContainer {
     public static void changeCone() {
         RobotContainer.isCube = false;
     }
-    public double getLiftEncoderTick(){
-        return lift.getEncoderTick();
-    }
+    // public double getLiftEncoderTick(){
+    //     return lift.getEncoderTick();
+    // }
 
     public double getShoulderEncoderTick(){
         return arm.getShoulderTick();
@@ -224,9 +262,9 @@ public class RobotContainer {
         return arm.getElbowTick();
     }
 
-    public void resetLiftEncoderTick(){
-        lift.liftEncoder.setPosition(0);
-    }
+    // public void resetLiftEncoderTick(){
+    //     lift.liftEncoder.setPosition(0);
+    // }
 
     public void resetElbowEncoderTick(){
         arm.elbowEncoder.setPosition(0);
@@ -251,17 +289,29 @@ public class RobotContainer {
     public double getElbowAngle(){
         return arm.getElbowAngle();
     }
-    public void resetElevatorIAccum(){
-        lift.liftController.setIAccum(0);
-    }
-    public boolean isElevLimitPressed(){
-        return lift.isResetLift();
-    }
     public boolean isShoulderLimitPressed(){
         return arm.isResetShoulder();
     }
     public void setSetPointsToPickUp(){
-        RobotContainer.setElbowSetPoint(Constants.ArmConstants.pickUpElbowTick);
-        RobotContainer.setShoulderSetPoint(Constants.ArmConstants.pickUpShoulderTick);
+        if(isCube){
+            RobotContainer.setElbowSetPoint(Constants.ArmConstants.pickUpElbowTick);
+            RobotContainer.setShoulderSetPoint(Constants.ArmConstants.pickUpShoulderTick);
+        }
+        else{
+            RobotContainer.setElbowSetPoint(Constants.ArmConstants.pickUpStationElbowTick);
+            RobotContainer.setShoulderSetPoint(Constants.ArmConstants.pickUpStationShoulderTick);
+        }
+    }
+    public double getTurretPos(){
+        return turret.getTurretTick();
+    }
+    public static double getGyroPitch(){
+        return Drivetrain.getGyroPitch();
+    }
+    public static Rotation2d getGyroYaw(){
+        return Drivetrain.gyroscope.getRotation2d();
+    }
+    public static Pose2d getDrivetrainOdometry(){
+        return drivetrain.m_odometry.getPoseMeters();
     }
 }

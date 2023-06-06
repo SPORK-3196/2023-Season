@@ -5,25 +5,33 @@ import com.ctre.phoenix.motorcontrol.NeutralMode;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.OI;
 import frc.robot.subsystems.Drivetrain;
 
-public class Turn90RightDegrees extends CommandBase  {
+public class TurnSetDegrees extends CommandBase  {
     Drivetrain drivetrain;
     public static double heading;
     public double speed;
     public PIDController controller;
-    private double time;
+    double error;
+    double degree;
     Timer timer = new Timer();
     
-    public Turn90RightDegrees(Drivetrain drivetrain, double time){
+    public TurnSetDegrees(Drivetrain drivetrain, double degree){
         this.drivetrain = drivetrain;
-        this.time=time;
+        this.degree = degree;
+
         addRequirements(drivetrain);
     }
     @Override
     public void initialize(){
+        drivetrain.frontLeft.setNeutralMode(NeutralMode.Brake);
+        drivetrain.rearLeft.setNeutralMode(NeutralMode.Brake);
+        drivetrain.frontRight.setNeutralMode(NeutralMode.Brake);
+        drivetrain.rearRight.setNeutralMode(NeutralMode.Brake);
         drivetrain.zeroGyro();
-        controller = new PIDController(.006, .005, 0);
+        Drivetrain.gyroscope.setYaw(0);
+        controller = new PIDController(.054, 0, .0085);
         timer.reset();
         timer.start();
 
@@ -31,7 +39,15 @@ public class Turn90RightDegrees extends CommandBase  {
     @Override
     public void execute(){ 
         heading = Drivetrain.getGyroHeading();
-        speed = controller.calculate(heading, 90);
+        speed = -controller.calculate(heading, degree);
+        if(speed > .45)
+            speed =.45;
+        else if(speed < -.45)
+            speed = -.45;
+        error = controller.getPositionError();
+        OI.Drivetrain.Turn180Error.setDouble(error);
+        OI.Drivetrain.Turn180Heading.setDouble(heading);
+        controller.setTolerance(1);
         drivetrain.arcadeDrive(0, speed);
     }
     @Override
@@ -42,7 +58,7 @@ public class Turn90RightDegrees extends CommandBase  {
         drivetrain.rearRight.setNeutralMode(NeutralMode.Coast);
     }
     public boolean isFinished(){
-        return timer.get() >= time;
+        return timer.hasElapsed(2);
         
     } 
 }

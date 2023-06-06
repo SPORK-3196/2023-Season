@@ -5,6 +5,7 @@
 package frc.robot;
 
 
+
 import org.photonvision.PhotonCamera;
 
 import com.ctre.phoenix.motorcontrol.NeutralMode;
@@ -38,19 +39,21 @@ public class Robot extends TimedRobot {
   @Override
   public void robotInit() {
       NetworkTableInstance camInstance = NetworkTableInstance.getDefault();
-      camInstance.startClient4("10.31.96.203");
+      NetworkTableInstance cam2Instance = NetworkTableInstance.getDefault();
+
+      camInstance.startClient4("10.31.96.214");
       camInstance.startDSClient();
+      cam2Instance.startClient4("10.31.96.4");
+      cam2Instance.startDSClient();
       
       m_robotContainer = new RobotContainer();
 
-      Drivetrain.zerogyro();
+      RobotContainer.drivetrain.zeroGyro();
 
-      PortForwarder.add(5800, "10.31.96.33", 5800);
-      PortForwarder.add(5800, "10.31.96.44", 5800);
+      PortForwarder.add(5800, "10.31.96.214", 5800);
 
-      RobotContainer.aprilTagCam.setDriverMode(true);
-      RobotContainer.aprilTagCam.setPipelineIndex(1);
-      RobotContainer.raspiCam.setDriverMode(true);
+      RobotContainer.raspiCam.setDriverMode(false);
+      RobotContainer.raspiCam.setPipelineIndex(0);
 
       PhotonCamera.setVersionCheckEnabled(false);
       
@@ -58,7 +61,6 @@ public class Robot extends TimedRobot {
       .add(RobotContainer.autoChooser);
 
       DriverStation.silenceJoystickConnectionWarning(true);
-      
   }
 
   /**
@@ -72,6 +74,8 @@ public class Robot extends TimedRobot {
   public void robotPeriodic() {
       RobotContainer.LJSX_Primary = RobotContainer.primaryController.getLeftX();
       RobotContainer.LJSY_Primary = RobotContainer.primaryController.getLeftY();
+      RobotContainer.R_TPrimary = RobotContainer.primaryController.getRightTriggerAxis();
+
       RobotContainer.LJSY_Arm = RobotContainer.armController.getLeftY();
       RobotContainer.RJSX_Arm = RobotContainer.armController.getRightX();
 
@@ -84,7 +88,7 @@ public class Robot extends TimedRobot {
       OI.ArmElevator.ElbowAngleEntry.setDouble(m_robotContainer.elbowAngle);
       OI.ArmElevator.ShoulderAngleEntry.setDouble(m_robotContainer.shoulderAngle);
 
-      m_robotContainer.currentElevatorPosition = m_robotContainer.getLiftEncoderTick();
+      // m_robotContainer.currentElevatorPosition = m_robotContainer.getLiftEncoderTick();
 
       OI.ArmElevator.ElbowPosEntry.setDouble(m_robotContainer.getElbowEncoderTick());
       OI.ArmElevator.ShoulderPosEntry.setDouble(m_robotContainer.getShoulderEncoderTick());
@@ -94,12 +98,12 @@ public class Robot extends TimedRobot {
       OI.ArmElevator.ElevatorSetPosEntry.setDouble(RobotContainer.elevatorSetPos);
       OI.ArmElevator.ShoulderSetPosEntry.setDouble(RobotContainer.shoulderSetPos);
 
-      if(m_robotContainer.arm.isResetElbow() != RobotContainer.isElbowSwitchHit){
-         m_robotContainer.resetElbowEncoderTick();
-      }
-      if(m_robotContainer.arm.isResetShoulder() != RobotContainer.isShoulderSwitchHit){
-         m_robotContainer.resetShoulderTick();
-      }
+      // if(m_robotContainer.arm.isResetElbow()){
+      //    m_robotContainer.resetElbowEncoderTick();
+      // }
+      // if(m_robotContainer.arm.isResetShoulder()){
+      //    m_robotContainer.resetShoulderTick();
+      // }
       RobotContainer.isElbowSwitchHit = m_robotContainer.arm.isResetElbow();
       RobotContainer.isShoulderSwitchHit = m_robotContainer.arm.isResetShoulder();
 
@@ -107,20 +111,20 @@ public class Robot extends TimedRobot {
          OI.Vision.TypeOfPieceEntry.setString("Cone");
       else
          OI.Vision.TypeOfPieceEntry.setString("Cube");
-      
-      OI.Vision.aprilCamHasTargets = 
+   
+      OI.Vision.piCamHasTargets = 
          RobotContainer.hasTargets(
             RobotContainer.pipelineResult(
-               RobotContainer.aprilTagCam));
+               RobotContainer.raspiCam));
       
-      RobotContainer.result = RobotContainer.pipelineResult(RobotContainer.aprilTagCam);
-      if(RobotContainer.hasTargets(RobotContainer.result)){
-         RobotContainer.bResult = RobotContainer.result.getBestTarget();
-         RobotContainer.rasbResult = RobotContainer.pipelineResult(RobotContainer.raspiCam).getBestTarget();
-         RobotContainer.aprilYaw = RobotContainer.getCamYaw(RobotContainer.bResult);
-         RobotContainer.aprilX = RobotContainer.distanceToVisionPose(RobotContainer.bResult).getX();
-         RobotContainer.aprilY = RobotContainer.distanceToVisionPose(RobotContainer.bResult).getY();
-         }
+      RobotContainer.piResult = RobotContainer.pipelineResult(RobotContainer.raspiCam);
+
+      if(RobotContainer.piResult != null){
+            RobotContainer.piBResult = RobotContainer.pipelineResult(RobotContainer.raspiCam).getBestTarget();
+            RobotContainer.piYaw = RobotContainer.getCamYaw(RobotContainer.piBResult);
+            RobotContainer.piX = RobotContainer.distanceToVisionPose(RobotContainer.piBResult).getX();
+            RobotContainer.piY = RobotContainer.distanceToVisionPose(RobotContainer.piBResult).getY();
+      }
 
       if(RobotContainer.primaryController.isConnected()) {
 
@@ -149,17 +153,21 @@ public class Robot extends TimedRobot {
          OI.XboxController.X2_DPadEntry.setDouble(OI.XboxController.X2_DPad);
 
          OI.Drivetrain.GyroRateEntry.setDouble(OI.Drivetrain.gyroRate);
-         OI.Drivetrain.GyroHeadingEntry.setDouble(OI.Drivetrain.gyroHeading);
+         OI.Drivetrain.GyroHeadingEntry.setDouble(RobotContainer.getGyroYaw().getDegrees());
 
          OI.Drivetrain.poseX = RobotContainer.getPoseX();
          OI.Drivetrain.poseY = RobotContainer.getPoseY();
-         OI.Drivetrain.PoseXEntry.setDouble(OI.Drivetrain.poseX);
-         OI.Drivetrain.PoseYEntry.setDouble(OI.Drivetrain.poseY);
-         if(RobotContainer.bResult != null)  
-            OI.Vision.MicroYawEntry.setDouble(RobotContainer.getCamYaw(RobotContainer.bResult));
-            OI.Vision.distanceToTagXEntry.setDouble(RobotContainer.aprilX);
-            OI.Vision.distanceToTagYEntry.setDouble(RobotContainer.aprilY);
-         OI.Vision.LimelightTargetsEntry.setBoolean(OI.Vision.aprilCamHasTargets);
+         OI.Drivetrain.PoseXEntry.setDouble(RobotContainer.getDrivetrainOdometry().getX());
+         OI.Drivetrain.PoseYEntry.setDouble(RobotContainer.getDrivetrainOdometry().getY());
+
+         OI.Drivetrain.GyroPitchEntry.setDouble(RobotContainer.getGyroPitch());
+         OI.Vision.TurretPosEntry.setDouble(m_robotContainer.getTurretPos());
+         if(RobotContainer.piBResult != null){
+            OI.Vision.RaspiYawEntry.setDouble(RobotContainer.getCamYaw(RobotContainer.piBResult));
+            OI.Vision.distanceToPieceXEntry.setDouble(RobotContainer.piX);
+            OI.Vision.distanceToPieceYEntry.setDouble(RobotContainer.piY);
+         }
+         OI.Vision.raspiTargetEntry.setBoolean(OI.Vision.piCamHasTargets);
       }
    
       CommandScheduler.getInstance().run();  
@@ -184,10 +192,6 @@ public class Robot extends TimedRobot {
       RobotContainer.drivetrain.frontRight.setNeutralMode(NeutralMode.Brake);
       RobotContainer.drivetrain.rearRight.setNeutralMode(NeutralMode.Brake);
 
-      RobotContainer.setElbowSetPoint(0);
-      RobotContainer.setElevatorSetPoint(40);
-      RobotContainer.setShoulderSetPoint(-3);
-
       RobotContainer.drivetrain.resetOdometry();
      autoCommand = m_robotContainer.getSelected();
 
@@ -202,9 +206,6 @@ public class Robot extends TimedRobot {
   /** This function is called periodically during autonomous. */
   @Override
   public void autonomousPeriodic() {
-   if(m_robotContainer.isElevLimitPressed() ==true)
-      RobotContainer.setShoulderSetPoint(Constants.ArmConstants.highCubeShoulderTick);
-      RobotContainer.setElbowSetPoint(Constants.ArmConstants.highCubeElbowTick);
    /*  rightGroup.setInverted(true);
     if(m_Timer.get()< 1.5){
     differentialDrive.arcadeDrive(0.1,0,false);
@@ -220,9 +221,8 @@ public class Robot extends TimedRobot {
 
       RobotContainer.drivetrain.resetEncoders();
       RobotContainer.drivetrain.resetOdometry();
-      m_robotContainer.resetElevatorIAccum();
       RobotContainer.setElbowSetPoint(0);
-      RobotContainer.setShoulderSetPoint(0);
+      RobotContainer.setShoulderSetPoint(-1);
    
      if(autoCommand != null){
        autoCommand.cancel();
@@ -233,32 +233,27 @@ public class Robot extends TimedRobot {
   /** This function is called periodically during operator control. */
   @Override
   public void teleopPeriodic() {
-      //  if(Math.abs(RobotContainer.LJSY_Arm) < 0.08)
-      //     RobotContainer.LJSY_Arm = 0;
-      //  RobotContainer.setElevatorSetPoint(RobotContainer.getElevatorSetPoint() + (RobotContainer.LJSY_Arm * -2));
-      // if(RobotContainer.getElbowSetPoint() < -7.6){
-      //    RobotContainer.setElbowSetPoint(-7.6);
-      // }
-      // if(RobotContainer.getElbowSetPoint() >0){
-      //    RobotContainer.setElbowSetPoint(0);
-      // }
-      if (OI.XboxController.X2_DPad == 270) {
 
-         m_robotContainer.resetElevatorIAccum();
+      if (OI.XboxController.X2_DPad == 180) {
+
          RobotContainer.setShoulderSetPoint(Constants.ArmConstants.restShoulderTick);
          RobotContainer.setElbowSetPoint(Constants.ArmConstants.restElbowTick);
-         
      }
+
       //Low Pos Pickup Position
-      if(OI.XboxController.X2_DPad == 0)  {
+      if(OI.XboxController.X2_DPad == 0 )  {
           RobotContainer.setShoulderSetPoint(Constants.ArmConstants.highCubeShoulderTick);
           RobotContainer.setElbowSetPoint(Constants.ArmConstants.highCubeElbowTick);
       }
-      if (OI.XboxController.X2_DPad == 180) {
+      if (OI.XboxController.X2_DPad == 90 && RobotContainer.isCube) {
             RobotContainer.setElbowSetPoint(Constants.ArmConstants.lowElbowTick);
             RobotContainer.setShoulderSetPoint(Constants.ArmConstants.lowShoulderTick);
       }
-      if(OI.XboxController.X2_DPad == 90 && RobotContainer.isCube) {
+      if(OI.XboxController.X2_DPad == 90 && RobotContainer.isCube == false){
+            RobotContainer.setElbowSetPoint(-.5);
+            RobotContainer.setShoulderSetPoint(-.5);
+      }
+      if(OI.XboxController.X2_DPad == 270 && RobotContainer.isCube) {
             RobotContainer.setElbowSetPoint(Constants.ArmConstants.midCubeElbowTick);
             RobotContainer.setShoulderSetPoint(Constants.ArmConstants.midCubeShoulderTick);
       }
@@ -266,6 +261,10 @@ public class Robot extends TimedRobot {
             RobotContainer.setElbowSetPoint(Constants.ArmConstants.midConeElbowTick);
             RobotContainer.setShoulderSetPoint(Constants.ArmConstants.midConeShoulderTick);
       }
+      if(RobotContainer.getElbowSetPoint() == 0 && RobotContainer.getShoulderSetPoint() == 0){
+         
+      }
+
 
   }
 
