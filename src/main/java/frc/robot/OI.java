@@ -93,8 +93,13 @@ public class OI {
 
         public static GenericEntry GyroRateEntry = Drive_TAB.add("Gyro rate", 0).getEntry();
         public static GenericEntry GyroHeadingEntry = Drive_TAB.add("Gyro Heading", 0).getEntry();
+        public static GenericEntry GyroPitchEntry = Drive_TAB.add("Gyro Pitch", 0).getEntry();
         public static GenericEntry PoseXEntry = Drive_TAB.add("Pose X Meters", 0).getEntry();
         public static GenericEntry PoseYEntry = Drive_TAB.add("Pose Y Meters", 0).getEntry();
+        public static GenericEntry Turn180Error = Drive_TAB.add("Position Error", 0).getEntry();
+        public static GenericEntry Turn180Heading = Drive_TAB.add("Turn180 Heading ", 0).getEntry();
+
+        public static GenericEntry AllianceEntry = Drive_TAB.add("Alliance", "").getEntry();
     }
     
     public static final class Vision {
@@ -103,6 +108,7 @@ public class OI {
         public static double microYaw = 0;
 
         public static boolean aprilCamHasTargets = false;
+        public static boolean piCamHasTargets = false;
 
         public static Transform3d distanceToTagX;
         public static Transform3d distanceToTagY;
@@ -113,12 +119,18 @@ public class OI {
         public static double error = 0;
 
         public static GenericEntry MicroYawEntry = Vision_TAB.add("Microsoft Cam Yaw", 0).getEntry();
-        public static GenericEntry LimelightTargetsEntry = Vision_TAB.add("Limelight has Targets", false).getEntry();
+        public static GenericEntry RaspiYawEntry = Vision_TAB.add("Raspi Cam Yaw", 0).getEntry();
+        public static GenericEntry raspiTargetEntry = Vision_TAB.add("Raspi has Targets", false).getEntry();
+        public static GenericEntry shutterTargetEntry = Vision_TAB.add("Shutter has Targets", false).getEntry();
         public static GenericEntry distanceToTagXEntry = Vision_TAB.add("Distance to Tag X", 0).getEntry();
         public static GenericEntry distanceToTagYEntry = Vision_TAB.add("Distance to Tag Y", 0).getEntry();
+        public static GenericEntry distanceToPieceXEntry = Vision_TAB.add("Distance to Cube X", 0).getEntry();
+        public static GenericEntry distanceToPieceYEntry = Vision_TAB.add("Distance to Cube Y", 0).getEntry();
+
         public static GenericEntry PIDoutputEntry = Vision_TAB.add("PID Output", 0).getEntry();
         public static GenericEntry PIDError = Vision_TAB.add("PID Error", 0).getEntry();
         public static GenericEntry TypeOfPieceEntry = Vision_TAB.add("Piece Selected", "Cube").getEntry();
+        public static GenericEntry TurretPosEntry = Vision_TAB.add("Turret Pos", 0).getEntry();
     }
     
     public static final class ArmElevator {

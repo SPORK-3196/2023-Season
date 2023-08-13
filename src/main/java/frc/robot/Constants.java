@@ -18,21 +18,21 @@ public final class Constants {
         public static final double kP = 1;
 
         public static final double restShoulderTick = -0;
-        public static final double restElbowTick = -0;
+        public static final double restElbowTick = 0;
         public static final double lowShoulderTick = -.4;
-        public static final double lowElbowTick = -7;
-        public static final double midCubeShoulderTick = -5.5;
+        public static final double lowElbowTick = -6;
+        public static final double midCubeShoulderTick = -6.2;
         public static final double midCubeElbowTick = -5;
-        public static final double midConeShoulderTick = -4.6;
-        public static final double midConeElbowTick = -6.2;
-        public static final double highCubeShoulderTick = -16.3;
-        public static final double highCubeElbowTick = -15.5;
+        public static final double midConeShoulderTick = -2.5;
+        public static final double midConeElbowTick = -5.2;
+        public static final double highCubeShoulderTick = -16.2;
+        public static final double highCubeElbowTick = -15;
         public static final double highConeElbowTick = -12.5;
         public static final double highConeShoulderTick = -14.5;
         public static final double pickUpShoulderTick = -.1;
         public static final double pickUpElbowTick = -9.4;
         public static final int pickUpStationShoulderTick = 0;
-        public static final int pickUpStationElbowTick = 0;
+        public static final double pickUpStationElbowTick = -4.75;
         public static final int startElbowTick = 0;
         public static final double startShoulderTick = -5.19;
 
@@ -68,10 +68,10 @@ public final class Constants {
         public static final double m_2022gearRatio = 8.68;
         public static final double countsPerRevolution = 2048;
 
-        public static double m_2022ksVolts = 0.67962;
-        public static double m_2022kvVoltSecondsPerMeter = 1.8334;
-        public static double m_2022kaVoltSecondsSquaredPerMeter = 0.45089;
-        public static double m_2022kP = .5; //1.7381;
+        public static double m_2022ksVolts = 0.19128;
+        public static double m_2022kvVoltSecondsPerMeter = 5.2133;
+        public static double m_2022kaVoltSecondsSquaredPerMeter = 1.2024;
+        public static double m_2022kP = 2.651; //1.7381;
         
         public static double m_2022DrivetrainTrackWidthMeters = Units.inchesToMeters(26);
         public static DifferentialDriveKinematics m_2022DifferentialDriveKinematics = new DifferentialDriveKinematics(m_2022DrivetrainTrackWidthMeters);

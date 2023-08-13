@@ -6,11 +6,12 @@ import frc.robot.commands.Autonomous.Positions.AutoArmToRestPos;
 
 public class AutoBackArmRest extends ParallelCommandGroup{
     Drivetrain drivetrain;
-
-    public AutoBackArmRest(Drivetrain drivetrain) {
+    double power;
+    double time;
+    public AutoBackArmRest(Drivetrain drivetrain, double power, double time) {
         super(
-            new DriveBackwardsAuto(drivetrain),
-            new AutoArmToRestPos()
+            new AutoArmToRestPos(),
+            new DriveBackwardsAuto(drivetrain, time, power)
         );
     }
 }

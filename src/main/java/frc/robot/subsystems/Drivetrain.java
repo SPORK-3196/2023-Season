@@ -50,7 +50,7 @@ public class Drivetrain extends SubsystemBase {
         rearLeft.setNeutralMode(NeutralMode.Coast);
         rearRight.setNeutralMode(NeutralMode.Coast);
 
-        m_odometry = new DifferentialDriveOdometry(gyroscope.getRotation2d(), sensorToMeters(rearLeft.getSelectedSensorPosition()), -1 * sensorToMeters(rearRight.getSelectedSensorPosition()));
+        m_odometry = new DifferentialDriveOdometry(gyroscope.getRotation2d().times(-1),  frontLeft.getSelectedSensorPosition() * ((Constants.DrivetrainConstants.wheelRadiusMeter*2*Math.PI) / (2048* Constants.DrivetrainConstants.m_2023gearRatio)), frontLeft.getSelectedSensorPosition() * ((Constants.DrivetrainConstants.wheelRadiusMeter*2*Math.PI) / (2048* Constants.DrivetrainConstants.m_2023gearRatio)));
     }
     public void resetEncoders() {
         frontLeft.setSelectedSensorPosition(0);
@@ -70,46 +70,36 @@ public class Drivetrain extends SubsystemBase {
     public Pose2d getPose(){
         return m_odometry.getPoseMeters();
     }
-
+    public void resetPose(Pose2d pose){
+        m_odometry.resetPosition(gyroscope.getRotation2d(), 0, 0, pose);
+    }
     public void tankDriveVolts(double leftVolts, double rightVolts){
         leftGroup.setVoltage(leftVolts);
         rightGroup.setVoltage(rightVolts);
+        differentialDrive.feed();
     }
 
     public double sensorToMeters(double sensorCount){
         double sensorRotations = sensorCount / Constants.DrivetrainConstants.countsPerRevolution;
-        double motorRotations = sensorRotations / Constants.DrivetrainConstants.m_2022gearRatio;
+        double motorRotations = sensorRotations / Constants.DrivetrainConstants.m_2023gearRatio;
          return motorRotations * (2 * Math.PI * Constants.DrivetrainConstants.wheelRadiusMeter);
     }
     
     public DifferentialDriveWheelSpeeds motorWheelSpeeds(){
         return new DifferentialDriveWheelSpeeds(
-            sensorToMeters(rearLeft.getSelectedSensorVelocity()),
-            -1 * sensorToMeters(rearRight.getSelectedSensorVelocity()));
+            sensorToMeters(frontLeft.getSelectedSensorVelocity()),
+            -1 * sensorToMeters(frontRight.getSelectedSensorVelocity()));
     }
 
     public void resetOdometry(){
         resetEncoders();
         m_odometry.resetPosition(gyroscope.getRotation2d(), 0, 0, new Pose2d(0, 0, new Rotation2d(0)));
-        System.out.println("-------------------------");
-        System.out.println("-------------------------");
-        System.out.println("-------------------------");
-        System.out.println("-------------------------");
-        System.out.println("-------------------------");
-        System.out.println("-------------------------");
-        System.out.println("Pose X: " + getPose().getX());
-        System.out.println("Pose Y: " + getPose().getY());
-        System.out.println("Pose Heading: " + getPose().getRotation());
-        System.out.println("-------------------------");
-        System.out.println("-------------------------");
-        System.out.println("-------------------------");
-        System.out.println("-------------------------");
-        System.out.println("-------------------------");
-        System.out.println("-------------------------");
-        System.out.println("-------------------------");
     }
     public static double getGyroHeading(){
         return gyroscope.getYaw();
+    }
+    public static double getGyroPitch(){
+        return gyroscope.getPitch();
     }
     public double getGyroHeadingRadians(){
         return Units.degreesToRadians(getGyroHeading());
@@ -120,16 +110,12 @@ public class Drivetrain extends SubsystemBase {
     }
     
     public void zeroGyro(){
-        gyroscope.setYaw(0);
+        gyroscope.reset();
     }
 
-    public static void zerogyro(){
-        gyroscope.setYaw(0);
-    }
     @Override
     public void periodic(){
-        
-        m_odometry.update(gyroscope.getRotation2d(), sensorToMeters(rearLeft.getSelectedSensorPosition()), -1 * sensorToMeters(rearRight.getSelectedSensorPosition()));
+        m_odometry.update(gyroscope.getRotation2d()/*.times(-1)*/, frontLeft.getSelectedSensorPosition() * ((Constants.DrivetrainConstants.wheelRadiusMeter*2*Math.PI) / (2048* Constants.DrivetrainConstants.m_2023gearRatio)), frontLeft.getSelectedSensorPosition() * ((Constants.DrivetrainConstants.wheelRadiusMeter*2*Math.PI) / (2048* Constants.DrivetrainConstants.m_2023gearRatio)));
     }
 
 }
