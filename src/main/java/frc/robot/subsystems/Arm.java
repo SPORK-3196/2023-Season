@@ -34,24 +34,27 @@ public class Arm extends SubsystemBase {
         Constants.ArmConstants.shoulderKgVolts, 
         Constants.ArmConstants.shoulderKvVoltSecondPerRad, 
         Constants.ArmConstants.shoulderKaVoltSecondSquaredPerRad);
-    
+    /* 
     public ArmFeedforward elbowFeedForward = new ArmFeedforward(
         Constants.ArmConstants.elbowKsVolts, 
         Constants.ArmConstants.elbowKgVolts, 
         Constants.ArmConstants.elbowKvVoltSecondPerRad, 
         Constants.ArmConstants.elbowKaVoltSecondSquaredPerRad);
-
+*/
     public double elbowKI, elbowKD, elbowKP, shoulderKI, shoulderKD, shoulderKP, elbowFFa, shoulderFFa, shoulderFFb, elbowMax, elbowMin, shoulderMax, shoulderMin;
     public Arm(){
         elbowController = elbowMotor.getPIDController();
         shoulderController = shoulderMotor.getPIDController();
 
+        //TODO change these values
+        
         elbowKP = 1.8;
         elbowKD = 0;
         elbowKI = .0006;
         elbowFFa = 1.4;
         elbowMax = .13;
         elbowMin = -.11;
+        
 
         shoulderFFa = -1.4;
         shoulderFFb = -1.4;

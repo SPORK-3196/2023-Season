@@ -15,7 +15,7 @@ public class HighRungAuto extends SequentialCommandGroup{
         super(
             new AutoMoveArmToTop(),
             new EjectCubeAuto(claw),
-            new AutoBackArmRest(drivetrain)
+            new AutoBackArmRest(drivetrain, 0.5, 5.25)
         );
     }
 }

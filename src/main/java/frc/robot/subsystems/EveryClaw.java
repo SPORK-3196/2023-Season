@@ -7,17 +7,21 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
 public class EveryClaw extends SubsystemBase{
-    public CANSparkMax clawMotor = new CANSparkMax(Constants.ClawConstants.clawMotorPort, MotorType.kBrushless);
+    public CANSparkMax clawMotorleft = new CANSparkMax(Constants.ClawConstants.LeftclawMotorPort, MotorType.kBrushless);
+    public CANSparkMax clawMotorRight = new CANSparkMax(Constants.ClawConstants.RightClawMotorPort, MotorType.kBrushless);
 
     public EveryClaw(){
-        clawMotor.set(0);
+        clawMotorleft.set(0);
+        clawMotorRight.set(0);
     }
 
     public void runMotor(double speed){
-        clawMotor.set(speed);
+        clawMotorleft.set(speed);
+        clawMotorRight.set(-speed);
     } 
     public void stopMotor(){
-        clawMotor.stopMotor();
+        clawMotorleft.stopMotor();
+        clawMotorRight.stopMotor();
     }
 }
 

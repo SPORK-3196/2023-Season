@@ -17,13 +17,25 @@ public class ArmPosition extends CommandBase {
 
     @Override
    public void initialize(){
-        arm.elbowController.setReference(RobotContainer.elbowSetPos, CANSparkMax.ControlType.kPosition);
-        arm.shoulderController.setReference(RobotContainer.shoulderSetPos, CANSparkMax.ControlType.kPosition);
+
    }
 
-   @Override
+@Override
    public void execute(){
-        
+
+     if(arm.getElbowTick() > 1000 && RobotContainer.shoulderSetPos < 2000)//danger
+     {
+          arm.shoulderController.setReference(20, CANSparkMax.ControlType.kPosition); //TODO change the setpoint
+     }
+     else{
+          arm.shoulderController.setReference(RobotContainer.shoulderSetPos, CANSparkMax.ControlType.kPosition);
+     }
+     if(arm.getShoulderTick() < 2000 && RobotContainer.elbowSetPos > 0 ){
+          arm.elbowController.setReference(0, CANSparkMax.ControlType.kPosition);//TODO set setpoint
+     }
+     else{
+          arm.elbowController.setReference(RobotContainer.elbowSetPos, CANSparkMax.ControlType.kPosition);
+     }    
    }
 
    @Override

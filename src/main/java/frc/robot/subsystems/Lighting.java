@@ -48,18 +48,6 @@ public class Lighting extends SubsystemBase {
     lightsAlpha.setData(lightBufferAlpha);
   }
 
-  /** Set lights between red, yellow, and green, based off an offset from a target. */
-  public void redGreenOffset(double offset, double offset_factor) {
-    offset = Math.abs(offset);
-    int val = (int) (offset * offset_factor);
-
-    for (int i = 0; i < lightBufferAlpha.getLength(); i++) {
-      lightBufferAlpha.setRGB(i, val, 200 - val, 0);
-    }
-
-    lightsAlpha.setData(lightBufferAlpha);
-    // lightsBeta.setData(lightBufferBeta);
-  }
 
   /** Set lights to red */
   public void fullRed() {

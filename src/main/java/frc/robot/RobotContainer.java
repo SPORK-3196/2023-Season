@@ -275,6 +275,7 @@ public class RobotContainer {
     }
 
     public static void setShoulderSetPoint(double setPoint){
+
         shoulderSetPos = setPoint;
     }
     public static void setElbowSetPoint(double setpoint){
@@ -282,9 +283,10 @@ public class RobotContainer {
         elbowSetPos = setpoint;
     }
 
+    /* 
     public double getShoulderAngle(){
         return arm.getShoulderAngle();
-    }
+    }*/
 
     public double getElbowAngle(){
         return arm.getElbowAngle();

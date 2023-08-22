@@ -83,7 +83,7 @@ public class Robot extends TimedRobot {
       OI.Drivetrain.gyroHeading = RobotContainer.getPoseRotation();
 
       m_robotContainer.elbowAngle = m_robotContainer.getElbowAngle();
-      m_robotContainer.shoulderAngle = m_robotContainer.getShoulderAngle();
+      //m_robotContainer.shoulderAngle = m_robotContainer.get
 
       OI.ArmElevator.ElbowAngleEntry.setDouble(m_robotContainer.elbowAngle);
       OI.ArmElevator.ShoulderAngleEntry.setDouble(m_robotContainer.shoulderAngle);

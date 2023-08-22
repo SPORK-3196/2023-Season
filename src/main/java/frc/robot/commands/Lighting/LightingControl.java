@@ -37,7 +37,7 @@ public class LightingControl extends CommandBase {
             lights.FullRainbow();
         }
         if(DriverStation.isAutonomousEnabled()){
-            lights.fullWhite();
+            lights.fullRed();
         }
 
         lights.fullWhite();

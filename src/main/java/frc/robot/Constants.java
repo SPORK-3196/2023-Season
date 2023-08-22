@@ -7,7 +7,8 @@ public final class Constants {
     
     public static final class ClawConstants {
 
-        public static final int clawMotorPort = 10;
+        public static final int LeftclawMotorPort = 10;
+        public static final int RightClawMotorPort = 11;
         
     }
 
