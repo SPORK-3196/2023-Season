@@ -21,6 +21,9 @@ public class Arm extends SubsystemBase {
         new CANSparkMax(ArmConstants.elbowPort,MotorType.kBrushless);
 
 
+
+
+    
    
     public RelativeEncoder elbowEncoder = elbowMotor.getEncoder();
     public RelativeEncoder shoulderEncoder = shoulderMotor.getEncoder();
@@ -75,24 +78,24 @@ public class Arm extends SubsystemBase {
         elbowController.setD(elbowKD);
         elbowController.setI(elbowKI);
         elbowController.setOutputRange(elbowMin, elbowMax);
-        elbowController.setIMaxAccum(3, 0);
-        elbowController.setIZone(2.5);
+        //elbowController.setIMaxAccum(3, 0);
+        //elbowController.setIZone(2.5);
 
         shoulderController.setP(shoulderKP);
         shoulderController.setD(shoulderKD);
         shoulderController.setI(shoulderKI);
         shoulderController.setOutputRange(shoulderMin, shoulderMax);
-        shoulderController.setIMaxAccum(10, 0);
-        shoulderController.setIZone(4.5);
+        //shoulderController.setIMaxAccum(10, 0);
+        //shoulderController.setIZone(4.5);
 
     }
-    public void runElbowMotor(double speed){
+    /*public void runElbowMotor(double speed){
         elbowMotor.set(speed);
     }
 
-    public void runShoulderMotor(double speed){
+     public void runShoulderMotor(double speed){
         shoulderMotor.set(speed);
-    }
+    }*/
 
     public void turnElbowOff(){
         elbowMotor.enableSoftLimit(SoftLimitDirection.kForward, true);
