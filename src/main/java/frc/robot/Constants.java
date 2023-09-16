@@ -8,34 +8,34 @@ public final class Constants {
     public static final class ClawConstants {
 
         public static final int LeftclawMotorPort = 10;
-        public static final int RightClawMotorPort = 11;
+        public static final int RightClawMotorPort = 6;
         
     }
 
     public static final class ArmConstants {
-        public static final int elbowPort = 6;
+        public static final int elbowPort = 8;
         public static final int shoulderPort = 7;
         
         public static final double kP = 1;
 
         public static final double restShoulderTick = -0;
         public static final double restElbowTick = 0;
-        public static final double lowShoulderTick = -.4;
-        public static final double lowElbowTick = -6;
-        public static final double midCubeShoulderTick = -6.2;
-        public static final double midCubeElbowTick = -5;
-        public static final double midConeShoulderTick = -2.5;
-        public static final double midConeElbowTick = -5.2;
-        public static final double highCubeShoulderTick = -16.2;
-        public static final double highCubeElbowTick = -15;
-        public static final double highConeElbowTick = -12.5;
-        public static final double highConeShoulderTick = -14.5;
-        public static final double pickUpShoulderTick = -.1;
-        public static final double pickUpElbowTick = -9.4;
-        public static final int pickUpStationShoulderTick = 0;
-        public static final double pickUpStationElbowTick = -4.75;
+        public static final double lowShoulderTick = -6;
+        public static final double lowElbowTick = 34;
+        public static final double midCubeShoulderTick = -16;
+        public static final double midCubeElbowTick = 0;
+        public static final double midConeShoulderTick = 0; // no
+        public static final double midConeElbowTick = 0;// no
+        public static final double highCubeShoulderTick = -23; 
+        public static final double highCubeElbowTick = 37;
+        public static final double highConeElbowTick = 0;// no
+        public static final double highConeShoulderTick = 0;// no
+        public static final double pickUpShoulderTick = 0;
+        public static final double pickUpElbowTick = 0;
+        public static final int pickUpStationShoulderTick = 0;// no
+        public static final double pickUpStationElbowTick = 0;// no
         public static final int startElbowTick = 0;
-        public static final double startShoulderTick = -5.19;
+        public static final double startShoulderTick = 0;
 
         public static final double shoulderKsVolts = 1;
         public static final double shoulderKgVolts = 1;

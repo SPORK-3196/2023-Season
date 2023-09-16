@@ -13,8 +13,10 @@ public class AutoMoveArmToTop extends CommandBase{
     @Override
     public void initialize(){
         timer.reset();
-        RobotContainer.setElbowSetPoint(Constants.ArmConstants.highCubeElbowTick);
+        //RobotContainer.setElbowSetPoint(Constants.ArmConstants.midCubeElbowTick);
         RobotContainer.setShoulderSetPoint(Constants.ArmConstants.highCubeShoulderTick);
+        //Timer.delay(1);
+        RobotContainer.setElbowSetPoint(Constants.ArmConstants.highCubeElbowTick);
         timer.start();
     }
     @Override

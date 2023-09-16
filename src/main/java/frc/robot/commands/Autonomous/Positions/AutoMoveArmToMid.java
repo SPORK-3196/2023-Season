@@ -19,7 +19,7 @@ public class AutoMoveArmToMid extends CommandBase{
     }
     @Override
     public void execute(){
-
+    
     }
 
     public void end(boolean interrupted){

@@ -20,6 +20,7 @@ public class CloseClaw extends CommandBase{
     public void execute(){
         if(RobotContainer.isCube)
             claw.runMotor(-.8);
+            
         else
             claw.runMotor(.8);
     }

@@ -98,12 +98,21 @@ public class Robot extends TimedRobot {
       OI.ArmElevator.ElevatorSetPosEntry.setDouble(RobotContainer.elevatorSetPos);
       OI.ArmElevator.ShoulderSetPosEntry.setDouble(RobotContainer.shoulderSetPos);
 
-      // if(m_robotContainer.arm.isResetElbow()){
-      //    m_robotContainer.resetElbowEncoderTick();
-      // }
-      // if(m_robotContainer.arm.isResetShoulder()){
-      //    m_robotContainer.resetShoulderTick();
-      // }
+      if(m_robotContainer.arm.isResetElbow()){
+         System.out.println("Slider reset");
+         m_robotContainer.resetElbowEncoderTick();
+       }
+       if(m_robotContainer.isShoulderLimitPressed()){
+         //System.out.println("shoulder reset");
+          m_robotContainer.resetShoulderTick();
+      }
+      if(m_robotContainer.arm.isStopElbow()){
+         m_robotContainer.arm.turnElbowOff();
+      }
+      if(m_robotContainer.arm.isStopShoulder()){
+         m_robotContainer.arm.turnShoulderOff();;
+      }
+
       RobotContainer.isElbowSwitchHit = m_robotContainer.arm.isResetElbow();
       RobotContainer.isShoulderSwitchHit = m_robotContainer.arm.isResetShoulder();
 
@@ -222,7 +231,7 @@ public class Robot extends TimedRobot {
       RobotContainer.drivetrain.resetEncoders();
       RobotContainer.drivetrain.resetOdometry();
       RobotContainer.setElbowSetPoint(0);
-      RobotContainer.setShoulderSetPoint(-1);
+      RobotContainer.setShoulderSetPoint(0);
    
      if(autoCommand != null){
        autoCommand.cancel();

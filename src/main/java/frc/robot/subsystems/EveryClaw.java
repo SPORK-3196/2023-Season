@@ -1,6 +1,7 @@
 package frc.robot.subsystems;
 
 import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -10,9 +11,12 @@ public class EveryClaw extends SubsystemBase{
     public CANSparkMax clawMotorleft = new CANSparkMax(Constants.ClawConstants.LeftclawMotorPort, MotorType.kBrushless);
     public CANSparkMax clawMotorRight = new CANSparkMax(Constants.ClawConstants.RightClawMotorPort, MotorType.kBrushless);
 
+
     public EveryClaw(){
         clawMotorleft.set(0);
         clawMotorRight.set(0);
+        clawMotorRight.setIdleMode(IdleMode.kBrake);
+        clawMotorleft.setIdleMode(IdleMode.kBrake);
     }
 
     public void runMotor(double speed){
