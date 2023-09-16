@@ -16,7 +16,6 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj2.command.Command;
-
 import frc.robot.subsystems.Drivetrain;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 
@@ -99,7 +98,6 @@ public class Robot extends TimedRobot {
       OI.ArmElevator.ShoulderSetPosEntry.setDouble(RobotContainer.shoulderSetPos);
 
       if(m_robotContainer.arm.isResetElbow()){
-         System.out.println("Slider reset");
          m_robotContainer.resetElbowEncoderTick();
        }
        if(m_robotContainer.isShoulderLimitPressed()){
@@ -112,6 +110,7 @@ public class Robot extends TimedRobot {
       if(m_robotContainer.arm.isStopShoulder()){
          m_robotContainer.arm.turnShoulderOff();;
       }
+      System.out.println(m_robotContainer.arm.elbowMotor.getOutputCurrent());
 
       RobotContainer.isElbowSwitchHit = m_robotContainer.arm.isResetElbow();
       RobotContainer.isShoulderSwitchHit = m_robotContainer.arm.isResetShoulder();
