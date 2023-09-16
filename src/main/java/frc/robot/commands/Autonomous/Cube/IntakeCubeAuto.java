@@ -31,7 +31,7 @@ public class IntakeCubeAuto extends CommandBase{
     }
     @Override
     public void end(boolean interrupted){
-        claw.stopMotor();
+        claw.runMotor(-0.03);
     }
 
     @Override

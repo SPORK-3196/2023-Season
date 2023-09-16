@@ -27,6 +27,7 @@ import frc.robot.commands.Lighting.LightingControl;
 import frc.robot.commands.Turret.TurretToCenter;
 import frc.robot.commands.Turret.TurretToTag;
 import frc.robot.commands.TurretDrive;
+import frc.robot.commands.Arm.ReZero;
 import frc.robot.commands.Arm.TurnArmOff;
 import frc.robot.commands.Autonomous.AutoHighChargeStation;
 import frc.robot.commands.Autonomous.HighRungAuto;
@@ -134,6 +135,7 @@ public class RobotContainer {
         X_Arm.whileTrue(new ReleasePiece(claw));
         A_Arm.whileTrue(new CloseClaw(claw));
         Y_Arm.onTrue(Commands.runOnce(() -> setSetPointsToPickUp()));
+        B_Arm.whileTrue(new ReZero(arm));
 
         LBP_Arm.onTrue(Commands.runOnce(() -> changePosPlaceHigh()));
         RBP_Arm.onTrue(Commands.runOnce(() -> changePosPlaceMid()));
