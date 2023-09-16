@@ -23,7 +23,7 @@ public class ArmPosition extends CommandBase {
 @Override
    public void execute(){
 
-     if(arm.getElbowTick() > 2 && RobotContainer.shoulderSetPos > -6)//danger
+     if(arm.getElbowTick() > 2 && RobotContainer.shoulderSetPos > -5.8)//danger
      {
           //System.out.println("Danger to arm");
           arm.shoulderController.setReference(-7, CANSparkMax.ControlType.kPosition); //TODO change the setpoint
@@ -32,7 +32,7 @@ public class ArmPosition extends CommandBase {
           //System.out.println("slider is OK");
           arm.shoulderController.setReference(RobotContainer.shoulderSetPos, CANSparkMax.ControlType.kPosition);
      }
-     if(arm.getShoulderTick() > -6 && RobotContainer.elbowSetPos >= 0 )
+     if(arm.getShoulderTick() > -5.8 && RobotContainer.elbowSetPos >= 0 )
      {
           //System.out.println("Shoulder to low");
           arm.elbowController.setReference(0, CANSparkMax.ControlType.kPosition);//TODO set setpoint

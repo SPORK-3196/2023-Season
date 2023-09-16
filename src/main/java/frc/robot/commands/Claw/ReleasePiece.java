@@ -19,14 +19,11 @@ public class ReleasePiece extends CommandBase{
     }
     @Override
     public void execute(){
-        if(RobotContainer.isCube)
-            claw.runMotor(.8);
-        else
-            claw.runMotor(-.3);
+        claw.runMotor(.1);
     }
     @Override 
     public void end(boolean isFinished){
-        claw.stopMotor();
+        claw.runMotor(-0.03);
     }
     public boolean isFinished(){
         return false;

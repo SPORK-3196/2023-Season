@@ -15,18 +15,15 @@ public class CloseClaw extends CommandBase{
 
     @Override
     public void initialize(){
+        
     }
     @Override
     public void execute(){
-        if(RobotContainer.isCube)
-            claw.runMotor(-.8);
-            
-        else
-            claw.runMotor(.8);
+        claw.runMotor(-.6);
     }
     @Override 
     public void end(boolean isFinished){
-        claw.stopMotor();
+        claw.runMotor(-0.03);
     }
     public boolean isFinished(){
         return false;

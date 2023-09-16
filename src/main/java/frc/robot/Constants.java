@@ -22,12 +22,12 @@ public final class Constants {
         public static final double restElbowTick = 0;
         public static final double lowShoulderTick = -6;
         public static final double lowElbowTick = 34;
-        public static final double midCubeShoulderTick = -16;
+        public static final double midCubeShoulderTick = -20;
         public static final double midCubeElbowTick = 0;
         public static final double midConeShoulderTick = 0; // no
         public static final double midConeElbowTick = 0;// no
-        public static final double highCubeShoulderTick = -23; 
-        public static final double highCubeElbowTick = 37;
+        public static final double highCubeShoulderTick = -27; 
+        public static final double highCubeElbowTick = 36;
         public static final double highConeElbowTick = 0;// no
         public static final double highConeShoulderTick = 0;// no
         public static final double pickUpShoulderTick = 0;

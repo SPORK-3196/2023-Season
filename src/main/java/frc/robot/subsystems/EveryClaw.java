@@ -13,10 +13,8 @@ public class EveryClaw extends SubsystemBase{
 
 
     public EveryClaw(){
-        clawMotorleft.set(0);
-        clawMotorRight.set(0);
-        clawMotorRight.setIdleMode(IdleMode.kBrake);
-        clawMotorleft.setIdleMode(IdleMode.kBrake);
+        clawMotorleft.set(-0.03);
+        clawMotorRight.set(0.03);
     }
 
     public void runMotor(double speed){
